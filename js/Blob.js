@@ -10,7 +10,7 @@
 
 /*global self, unescape */
 /*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
-  plusplus: true */
+ plusplus: true */
 
 /*! @source http://purl.eligrey.com/github/Blob.js/blob/master/Blob.js */
 
@@ -30,7 +30,7 @@
 	// in order to support older browsers that only have BlobBuilder
 	var BlobBuilder = view.BlobBuilder || view.WebKitBlobBuilder || view.MozBlobBuilder || (function(view) {
 		var
-			  get_class = function(object) {
+			get_class = function(object) {
 				return Object.prototype.toString.call(object).match(/^\[object\s(.*)\]$/)[1];
 			}
 			, FakeBlobBuilder = function BlobBuilder() {
@@ -49,9 +49,9 @@
 				this.code = this[this.name = type];
 			}
 			, file_ex_codes = (
-				  "NOT_FOUND_ERR SECURITY_ERR ABORT_ERR NOT_READABLE_ERR ENCODING_ERR "
+				"NOT_FOUND_ERR SECURITY_ERR ABORT_ERR NOT_READABLE_ERR ENCODING_ERR "
 				+ "NO_MODIFICATION_ALLOWED_ERR INVALID_STATE_ERR SYNTAX_ERR"
-			).split(" ")
+				).split(" ")
 			, file_ex_code = file_ex_codes.length
 			, real_URL = view.URL || view.webkitURL || view
 			, real_create_object_URL = real_URL.createObjectURL
@@ -64,7 +64,7 @@
 			, Uint8Array = view.Uint8Array
 
 			, origin = /^[\w-]+:\/*\[?[\w\.:-]+\]?(?::[0-9]+)?/
-		;
+			;
 		FakeBlob.fake = FB_proto.fake = true;
 		while (file_ex_code--) {
 			FileException.prototype[file_ex_codes[file_ex_code]] = file_ex_code + 1;
@@ -73,9 +73,9 @@
 		if (!real_URL.createObjectURL) {
 			URL = view.URL = function(uri) {
 				var
-					  uri_info = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
+					uri_info = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
 					, uri_origin
-				;
+					;
 				uri_info.href = uri;
 				if (!("origin" in uri_info)) {
 					if (uri_info.protocol.toLowerCase() === "data:") {
@@ -90,9 +90,9 @@
 		}
 		URL.createObjectURL = function(blob) {
 			var
-				  type = blob.type
+				type = blob.type
 				, data_URI_header
-			;
+				;
 			if (type === null) {
 				type = "application/octet-stream";
 			}
@@ -121,11 +121,11 @@
 			// decode data to a binary string
 			if (Uint8Array && (data instanceof ArrayBuffer || data instanceof Uint8Array)) {
 				var
-					  str = ""
+					str = ""
 					, buf = new Uint8Array(data)
 					, i = 0
 					, buf_len = buf.length
-				;
+					;
 				for (; i < buf_len; i++) {
 					str += String.fromCharCode(buf[i]);
 				}
@@ -169,7 +169,7 @@
 				type = null;
 			}
 			return new FakeBlob(
-				  this.data.slice(start, args > 1 ? end : this.data.length)
+				this.data.slice(start, args > 1 ? end : this.data.length)
 				, type
 				, this.encoding
 			);

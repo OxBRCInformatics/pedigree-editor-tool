@@ -1,66 +1,92 @@
-/**
- * Returns the age of a person with the given birth and death dates
- * @param {Date} birthDate
- * @param {Date} [deathDate]
- * @return {String} Age formatted with years, months, days
- */
-function getAge(birthDate, deathDate)
-{
-    var now;
-    if (deathDate == null){
-        now = new Date();
-    }
-    else {
-        now = deathDate;
-    }
+	/**
+	 * Returns the age of a person with the given birth and death dates
+	 * @param {Date} birthDate
+	 * @param {Date} [deathDate]
+	 * @return {String} Age formatted with years, months, days
+	 */
+	function getAge(birthDate, deathDate, onlyYears)
+	{
+		if (birthDate.onlyDecadeAvailable() || (deathDate && deathDate.onlyDecadeAvailable())) {
+			if (onlyYears) {
+				var lastYearAlive = new Date().getFullYear();
+				if (deathDate != null) {
+					lastYearAlive = deathDate.getYear(true);
+					if (deathDate.onlyDecadeAvailable()) {
+						lastYearAlive += 10;
+					}
+				}
+				var oldestYear = birthDate.onlyDecadeAvailable() ? parseInt(birthDate.getDecade()) : birthDate.getYear();
+				var age = lastYearAlive - oldestYear;
+				var decadeOld = Math.ceil(age/10)*10;
+				return "before_" + decadeOld;
+			}
+			return "";
+		}
 
-    var aSecond = 1000;
-    var aMinute = aSecond * 60;
-    var aHour = aMinute * 60;
-    var aDay = aHour * 24;
-    var aWeek = aDay * 7;
-    var aMonth = aDay * 30;
+		var now;
+		if (deathDate == null){
+			now = new Date();
+		}
+		else {
+			now = deathDate.toJSDate();
+		}
 
-    var age = now.getTime() - birthDate.getTime();
+		birthDate = birthDate.toJSDate();
 
-    if (age < 0) {
-        return "not born yet"
-    }
+		var aSecond = 1000;
+		var aMinute = aSecond * 60;
+		var aHour = aMinute * 60;
+		var aDay = aHour * 24;
+		var aWeek = aDay * 7;
+		var aMonth = aDay * 30.5;
 
-    var years = (new Date(now.getTime() - aMonth* (birthDate.getMonth()) )).getFullYear()
-                - (new Date(birthDate.getTime() - aMonth* (birthDate.getMonth()) )).getFullYear();
+		var age = now.getTime() - birthDate.getTime();
 
-    var offsetNow = (new Date(now.getTime() - aDay* (birthDate.getDate() -1) ));
-    var offsetBirth = (new Date(birthDate.getTime() - aDay* (birthDate.getDate() -1) ));
-    if (years > 1){
-        var months = years*12 + ( offsetNow.getMonth() - offsetBirth.getMonth()) ;
-    }else{
-        var months = (now.getFullYear() - birthDate.getFullYear())*12 + ( offsetNow.getMonth() - offsetBirth.getMonth()) ;
-    }
+		if (age <= 0) {
+			if (deathDate == null) {
+				if (age < 0) {
+					return "not born yet"
+				}
+			} else {
+				return "";
+			}
+		}
 
-    var agestr = "";
+		var years = now.getFullYear() - birthDate.getFullYear() - (now.getDayOfYear() < birthDate.getDayOfYear() ? 1 : 0);
 
-    if (months < 12) {
-        var days = Math.floor(age / aDay);
+		if (onlyYears) {
+			return years;
+		}
 
-        if (days <21)
-        {
-            if (days == 1) {
-                agestr = days + ' day';
-            }
-            else {
-                agestr = days + ' days';
-            }
-        }
-        else if (days < 60) {
-            var weeks = Math.floor(age / aWeek);
-            agestr = weeks + " wk";
-        } else
-        {
-            agestr = months + ' mo';
-        }
-    } else {
-        agestr = years + " y";
-    }
-    return agestr;
-}
+		var agestr = "";
+
+		// TODO: can do a bit better with up-to-a-day precision
+		//       (e.g. born Apr 10, now May 9 => 0 month, May 10 => 1 month) - but don't need it here
+		var months = Math.floor(age / aMonth);
+
+		if (months < 12) {
+			var days = Math.floor(age / aDay);
+
+			if (days <21)
+			{
+				if (days == 1) {
+					agestr = days + ' day';
+				}
+				else {
+					agestr = days + ' days';
+				}
+			}
+			else if (days < 60) {
+				var weeks = Math.floor(age / aWeek);
+				agestr = weeks + " wk";
+			} else
+			{
+				agestr = months + ' mo';
+			}
+		} else {
+			agestr = years + " y";
+		}
+		return agestr;
+	}
+	var AgeCalc = {};
+	AgeCalc.getAge = getAge;

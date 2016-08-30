@@ -4,212 +4,197 @@
  * @class SaveLoadEngine
  * @constructor
  */
+	var SaveLoadEngine = Class.create( {
 
-function unescapeRestData (data) {
-    // http://stackoverflow.com/questions/4480757/how-do-i-unescape-html-entities-in-js-change-lt-to
-    var tempNode = document.createElement('div');
-    tempNode.innerHTML = data.replace(/&amp;/, '&');
-    return tempNode.innerText || tempNode.text || tempNode.textContent;
-}
+		initialize: function() {
+			this._saveInProgress = false;
+		},
 
-function getSelectorFromXML(responseXML, selectorName, attributeName, attributeValue) {
-    if (responseXML.querySelector) {
-        // modern browsers
-        return responseXML.querySelector(selectorName + "[" + attributeName + "='" + attributeValue + "']");
-    } else {
-        // IE7 && IE8 && some other older browsers
-        // http://www.w3schools.com/XPath/xpath_syntax.asp
-        // http://msdn.microsoft.com/en-us/library/ms757846%28v=vs.85%29.aspx
-        var query = "//" + selectorName + "[@" + attributeName + "='" + attributeValue + "']";
-        try {
-            return responseXML.selectSingleNode(query);
-        } catch (e) {
-            // Firefox v3.0-
-            alert("your browser is unsupported");
-            window.stop && window.stop();
-            throw "Unsupported browser";
-        }
-    }
-}
+		/**
+		 * Saves the state of the pedigree (including any user preferences and current color scheme)
+		 *
+		 * @return Serialization data for the entire graph
+		 */
+		serialize: function() {
+			var jsonObject = editor.getGraph().toJSONObject();
 
-function getSubSelectorTextFromXML(responseXML, selectorName, attributeName, attributeValue, subselectorName) {
-    var selector = getSelectorFromXML(responseXML, selectorName, attributeName, attributeValue);
+			jsonObject["settings"] = editor.getView().getSettings();
 
-    var value = selector.innerText || selector.text || selector.textContent;
+			return JSON.stringify(jsonObject);
+		},
 
-    if (!value)     // fix IE behavior where (undefined || "" || undefined) == undefined
-        value = "";
+		createGraphFromSerializedData: function(JSONString, noUndo, centerAround0) {
+			console.log("---- load: parsing data ----");
+			document.fire("pedigree:load:start");
 
-    return value;
-}
+			try {
+				var jsonObject = JSON.parse(JSONString);
 
-var ProbandDataLoader = Class.create( {
-    initialize: function() {
-        this.probandData = undefined;
-    },
-    load: function(callWhenReady) {
-        new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PatientClass/0.xml').substring(1), {
-            method: "GET",
-            onSuccess: this.onProbandDataReady.bind(this),
-            onComplete: callWhenReady ? callWhenReady : {}
-        });
-    },
+				// load the graph model of the pedigree & node data
+				var changeSet = editor.getGraph().fromJSONObject(jsonObject);
 
-    onProbandDataReady : function(response) {
-        var responseXML = response.responseXML;  //documentElement.
-        this.probandData = {};
-        this.probandData.firstName = unescapeRestData(getSubSelectorTextFromXML(responseXML, "property", "name", "first_name", "value"));
-        this.probandData.lastName  = unescapeRestData(getSubSelectorTextFromXML(responseXML, "property", "name", "last_name", "value"));
-        this.probandData.gender    = unescapeRestData(getSubSelectorTextFromXML(responseXML, "property", "name", "gender", "value"));
-        if (this.probandData.gender === undefined || this.probandData.gender == '')
-            this.probandData.gender = 'U';
-        console.log("Proband data: " + stringifyObject(this.probandData));
-    },
-});
+				// load/process metadata such as pedigree options and color choices
+				if (jsonObject.hasOwnProperty("settings")) {
+					editor.getView().loadSettings(jsonObject.settings);
+				}
+			}
+			catch(err)
+			{
+				console.log("ERROR loading the graph: " + err);
+				alert("Error loading the graph");
+				document.fire("pedigree:graph:clear");
+				document.fire("pedigree:load:finish");
+				return;
+			}
 
+			if (!noUndo) {
+				var probandJSONObject = editor.getProbandDataFromPhenotips();
+				var genderOk = editor.getGraph().setProbandData(probandJSONObject);
+				if (!genderOk)
+					alert("Proband gender defined in Phenotips is incompatible with this pedigree. Setting proband gender to 'Unknown'");
+				JSONString = this.serialize();
+			}
 
-var SaveLoadEngine = Class.create( {
+			if (editor.getView().applyChanges(changeSet, false)) {
+				editor.getWorkspace().adjustSizeToScreen();
+			}
 
-    initialize: function() {
-        this._saveInProgress = false;
-    },
+			if (centerAround0) {
+				editor.getWorkspace().centerAroundNode(0);
+			}
 
-    /**
-     * Saves the state of the graph
-     *
-     * @return Serialization data for the entire graph
-     */
-    serialize: function() {
-        return editor.getGraph().toJSON();
-    },
+			if (!noUndo && !editor.isReadOnlyMode()) {
+				editor.getUndoRedoManager().addState(null, null, JSONString);
+			}
 
-    createGraphFromSerializedData: function(JSONString, noUndo, centerAround0) {
-        console.log("---- load: parsing data ----");
-        document.fire("pedigree:load:start");
+			document.fire("pedigree:load:finish");
+		},
 
-        try {
-            var changeSet = editor.getGraph().fromJSON(JSONString);
-        }
-        catch(err)
-        {
-            console.log("ERROR loading the graph: " + err);
-            alert("Error loading the graph");
-            document.fire("pedigree:graph:clear");
-            document.fire("pedigree:load:finish");
-            return;
-        }
+		createGraphFromImportData: function(importString, importType, importOptions, noUndo, centerAround0) {
+			console.log("---- import: parsing data ----");
+			document.fire("pedigree:load:start");
 
-        if (!noUndo) {
-            var probandData = editor.getProbandDataFromPhenotips();
-            var genderOk = editor.getGraph().setProbandData( probandData.firstName, probandData.lastName, probandData.gender );
-            if (!genderOk)
-                alert("Proband gender defined in Phenotips is incompatible with this pedigree. Setting proband gender to 'Unknown'");
-            JSONString = editor.getGraph().toJSON();
-        }
+			try {
+				var changeSet = editor.getGraph().fromImport(importString, importType, importOptions);
+				if (changeSet == null) throw "unable to create a pedigree from imported data";
+			}
+			catch(err)
+			{
+				alert("Error importing pedigree: " + err);
+				document.fire("pedigree:load:finish");
+				return;
+			}
 
-        if (editor.getView().applyChanges(changeSet, false)) {
-            editor.getWorkspace().adjustSizeToScreen();
-        }
+			if (!noUndo) {
+				var probandJSONObject = editor.getProbandDataFromPhenotips();
+				var genderOk = editor.getGraph().setProbandData(probandJSONObject);
+				if (!genderOk)
+					alert("Proband gender defined in Phenotips is incompatible with the imported pedigree. Setting proband gender to 'Unknown'");
+				JSONString = this.serialize();
+			}
 
-        if (centerAround0)
-            editor.getWorkspace().centerAroundNode(0);
+			if (editor.getView().applyChanges(changeSet, false)) {
+				editor.getWorkspace().adjustSizeToScreen();
+			}
 
-        if (!noUndo)
-            editor.getActionStack().addState(null, null, JSONString);
+			if (centerAround0) {
+				editor.getWorkspace().centerAroundNode(0);
+			}
 
-        document.fire("pedigree:load:finish");
-    },
+			if (!noUndo && !editor.isReadOnlyMode()) {
+				editor.getUndoRedoManager().addState(null, null, JSONString);
+			}
 
-    createGraphFromImportData: function(importString, importType, importOptions, noUndo, centerAround0) {
-        console.log("---- import: parsing data ----");
-        document.fire("pedigree:load:start");
+			document.fire("pedigree:load:finish");
+		},
 
-        try {
-            var changeSet = editor.getGraph().fromImport(importString, importType, importOptions);
-            if (changeSet == null) throw "unable to create a pedigree from imported data";
-        }
-        catch(err)
-        {
-            alert("Error importing pedigree: " + err);
-            document.fire("pedigree:load:finish");
-            return;
-        }
+		save: function() {
+			if (this._saveInProgress) {
+				return;   // Don't send parallel save requests
+			}
 
-        if (!noUndo) {
-            var probandData = editor.getProbandDataFromPhenotips();
-            var genderOk = editor.getGraph().setProbandData( probandData.firstName, probandData.lastName, probandData.gender );
-            if (!genderOk)
-                alert("Proband gender defined in Phenotips is incompatible with the imported pedigree. Setting proband gender to 'Unknown'");
-            JSONString = editor.getGraph().toJSON();
-        }
+			editor.getView().unmarkAll();
 
-        if (editor.getView().applyChanges(changeSet, false)) {
-            editor.getWorkspace().adjustSizeToScreen();
-        }
+			var me = this;
 
-        if (centerAround0)
-            editor.getWorkspace().centerAroundNode(0);
+			var jsonData = this.serialize();
 
-        if (!noUndo)
-            editor.getActionStack().addState(null, null, JSONString);
+			console.log("[SAVE] data: " + Helpers.stringifyObject(jsonData));
 
-        document.fire("pedigree:load:finish");
-    },
+			var svg = editor.getWorkspace().getSVGCopy();
+			var svgText = svg.getSVGText();
 
-    save: function() {
-        if (this._saveInProgress)
-            return;   // Don't send parallel save requests
+			var savingNotification = new XWiki.widgets.Notification("Saving", "inprogress");
+			new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0', 'method=PUT'), {
+				method: 'POST',
+				onCreate: function() {
+					me._saveInProgress = true;
+					// Disable save and close buttons during a save
+					var closeButton = $('action-close');
+					var saveButton = $('action-save');
+					Element.addClassName(saveButton, "disabled-menu-item");
+					Element.removeClassName(saveButton, "menu-item");
+					Element.addClassName(saveButton, "no-mouse-interaction");
+					Element.addClassName(closeButton, "disabled-menu-item");
+					Element.removeClassName(closeButton, "menu-item");
+					Element.addClassName(closeButton, "no-mouse-interaction");
+					// IE9 & IE10 do not support "no-mouse-interaction", so add JS to handle this
+					Helpers.disableMouseclicks(closeButton);
+					Helpers.disableMouseclicks(saveButton);
+				},
+				onComplete: function() {
+					me._saveInProgress = false;
+					var actionAfterSave = editor.getAfterSaveAction();
+					actionAfterSave && actionAfterSave();
+					// Enable save and close buttons after a save
+					var closeButton = $('action-close');
+					var saveButton = $('action-save');
+					Element.addClassName(saveButton, "menu-item");
+					Element.removeClassName(saveButton, "disabled-menu-item");
+					Element.removeClassName(saveButton, "no-mouse-interaction");
+					Element.addClassName(closeButton, "menu-item");
+					Element.removeClassName(closeButton, "disabled-menu-item");
+					Element.removeClassName(closeButton, "no-mouse-interaction");
+					// remove IE9/IE10 specific handlers
+					Helpers.enableMouseclicks(closeButton);
+					Helpers.enableMouseclicks(saveButton);
+				},
+				onSuccess: function() { editor.getUndoRedoManager().addSaveEvent();
+					savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
+				},
+				parameters: {"property#data": jsonData, "property#image": svgText}
+			});
+		},
 
-        var me = this;
+		load: function() {
+			console.log("initiating load process");
 
-        var jsonData = this.serialize();
+			// IE caches AJAX requests, use a random URL to break that cache
+			var probandID = XWiki.currentDocument.page;
+			var pedigreeJsonURL = new XWiki.Document('ExportPatient', 'PhenoTips').getURL('get', 'id='+probandID);
+			pedigreeJsonURL += "&data=pedigree";
+			// IE caches AJAX requests, use a random URL to break that cache (TODO: investigate)
+			pedigreeJsonURL += "&rand=" + Math.random();
+			new Ajax.Request(pedigreeJsonURL, {
+				method: 'GET',
+				onCreate: function() {
+					document.fire("pedigree:load:start");
+				},
+				onSuccess: function (response) {
+					//console.log("Data from LOAD: >>" + response.responseText + "<<");
+					if (response.responseJSON) {
+						console.log("[LOAD] recived JSON: " + Helpers.stringifyObject(response.responseJSON));
 
-        console.log("[SAVE] data: " + stringifyObject(jsonData));
+						var updatedJSONData = editor.getVersionUpdater().updateToCurrentVersion(response.responseText);
 
-        var image = $('canvas');
-        var background = image.getElementsByClassName('panning-background')[0];
-        var backgroundPosition = background.nextSibling;
-        var backgroundParent =  background.parentNode;
-        backgroundParent.removeChild(background);
-        var bbox = image.down().getBBox();
-        var savingNotification = new XWiki.widgets.Notification("Saving", "inprogress");
-        new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml', 'method=PUT').substring(1), {
-            method: 'POST',
-            onCreate: function() {
-                me._saveInProgress = true;
-            },
-            onComplete: function() {
-                me._saveInProgress = false;
-            },
-            onSuccess: function() {savingNotification.replace(new XWiki.widgets.Notification("Successfuly saved"));},
-            parameters: {"property#data": jsonData, "property#image": image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")}
-        });
-        backgroundParent.insertBefore(background, backgroundPosition);
-    },
+						this.createGraphFromSerializedData(updatedJSONData);
 
-    load: function() {
-        console.log("initiating load process");
-
-        new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml').substring(1), {
-            method: 'GET',
-            onCreate: function() {
-                document.fire("pedigree:load:start");
-            },
-            onSuccess: function (response) {
-                //console.log("Data from LOAD: " + stringifyObject(response));
-                //console.log("[Data from LOAD]");
-                var rawdata  = getSubSelectorTextFromXML(response.responseXML, "property", "name", "data", "value");
-                var jsonData = unescapeRestData(rawdata);
-                if (jsonData.trim()) {
-                    console.log("[LOAD] recived JSON: " + stringifyObject(jsonData));
-
-                    jsonData = editor.getVersionUpdater().updateToCurrentVersion(jsonData);
-
-                    this.createGraphFromSerializedData(jsonData);
-                } else {
-                    new TemplateSelector(true);
-                }
-            }.bind(this)
-        })
-    }
-});
+						// since we just loaded data from disk data in memory is equivalent to data on disk
+						editor.getUndoRedoManager().addSaveEvent();
+					} else {
+						new TemplateSelector(true);
+					}
+				}.bind(this)
+			})
+		}
+	});

@@ -1,106 +1,106 @@
 /**
  * A stub hoverbox used when generating read-only pedigrees
  */
-var ReadOnlyHoverbox = Class.create(AbstractHoverbox, {
+	var ReadOnlyHoverbox = Class.create(AbstractHoverbox, {
 
-    initialize: function($super, node, x, y, shapes) {
-        this._node   = node;
-        this._nodeX  = x;
-        this._nodeY  = y;
-        this._shapes = shapes;
-    },
+		initialize: function($super, node, x, y, shapes) {
+			this._node   = node;
+			this._nodeX  = x;
+			this._nodeY  = y;
+			this._shapes = editor.getPaper().set();
+		},
 
-    getWidth: function() {
-        return 0;
-    },
+		getWidth: function() {
+			return 0;
+		},
 
-    getHeight: function() {
-        return 0;
-    },
+		getHeight: function() {
+			return 0;
+		},
 
-    getNode: function() {
-        return this._node;
-    },
+		getNode: function() {
+			return this._node;
+		},
 
-    generateButtons: function() {
-    },
+		generateButtons: function() {
+		},
 
-    removeButtons: function () {
-    },
+		removeButtons: function () {
+		},
 
-    hideButtons: function() {
-    },
+		hideButtons: function() {
+		},
 
-    showButtons: function() {
-    },
+		showButtons: function() {
+		},
 
-    getCurrentButtons: function() {
-        return this._currentButtons;
-    },
+		getCurrentButtons: function() {
+			return this._currentButtons;
+		},
 
-    removeHandles: function () {
-    },
+		removeHandles: function () {
+		},
 
-    hideHandles: function() {
-    },
+		hideHandles: function() {
+		},
 
-    showHandles: function() {
-    },
+		showHandles: function() {
+		},
 
-    generateHandles: function() {
-    },
+		generateHandles: function() {
+		},
 
-    regenerateHandles: function() {
-    },
+		regenerateHandles: function() {
+		},
 
-    getBoxOnHover: function() {
-        return null;
-    },
+		getBoxOnHover: function() {
+			return null;
+		},
 
-    isHovered: function() {
-        return false;
-    },
+		isHovered: function() {
+			return false;
+		},
 
-    setHovered: function(isHovered) { 
-    },
-    
-    setHighlighted: function(isHighlighted) {
-    },    
+		setHovered: function(isHovered) {
+		},
 
-    getHoverZoneMask: function() {
-        return null;
-    },
+		setHighlighted: function(isHighlighted) {
+		},
 
-    getFrontElements: function() {
-        return this._shapes;
-    },
+		getHoverZoneMask: function() {
+			return null;
+		},
 
-    getBackElements: function() {
-        return this._shapes;
-    },
+		getFrontElements: function() {
+			return this._shapes;
+		},
 
-    isMenuToggled: function() {
-        return false;
-    },
+		getBackElements: function() {
+			return this._shapes;
+		},
 
-    animateDrawHoverZone: function() {
-    },
+		isMenuToggled: function() {
+			return false;
+		},
 
-    animateHideHoverZone: function() {
-    },
+		animateDrawHoverZone: function() {
+		},
 
-    disable: function() {
-    },
+		animateHideHoverZone: function() {
+		},
 
-    enable: function() {
-    },
+		disable: function() {
+		},
 
-    remove: function() {
-    },
+		enable: function() {
+		},
 
-    onWidgetHide: function() {
-    },
+		remove: function() {
+		},
 
-    onWidgetShow: function() {
-    }
-});
+		onWidgetHide: function() {
+		},
+
+		onWidgetShow: function() {
+		}
+	});

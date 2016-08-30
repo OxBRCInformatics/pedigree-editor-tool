@@ -1,1 +1,569 @@
-var XWiki=(function(c){var a=c.widgets=c.widgets||{};a.FullScreen=Class.create({margin:0,buttonSize:16,initialize:function(){this.buttons=$(document.body).down(".bottombuttons");if(!this.buttons){this.buttons=new Element("div",{"class":"bottombuttons"}).update(new Element("div",{"class":"buttons"}));this.buttons._x_isCustom=true;document.body.appendChild(this.buttons.hide())}this.buttonsPlaceholder=new Element("span");this.toolbarPlaceholder=new Element("span");this.createCloseButtons();$$("textarea",".maximizable").each(function(e){this.addBehavior(e)}.bind(this));document.observe("xwiki:dom:updated",function(e){e.memo.elements.each(function(f){f.select("textarea",".maximizable").each(function(g){this.addBehavior(g)}.bind(this))}.bind(this))}.bind(this));$$(".xRichTextEditor").each(function(e){this.addBehavior(e)}.bind(this));this.addWysiwygListeners();this.maximizedReference=$(document.body).down("input[name='x-maximized']");if(this.maximizedReference&&this.maximizedReference.value!=""){var d=$$(this.maximizedReference.value);if(d&&d.length>0){this.makeFullScreen(d[0])}}this.unloadHandler=this.cleanup.bind(this);Event.observe(window,"unload",this.unloadHandler)},addBehavior:function(d){if(this.isWysiwyg20Content(d)){this.addWysiwyg20ContentButton(d)}else{if(this.isWysiwyg10Content(d)){this.addWysiwyg10ContentButton(d)}else{if(this.isWikiContent(d)){this.addWikiContentButton(d)}else{if(this.isWysiwyg20Field(d)){this.addWysiwyg20FieldButton(d)}else{if(this.isWikiField(d)){this.addWikiFieldButton(d)}else{if(this.isWysiwyg10Field(d)){this.addWysiwyg10FieldButton(d)}else{this.addElementButton(d)}}}}}}},addWysiwygListeners:function(){document.observe("xwiki:wysiwyg:created",this.wysiwyg20Created.bindAsEventListener(this));document.observe("xwiki:tinymce:created",this.wysiwyg10Created.bindAsEventListener(this))},wysiwyg10Created:function(e){var d=$(e.memo.instance);this.removeTextareaLink(d);this.addBehavior(d)},wysiwyg20Created:function(e){var d=$(e.memo.instance.getRichTextArea()).up(".xRichTextEditor");this.removeTextareaLink(d);this.addBehavior(d)},removeTextareaLink:function(d){while(true){if(!d){return}else{if(d.previous(".fullScreenEditLinkContainer")){d.previous(".fullScreenEditLinkContainer").remove();return}}d=d.up()}},isWikiContent:function(d){return d.name=="content"&&d.visible()},isWysiwyg10Content:function(d){return d.name=="content"&&(Prototype.Browser.IE?d.previous(".mceEditorContainer"):d.next(".mceEditorContainer"))},isWysiwyg20Content:function(d){return d.hasClassName("xRichTextEditor")&&d.up("div[id^=content_container]")},isWikiField:function(d){return d.visible()},isWysiwyg10Field:function(d){return !d.visible()&&d.name!="content"&&(Prototype.Browser.IE?d.previous(".mceEditorContainer"):d.next(".mceEditorContainer"))},isWysiwyg20Field:function(d){return d.hasClassName("xRichTextEditor")&&!d.up("div[id^=content_container]")},addWikiContentButton:function(d){d._toolbar=$(document.body).down(".leftmenu2");if(d._toolbar){d._toolbar.insert({top:this.createOpenButton(d)})}else{this.addWikiFieldButton(d)}},addWysiwyg10ContentButton:function(h){var e=(Prototype.Browser.IE?h.previous(".mceEditorContainer"):h.next(".mceEditorContainer"));if(!e){return false}var g=e.down(".mceToolbar");if(!g){return false}var d=new Element("span",{"class":"mce_editor_fullscreentoolbar"});var f=new Element("a",{"class":"mceButtonNormal"});d.insert(new Element("img",{"class":"mceSeparatorLine",height:15,width:1,src:g.down("img.mceSeparatorLine").src}));d.insert(f.insert(this.createOpenButton(e)));g.insert(d);e._toolbar=g;return true},addWysiwyg20ContentButton:function(e){var d=e.down(".gwt-MenuBar");if(!d){if(!e._x_fullScreenLoader){e._x_fullScreenLoader_iterations=0;e._x_fullScreenLoader=new PeriodicalExecuter(function(f){if(f._x_fullScreenLoader_iteration>100){f._x_fullScreenLoader.stop();f._x_fullScreenLoader=false;return}f._x_fullScreenLoader_iteration++;this.addWysiwyg20ContentButton(f)}.bind(this,e),0.2)}return false}d.insert({top:this.createOpenButton(e)});e._toolbar=d;if(e._x_fullScreenLoader){e._x_fullScreenLoader.stop();e._x_fullScreenLoader=false}return true},addElementButton:function(d){Element.insert(d,{before:this.createOpenLink(d)})},addWikiFieldButton:function(d){Element.insert(d,{before:this.createOpenLink(d)})},addWysiwyg10FieldButton:function(d){this.addWysiwyg10ContentButton(d)},addWysiwyg20FieldButton:function(d){this.addWysiwyg20ContentButton(d)},createOpenButton:function(e){var d=new Element("img",{"class":"fullScreenEditButton",title:"Maximize",alt:"Maximize",src:"/resources/icons/silk/arrow_out.png"});d.observe("click",this.makeFullScreen.bind(this,e));d.observe("mousedown",this.preventDrag.bindAsEventListener(this));e._x_fullScreenActivator=d;d._x_maximizedElement=e;return d},createOpenLink:function(e){var f=new Element("div",{"class":"fullScreenEditLinkContainer"});var d=new Element("a",{"class":"fullScreenEditLink",title:"Maximize"});d.update("Maximize &raquo;");d.observe("click",this.makeFullScreen.bind(this,e));f.update(d);e._x_fullScreenActivator=d;d._x_maximizedElement=e;return f},createCloseButtons:function(){this.closeButton=new Element("img",{"class":"fullScreenCloseButton",title:"Exit full screen",alt:"Exit full screen",src:"/resources/icons/silk/arrow_in.png"});this.closeButton.observe("click",this.closeFullScreen.bind(this));this.closeButton.observe("mousedown",this.preventDrag.bindAsEventListener(this));this.closeButton.hide();this.actionCloseButton=new Element("input",{type:"button","class":"button",value:"Exit full screen"});this.actionCloseButtonWrapper=new Element("span",{"class":"buttonwrapper"});this.actionCloseButtonWrapper.update(this.actionCloseButton);this.actionCloseButton.observe("click",this.closeFullScreen.bind(this));this.actionCloseButtonWrapper.hide();this.buttons.down(".buttons").insert({top:this.actionCloseButtonWrapper})},makeFullScreen:function(g){document.fire("xwiki:fullscreen:enter",{target:g});if(this.maximizedReference){if(g.id){this.maximizedReference.value=g.tagName+"[id='"+g.id+"']"}else{if(g.name){this.maximizedReference.value=g.tagName+"[name='"+g.name+"']"}else{if(g.className){this.maximizedReference.value=g.tagName+"."+g.className}}}}this.maximized=g;if(typeof g.setSelectionRange=="function"){var j=g.selectionStart;var l=g.selectionEnd;var e=g.scrollTop}g._originalStyle={width:g.style.width,height:g.style.height};if(g.hasClassName("xRichTextEditor")){var f=g.down(".gwt-RichTextArea");g._richTextAreaOriginalStyle={width:f.style.width,height:f.style.height}}else{if(g.hasClassName("mceEditorContainer")){var f=g.down(".mceEditorIframe");f._originalStyle={width:f.style.width,height:f.style.height};var i=g.down(".mceEditorSource");i._originalStyle={width:i.style.width,height:i.style.height}}}var d=g.up();d.addClassName("fullScreenWrapper");if(g._toolbar){if(g._toolbar.hasClassName("leftmenu2")){d.insert({top:g._toolbar.replace(this.toolbarPlaceholder)})}g._x_fullScreenActivator.replace(this.closeButton)}d.insert(this.buttons.replace(this.buttonsPlaceholder).show());var k=g.up();g._x_fullScreenActivator.hide();while(k!=document.body){k._originalStyle={overflow:k.style.overflow,position:k.style.position,width:k.style.width,height:k.style.height,left:k.style.left,right:k.style.right,top:k.style.top,bottom:k.style.bottom,padding:k.style.padding,margin:k.style.margin};k.setStyle({overflow:"visible",position:"absolute",width:"100%",height:"100%",left:0,top:0,right:0,bottom:0,padding:0,margin:0});k.siblings().each(function(m){m._originalDisplay=m.style.display;m.setStyle({display:"none"})});k=k.up()}document.body._originalStyle={overflow:k.style.overflow,width:k.style.width,height:k.style.height};var h=$(document.body).up();h._originalStyle={overflow:h.style.overflow,width:h.style.width,height:h.style.height};$(document.body).setStyle({overflow:"hidden",width:"100%",height:"100%"});h.setStyle({overflow:"hidden",width:"100%",height:"100%"});this.resizeListener=this.resizeTextArea.bind(this,g);Event.observe(window,"resize",this.resizeListener);this.closeButton.show();this.actionCloseButtonWrapper.show();this.resizeTextArea(g);if(g._toolbar){g._toolbar.viewportOffset()}if(typeof g.setSelectionRange=="function"){g.scrollTop=e;g.selectionStart=j;g.selectionEnd=l}document.fire("xwiki:fullscreen:entered",{target:g})},closeFullScreen:function(){var g=this.maximized;document.fire("xwiki:fullscreen:exit",{target:g});if(typeof g.setSelectionRange=="function"){var k=g.selectionStart;var m=g.selectionEnd;var d=g.scrollTop}this.closeButton.hide();this.actionCloseButtonWrapper.hide();Event.stopObserving(window,"resize",this.resizeListener);g.up().removeClassName("fullScreenWrapper");if(g.hasClassName("xRichTextEditor")){var e=g.down(".gwt-RichTextArea");e.setStyle(g._richTextAreaOriginalStyle)}else{if(g.hasClassName("mceEditorContainer")){var e=g.down(".mceEditorIframe");e.setStyle(e._originalStyle);var h=g.down(".mceEditorSource");h.setStyle(h._originalStyle)}}var l=g.up();var j=[];while(l!=document.body){j.push(l);l=l.up()}var f=j.length;while(f--){l=j[f];l.setStyle(l._originalStyle);l.siblings().each(function(i){i.style.display=i._originalDisplay||""})}document.body.setStyle(document.body._originalStyle);$(document.body).up().setStyle($(document.body).up()._originalStyle);this.buttonsPlaceholder.replace(this.buttons);if(this.buttons._x_isCustom){this.buttons.hide()}if(g._toolbar){if(g._toolbar.hasClassName("leftmenu2")){this.toolbarPlaceholder.replace(g._toolbar)}this.closeButton.replace(g._x_fullScreenActivator)}if(Prototype.Browser.IE){setTimeout(function(){g._x_fullScreenActivator.show();this.setStyle(this._originalStyle)}.bind(g),500)}else{g._x_fullScreenActivator.show();g.setStyle(g._originalStyle)}delete this.maximized;if(this.maximizedReference){this.maximizedReference.value=""}if(typeof g.setSelectionRange=="function"){g.scrollTop=d;g.selectionStart=k;g.selectionEnd=m}document.fire("xwiki:fullscreen:exited",{target:g})},resizeTextArea:function(e){if(!this.maximized){return}var d=document.viewport.getHeight();var f=document.viewport.getWidth();if(f<=0){f=document.body.clientWidth;d=document.body.clientHeight}f=f-this.margin;d=d-e.positionedOffset().top-this.margin-this.buttons.getHeight();e.setStyle({width:f+"px",height:d+"px"});if(e.hasClassName("xRichTextEditor")){e.down(".gwt-RichTextArea").setStyle({width:f+"px",height:d-e.down(".xToolbar").getHeight()-e.down(".gwt-MenuBar").getHeight()+"px"})}else{if(e.hasClassName("mceEditorContainer")){e.down(".mceEditorIframe").setStyle({width:f+"px",height:d-e._toolbar.getHeight()+"px"});e.down(".mceEditorSource").setStyle({width:f+"px",height:d-e._toolbar.getHeight()+"px"})}}document.fire("xwiki:fullscreen:resized",{target:e})},preventDrag:function(d){d.stop()},cleanup:function(){Event.stopObserving(window,"unload",this.unloadHandler);this.actionCloseButtonWrapper.remove()}});function b(){return new a.FullScreen()}(c.domIsLoaded&&b())||document.observe("xwiki:dom:loaded",b);return c}(XWiki||{}));
+var XWiki = (function(XWiki) {
+// Start XWiki augmentation.
+	var widgets = XWiki.widgets = XWiki.widgets || {};
+	/**
+	 * Full screen editing for textareas or maximizable elements.
+	 *
+	 * TODO Revisit once the new WYSIWYG supports inline editing.
+	 */
+	widgets.FullScreen = Class.create({
+		// Some layout settings, to be customized for other skins
+		/** Maximized element margins */
+		margin : 0,
+		/** Full screen activator / deactivator button size */
+		buttonSize : 16,
+		editFullScreenLabel: "GEL_$jsontool.serialize($services.localization.render('core.editors.fullscreen.editFullScreen'))_GEL",
+		exitFullScreenLabel: "GEL_$jsontool.serialize($services.localization.render('core.editors.fullscreen.exitFullScreen'))_GEL",
+		/**
+		 * Full screen control initialization
+		 * Identifies the elements that must be visible in full screen: the textarea or the rich text editor, along with their
+		 * toolbar and the form buttons.
+		 * Creates two buttons for closing the fullscreen: one (image) to insert in the toolbar, and one (plain form button)
+		 * to add next to the form's action buttons.
+		 * Finally, the textareas and rich text editors in the form are equipped with their own fullscreen activators,
+		 * inserted in the corresponding toolbar, if there is any, or simply next to the textarea in the document
+		 * (see the {@link #addBehavior} function),
+		 */
+		initialize : function() {
+			// The action buttons need to be visible in full screen
+			this.buttons = $(document.body).down(".bottombuttons");
+			// If there are no buttons, at least the Exit FS button should be visible, so create an empty button container
+			if (!this.buttons) {
+				this.buttons = new Element("div", {"class" : "bottombuttons"}).update(new Element("div", {"class" : "buttons"}));
+				this.buttons._x_isCustom = true;
+				// It doesn't matter where the container is, it will only be needed in fullScreen.
+				document.body.appendChild(this.buttons.hide());
+			}
+			// When the full screen is activated, the buttons will be brought in the fullscreen, thus removed from their parent
+			// element, where they are replaced by a placeholder, so that we know exactly where to put them back.
+			this.buttonsPlaceholder = new Element("span");
+			// Placeholder for the toolbar, see above.
+			this.toolbarPlaceholder = new Element("span");
+			// The controls that will close the fullscreen
+			this.createCloseButtons();
+			// Prepare textareas / maximizable elements for full screen editing
+			$$('textarea', '.maximizable').each(function(element) {
+				this.addBehavior(element);
+			}.bind(this));
+			document.observe('xwiki:dom:updated', function(event) {
+				event.memo.elements.each(function(element) {
+					element.select('textarea', '.maximizable').each(function(element) {
+						this.addBehavior(element);
+					}.bind(this));
+				}.bind(this));
+			}.bind(this));
+			// The GWT editor removes the textarea from the document, thus should be treated separately
+			$$('.xRichTextEditor').each(function(item) {
+				this.addBehavior(item);
+			}.bind(this));
+			// WYSIWYGR sends events when a new editor is created.
+			this.addWysiwygListeners();
+			// When comming back from preview, check if the user was in full screen before hitting preview, and if so restore
+			// that full screen
+			this.maximizedReference = $(document.body).down("input[name='x-maximized']");
+			if (this.maximizedReference && this.maximizedReference.value != "") {
+				var matches = $$(this.maximizedReference.value);
+				if (matches && matches.length > 0) {
+					this.makeFullScreen(matches[0]);
+				}
+			}
+			// Cleanup before the window unloads.
+			this.unloadHandler = this.cleanup.bind(this);
+			Event.observe(window, 'unload', this.unloadHandler);
+		},
+		/** According to the type of each element being maximized, a button in created and attached to it. */
+		addBehavior : function (item) {
+			if (this.isWysiwyg20Content(item)) {
+				this.addWysiwyg20ContentButton(item);
+			} else if (this.isWysiwyg10Content(item)) {
+				this.addWysiwyg10ContentButton(item);
+			} else if (this.isWikiContent(item)) {
+				this.addWikiContentButton(item);
+			} else if (this.isWysiwyg20Field(item)) {
+				this.addWysiwyg20FieldButton(item);
+			} else if (this.isWikiField(item)) {
+				this.addWikiFieldButton(item);
+			} else if (this.isWysiwyg10Field(item)) {
+				this.addWysiwyg10FieldButton(item);
+			} else {
+				// a div element with class maximazable
+				this.addElementButton(item);
+			}
+		},
+		addWysiwygListeners : function () {
+			document.observe('xwiki:wysiwyg:created', this.wysiwyg20Created.bindAsEventListener(this));
+			document.observe('xwiki:tinymce:created', this.wysiwyg10Created.bindAsEventListener(this));
+		},
+		wysiwyg10Created : function(event) {
+			var item = $(event.memo.instance);
+			this.removeTextareaLink(item);
+			this.addBehavior(item);
+		},
+		wysiwyg20Created : function(event) {
+			var item = $(event.memo.instance.getRichTextArea()).up(".xRichTextEditor");
+			this.removeTextareaLink(item);
+			this.addBehavior(item);
+		},
+		/* Remove the old maximize link inserted for the plain textarea before the WYSIWYG was loaded. */
+		removeTextareaLink : function(item) {
+			while (true) {
+				if (!item) {
+					return;
+				} else if (item.previous(".fullScreenEditLinkContainer")) {
+					item.previous(".fullScreenEditLinkContainer").remove();
+					return;
+				}
+				item = item.up();
+			}
+		},
+		// Some simple functions that help deciding what kind of editor is the target element
+		isWikiContent : function (textarea) {
+			// If the textarea is not visible, then the WYSIWYG editor is active.
+			return textarea.name == 'content' && textarea.visible();
+		},
+		isWysiwyg10Content : function (textarea) {
+			// If the textarea is not visible, then the WYSIWYG editor is active.
+			// In IE, the WYSIWYG is placed before its textarea.
+			return textarea.name == 'content' && (Prototype.Browser.IE ? textarea.previous(".mceEditorContainer") : textarea.next(".mceEditorContainer"));
+		},
+		isWysiwyg20Content : function (item) {
+			return item.hasClassName("xRichTextEditor") && item.up("div[id^=content_container]");
+		},
+		isWikiField : function (textarea) {
+			// If the textarea is not visible, then the WYSIWYG editor is active.
+			return textarea.visible();
+		},
+		isWysiwyg10Field : function (textarea) {
+			return !textarea.visible() && textarea.name != 'content' && (Prototype.Browser.IE ? textarea.previous(".mceEditorContainer") : textarea.next(".mceEditorContainer"));
+		},
+		isWysiwyg20Field : function (item) {
+			return item.hasClassName("xRichTextEditor") && !item.up("div[id^=content_container]");
+		},
+		/** Adds the fullscreen button in the Wiki editor toolbar. */
+		addWikiContentButton : function (textarea) {
+			textarea._toolbar = $(document.body).down(".leftmenu2");
+			// Normally there should be a simple toolbar with basic actions
+			if (textarea._toolbar) {
+				textarea._toolbar.insert({top: this.createOpenButton(textarea)});
+			} else {
+				this.addWikiFieldButton(textarea);
+			}
+		},
+		/** Adds the fullscreen button in the TinyMCE WYSIWYG editor toolbar. */
+		addWysiwyg10ContentButton : function (item) {
+			var container = (Prototype.Browser.IE ? item.previous(".mceEditorContainer") : item.next(".mceEditorContainer"));
+			if (!container) {
+				return false;
+			}
+			var toolbar = container.down(".mceToolbar");
+			if (!toolbar) {
+				return false;
+			}
+			// Create a tinymce-like internal toolbar to contain the fullscreen button
+			var newToolbar = new Element('span', {'class': 'mce_editor_fullscreentoolbar'});
+			var link = new Element('a', {'class' : 'mceButtonNormal'});
+			// Separator
+			newToolbar.insert(new Element('img', {
+				'class': 'mceSeparatorLine',
+				height: 15,
+				width: 1,
+				src: toolbar.down('img.mceSeparatorLine').src
+			}));
+			newToolbar.insert(link.insert(this.createOpenButton(container)));
+			toolbar.insert(newToolbar);
+			container._toolbar = toolbar;
+			return true;
+		},
+		/** Adds the fullscreen button in the GWT WYSIWYGR editor menu. */
+		addWysiwyg20ContentButton : function (item) {
+			var toolbar = item.down(".gwt-MenuBar");
+			// Sometimes the toolbar isn't loaded when this method executes (in IE). Schedule a periodical reatempt.
+			if (!toolbar) {
+				// Only schedule once
+				if (!item._x_fullScreenLoader) {
+					item._x_fullScreenLoader_iterations = 0;
+					item._x_fullScreenLoader = new PeriodicalExecuter(function(item) {
+						// Give up after 20 seconds
+						if (item._x_fullScreenLoader_iteration > 100) {
+							item._x_fullScreenLoader.stop();
+							item._x_fullScreenLoader = false;
+							return;
+						}
+						item._x_fullScreenLoader_iteration++;
+						this.addWysiwyg20ContentButton(item);
+					}.bind(this, item), 0.2);
+				}
+				return false;
+			}
+			toolbar.insert({"top" : this.createOpenButton(item)});
+			item._toolbar = toolbar;
+			if (item._x_fullScreenLoader) {
+				item._x_fullScreenLoader.stop();
+				item._x_fullScreenLoader = false;
+			}
+			return true;
+		},
+		addElementButton: function(element) {
+			Element.insert(element, {before: this.createOpenLink(element)});
+		},
+		addWikiFieldButton : function (textarea) {
+			Element.insert(textarea, {before: this.createOpenLink(textarea)});
+		},
+		addWysiwyg10FieldButton : function (textarea) {
+			this.addWysiwyg10ContentButton(textarea);
+		},
+		addWysiwyg20FieldButton : function (textarea) {
+			this.addWysiwyg20ContentButton(textarea);
+		},
+		/** Creates a full screen activator button for the given element. */
+		createOpenButton : function (targetElement) {
+			// Create HTML element
+			var fullScreenActivator = new Element('img', {
+				'class': 'fullScreenEditButton',
+				title: this.editFullScreenLabel,
+				alt: this.editFullScreenLabel,
+				src: "icons/silk/arrow_out.png" //@@"$jsontool.serialize($xwiki.getSkinFile('icons/silk/arrow_out.png'))"
+			});
+			// Add functionality
+			fullScreenActivator.observe('click', this.makeFullScreen.bind(this, targetElement));
+			fullScreenActivator.observe('mousedown', this.preventDrag.bindAsEventListener(this));
+			// Remember the button associated with each maximizable element
+			targetElement._x_fullScreenActivator = fullScreenActivator;
+			fullScreenActivator._x_maximizedElement = targetElement;
+			return fullScreenActivator;
+		},
+		createOpenLink : function (targetElement) {
+			// Create HTML element
+			var fullScreenActivatorContainer = new Element('div', {
+				'class': 'fullScreenEditLinkContainer'
+			});
+			var fullScreenActivator = new Element('a', {
+				'class': 'fullScreenEditLink',
+				title: this.editFullScreenLabel
+			}).update(this.editFullScreenLabel + ' &raquo;');
+			// Add functionality
+			fullScreenActivator.observe('click', this.makeFullScreen.bind(this, targetElement));
+			// Add it to the container
+			fullScreenActivatorContainer.update(fullScreenActivator);
+			// Remember the button associated with each maximizable element
+			targetElement._x_fullScreenActivator = fullScreenActivator;
+			fullScreenActivator._x_maximizedElement = targetElement;
+			return fullScreenActivatorContainer;
+		},
+		/**
+		 * Creates the full screen close buttons (which are generic, not attached to the maximized elements like the activators)
+		 */
+		createCloseButtons : function () {
+			// Toolbar image button
+			// Create HTML element
+			this.closeButton = new Element('img', {
+				'class': 'fullScreenCloseButton',
+				title: this.exitFullScreenLabel,
+				alt: this.exitFullScreenLabel,
+				src: "icons/silk/arrow_in.png" //@@@"GEL_$jsontool.serialize($xwiki.getSkinFile('icons/silk/arrow_in.png'))_GEL"
+			});
+			// Add functionality
+			this.closeButton.observe('click', this.closeFullScreen.bind(this));
+			this.closeButton.observe('mousedown', this.preventDrag.bindAsEventListener(this));
+			// Hide by default
+			this.closeButton.hide();
+
+			// Edit actions button
+			// Create HTML element
+			this.actionCloseButton = new Element('input', {
+				type: 'button',
+				'class': 'button',
+				value: this.exitFullScreenLabel
+			});
+			this.actionCloseButtonWrapper = new Element('span', {
+				'class': 'buttonwrapper'
+			});
+			this.actionCloseButtonWrapper.update(this.actionCloseButton);
+			// Add functionality
+			this.actionCloseButton.observe('click', this.closeFullScreen.bind(this));
+			// Hide by default
+			this.actionCloseButtonWrapper.hide();
+			// Add it in the action bar
+			this.buttons.down(".buttons").insert({top: this.actionCloseButtonWrapper});
+		},
+
+		/**
+		 * How this works:
+		 * - All the elements between the targetElement and the root element are maximized, and all the other nodes are hidden
+		 * - The parent element becomes a wrapper around the targetElement
+		 * - Move the toolbar (if it exists) and the action buttons in the wrapper
+		 * - Hide the overflows of the body element, so that a scrollbar doesn't appear
+		 * - All the initial styles of the altered elements are remembered, so that they can be restored when exiting fullscreen
+		 */
+		makeFullScreen : function (targetElement) {
+			document.fire("xwiki:fullscreen:enter", { "target" : targetElement });
+			// Store the selector of the target element in the form, in the hidden input called 'x-maximized'.
+			// This is needed so that the full screen can be reactivated when comming back from preview, if it was activate before
+			// the user hit the preview button.
+			if (this.maximizedReference) {
+				if (targetElement.id) {
+					// Using #ID fails since the IDs for the textareas in inline editing contain the '.' character, which marks a classname
+					this.maximizedReference.value = targetElement.tagName + "[id='" + targetElement.id + "']";
+				} else if (targetElement.name) {
+					this.maximizedReference.value = targetElement.tagName + "[name='" + targetElement.name + "']" ;
+				} else if (targetElement.className) {
+					// No id, no name. This must be the GWT editor...
+					this.maximizedReference.value = targetElement.tagName + "." + targetElement.className ;
+				}
+			}
+			// Remember the maximized element
+			this.maximized = targetElement;
+			// Remember the cursor position and scroll offset (needed for circumventing https://bugzilla.mozilla.org/show_bug.cgi?id=633789 )
+			if (typeof targetElement.setSelectionRange == 'function') {
+				var selectionStart = targetElement.selectionStart;
+				var selectionEnd = targetElement.selectionEnd;
+				var scrollTop = targetElement.scrollTop;
+			}
+			// Remember the original dimensions of the maximized element
+			targetElement._originalStyle = {
+				'width' : targetElement.style['width'],
+				'height' : targetElement.style['height']
+			};
+			if (targetElement.hasClassName("xRichTextEditor")) {
+				var iframe = targetElement.down(".gwt-RichTextArea");
+				// We store the original style of the rich text area on the editor element because the in-line frame used to
+				// implement the rich text area is renewed each time the rich text area is reloaded (e.g. when adding or editing a
+				// macro) to prevent the browser from adding a new history entry. The WYSIWYG editor could copy the JavaScript
+				// object properties whenever the in-line frame is cloned but it would have to filter some internal properties
+				// specific to GWT. Let's keep the hack here, for the moment. The code is not generic anyway.
+				targetElement._richTextAreaOriginalStyle = {
+					'width' : iframe.style['width'],
+					'height' : iframe.style['height']
+				};
+			} else if (targetElement.hasClassName("mceEditorContainer")) {
+				var iframe = targetElement.down(".mceEditorIframe");
+				iframe._originalStyle = {
+					'width' : iframe.style['width'],
+					'height' : iframe.style['height']
+				};
+				var tframe = targetElement.down(".mceEditorSource");
+				tframe._originalStyle = {
+					'width' : tframe.style['width'],
+					'height' : tframe.style['height']
+				};
+			}
+			// All the elements between the targetElement and the root element are set to position: static, so that the offset
+			// parent of the targetElement will be the window. Remember the previous settings in order to be able to restore the
+			// layout when exiting fullscreen.
+			var wrapper = targetElement.up();
+			wrapper.addClassName("fullScreenWrapper");
+			if(targetElement._toolbar) {
+				// The wiki editor has the toolbar outside the textarea element, unlike the other editors, which have it as a descendant
+				if (targetElement._toolbar.hasClassName("leftmenu2")) {
+					wrapper.insert({"top" : targetElement._toolbar.replace(this.toolbarPlaceholder)});
+				}
+				// Replace the Maximize button in the toolbar with the Restore one
+				targetElement._x_fullScreenActivator.replace(this.closeButton);
+			}
+			wrapper.insert(this.buttons.replace(this.buttonsPlaceholder).show());
+			var parent = targetElement.up();
+			targetElement._x_fullScreenActivator.hide();
+			while (parent != document.body) {
+				parent._originalStyle = {
+					'overflow' : parent.style['overflow'],
+					'position' : parent.style['position'],
+					'width' : parent.style['width'],
+					'height' : parent.style['height'],
+					'left' : parent.style['left'],
+					'right' : parent.style['right'],
+					'top' : parent.style['top'],
+					'bottom' : parent.style['bottom'],
+					'padding' : parent.style['padding'],
+					'margin' : parent.style['margin']
+				};
+				parent.setStyle({'overflow': "visible", 'position': "absolute", width: "100%", height: "100%", left: 0, top:0, right:0, bottom: 0, padding: 0, margin: 0});
+				parent.siblings().each(function(item) {
+					item._originalDisplay = item.style['display'];
+					item.setStyle({display: "none"});
+					// We tag this element to know that we have hidden it, and that we should rollback the original style when we
+					// close the fullscreen mode.
+					// We have introduced this variable because _originalDisplay can be null so we cannot rely on this variable
+					// to know if either or not we have hidden the element.
+					item._fullscreenHidden = true;
+				});
+				parent = parent.up();
+			}
+			document.body._originalStyle = {
+				'overflow' : parent.style['overflow'],
+				'width' : parent.style['width'],
+				'height' : parent.style['height']
+			};
+			var root = $(document.body).up();
+			root._originalStyle = {
+				'overflow' : root.style['overflow'],
+				'width' : root.style['width'],
+				'height' : root.style['height']
+			};
+			$(document.body).setStyle({'overflow': 'hidden', 'width': '100%', 'height': '100%'});
+			root.setStyle({'overflow': "hidden", 'width': "100%", 'height': "100%"});
+
+			// Make sure to resize the targetElement when the window dimensions are changed. Both document and window are monitored,
+			// since different browsers send events to different elements.
+			this.resizeListener = this.resizeTextArea.bind(this, targetElement);
+			Event.observe(window, 'resize', this.resizeListener);
+			// Show the exit buttons
+			this.closeButton.show();
+			this.actionCloseButtonWrapper.show();
+			// Maximize the targetElement
+			this.resizeTextArea(targetElement);
+			// IE6 has yet another bug, if we don't call this, then sometimes the toolbar will be invisible. Don't ask why.
+			if (targetElement._toolbar) {
+				targetElement._toolbar.viewportOffset();
+			}
+			// Reset the cursor and scroll offset
+			if (typeof targetElement.setSelectionRange == 'function') {
+				// This is approximate, since the textarea width changes, and more lines can fit in the same vertical space
+				targetElement.scrollTop = scrollTop;
+				targetElement.selectionStart = selectionStart;
+				targetElement.selectionEnd = selectionEnd;
+			}
+			document.fire("xwiki:fullscreen:entered", { "target" : targetElement });
+		},
+		/** Restore the layout. */
+		closeFullScreen : function() {
+			var targetElement = this.maximized;
+			document.fire("xwiki:fullscreen:exit", { "target" : targetElement });
+			// Remember the cursor position and scroll offset (needed for circumventing https://bugzilla.mozilla.org/show_bug.cgi?id=633789 )
+			if (typeof targetElement.setSelectionRange == 'function') {
+				var selectionStart = targetElement.selectionStart;
+				var selectionEnd = targetElement.selectionEnd;
+				var scrollTop = targetElement.scrollTop;
+			}
+			// Hide the exit buttons
+			this.closeButton.hide();
+			this.actionCloseButtonWrapper.hide();
+			// We're no longer interested in resize events
+			Event.stopObserving(window, 'resize', this.resizeListener);
+			// Restore the parent element (the wrapper)
+			targetElement.up().removeClassName("fullScreenWrapper");
+			// Restore the WYSIWYGs
+			if (targetElement.hasClassName("xRichTextEditor")) {
+				var iframe = targetElement.down(".gwt-RichTextArea");
+				iframe.setStyle(targetElement._richTextAreaOriginalStyle);
+			} else if (targetElement.hasClassName("mceEditorContainer")) {
+				var iframe = targetElement.down(".mceEditorIframe");
+				iframe.setStyle(iframe._originalStyle);
+				var tframe = targetElement.down(".mceEditorSource");
+				tframe.setStyle(tframe._originalStyle);
+			}
+
+			// Restore the previous layout
+			// NOTE: We restore the previous layout in reverse order (from the document body down to the target element) to
+			// overcome a IE7 bug (see http://jira.xwiki.org/jira/browse/XWIKI-4346 ).
+			var parent = targetElement.up();
+			var parents = [];
+			while (parent != document.body) {
+				parents.push(parent);
+				parent = parent.up();
+			}
+			var i = parents.length;
+			while (i--) {
+				parent = parents[i];
+				parent.setStyle(parent._originalStyle);
+				parent.siblings().each(function(item) {
+					// if the element has been hidden by us, we should rollback its style
+					if (item._fullscreenHidden) {
+						// IE8 does not like null values. Default to "" (specific to each element's type) for elements that were added
+						// while in full screen mode (like the Save & Continue notifications) and which don't have the _originalDisplay set.
+						item.style['display'] = item._originalDisplay || "";
+					}
+				});
+			}
+			document.body.setStyle(document.body._originalStyle);
+			$(document.body).up().setStyle($(document.body).up()._originalStyle);
+			// Restore the toolbar and action buttons to their initial position
+			this.buttonsPlaceholder.replace(this.buttons);
+			if (this.buttons._x_isCustom) {
+				this.buttons.hide();
+			}
+			if (targetElement._toolbar) {
+				if (targetElement._toolbar.hasClassName("leftmenu2")) {
+					this.toolbarPlaceholder.replace(targetElement._toolbar);
+				}
+				// Replace the Restore button in the toolbar with the Maximize one
+				this.closeButton.replace(targetElement._x_fullScreenActivator);
+			}
+			if (Prototype.Browser.IE) {
+				// IE crashes if we try to resize this without a bit of delay.
+				setTimeout(function() {
+					targetElement._x_fullScreenActivator.show();
+					this.setStyle(this._originalStyle);
+				}.bind(targetElement), 500);
+			} else {
+				targetElement._x_fullScreenActivator.show();
+				targetElement.setStyle(targetElement._originalStyle);
+			}
+			// No element is maximized anymore
+			delete this.maximized;
+			if (this.maximizedReference) {
+				this.maximizedReference.value = '';
+			}
+			// Reset the cursor and scroll offset
+			if (typeof targetElement.setSelectionRange == 'function') {
+				// This is approximate, since the textarea width changes, and more lines can fit in the same vertical space
+				targetElement.scrollTop = scrollTop;
+				targetElement.selectionStart = selectionStart;
+				targetElement.selectionEnd = selectionEnd;
+			}
+			document.fire("xwiki:fullscreen:exited", { "target" : targetElement });
+		},
+		/** In full screen, when the containers's dimensions change, the maximized element must be resized accordingly. */
+		resizeTextArea : function(targetElement) {
+			if (!this.maximized) {
+				return;
+			}
+			// Compute the maximum space available for the textarea:
+			var newHeight = document.viewport.getHeight();
+			var newWidth = document.viewport.getWidth();
+			// Prototype fails to return the right viewport in IE6. This works:
+			if(newWidth <= 0) {
+				newWidth = document.body.clientWidth;
+				newHeight = document.body.clientHeight;
+			}
+			// Window width - styling padding
+			newWidth = newWidth - this.margin;
+			// Window height - margin (for the toolbar) - styling padding - buttons
+			newHeight = newHeight - targetElement.positionedOffset().top - this.margin - this.buttons.getHeight();
+			targetElement.setStyle({'width' :  newWidth + 'px', 'height' :  newHeight + 'px'});
+			// Resize the WYSIWYGs
+			if (targetElement.hasClassName("xRichTextEditor")) {
+				targetElement.down(".gwt-RichTextArea").setStyle({'width' :  newWidth + 'px', 'height' : newHeight - targetElement.down(".xToolbar").getHeight() - targetElement.down(".gwt-MenuBar").getHeight() + 'px'});
+			} else if (targetElement.hasClassName("mceEditorContainer")) {
+				targetElement.down(".mceEditorIframe").setStyle({'width' :  newWidth + 'px', 'height' : newHeight - targetElement._toolbar.getHeight() + 'px'});
+				targetElement.down(".mceEditorSource").setStyle({'width' :  newWidth + 'px', 'height' : newHeight - targetElement._toolbar.getHeight() + 'px'});
+			}
+			document.fire("xwiki:fullscreen:resized", { "target" : targetElement });
+		},
+		/** onMouseDown handler that prevents dragging the button. */
+		preventDrag : function(event) {
+			event.stop();
+		},
+		/** Cleans up the DOM tree when the user leaves the current page. */
+		cleanup : function() {
+			Event.stopObserving(window, 'unload', this.unloadHandler);
+			// Remove the "Exit full screen" action button because it can interfere with the browser's back-forward cache.
+			// This can throw an exception in certain browsers (IE9 for one), since the DOM may be already cleaned
+			try {
+				this.actionCloseButtonWrapper.remove();
+			} catch (ex) {
+				// Not important, just ignore
+			}
+		}
+	});
+
+	function init() {
+		return new widgets.FullScreen();
+	}
+
+// When the document is loaded, enable the fullscreen behavior.
+	(XWiki.domIsLoaded && init())
+	|| document.observe("xwiki:dom:loaded", init);
+// End XWiki augmentation.
+	return XWiki;
+}(XWiki || {}));
+
