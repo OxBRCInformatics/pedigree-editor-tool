@@ -58,9 +58,10 @@
 .editor-menu .action-group {
 	display: inline-block;
 }
-.editor-menu span {
-	font-family: Arial,Verdana,sans-serif;
-}
+/* Removed by Soheil as it has a conflict with font-awesome icons */
+/*.editor-menu span {*/
+	/*font-family: Arial,Verdana,sans-serif;*/
+/*}*/
 .editor-menu .action-group:not(:last-of-type) {
 	border-right: 1px solid #777;
 	margin-right: 1em;
