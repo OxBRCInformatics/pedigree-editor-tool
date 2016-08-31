@@ -29,7 +29,7 @@ Settings = Class.create({
 
 		var response = {
 			responseJSON: {
-				"codingDefinitionServiceEndpoint": "/codingDefinitionService",
+				"codingDefinitionServiceEndpoint": "/OCService",
 				"diagramEndpoint": {
 //    "service": "mercury",
 //    "service": "openclinica",
