@@ -5,7 +5,7 @@
 Settings = Class.create({
 
 	initialize: function (baseURL) {
-		this._baseURL = baseURL ? baseURL : "";
+		this._baseURL = baseURL ? baseURL : "http://localhost:8080/panogram";
 		this._settings = undefined;
 		this._loaded = false;
 	},
