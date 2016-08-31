@@ -268,7 +268,10 @@ DynamicPositionedGraph.prototype = {
 			delete this.DG.GG.properties[0].candidateGenes;
 		}
 
-		return genderOK;
+		//This line is commented by Soheil for GEL(GenomicsEngland)
+		//We don't need to validate if the proband Gender is the same as the defined proband
+		//return genderOK;
+		return true;
 	},
 
 	getPosition: function (v) {
