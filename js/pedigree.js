@@ -464,8 +464,16 @@ var PedigreeEditor = Class.create({
 				'function': 'setLastName'
 			},
 			{
+				'name' : 'participant_id',
+				'label': 'Participant ID',
+				'type' : 'text',
+				'tab': 'Personal',
+				'columns': 1,
+				'function' : 'setParticipantId'
+			},
+			{
 				'name' : 'nhs_number',
-				'label': 'NHS#',
+				'label': 'NHS Number',
 				'type' : 'text',
 				'tab': 'Personal',
 				'columns': 1,

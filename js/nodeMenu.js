@@ -378,6 +378,7 @@ NodeMenu = Class.create({
 			'default': data["default"] || '',
 			'crtValue': data["default"] || '',
 			'function': data['function'],
+			'disabled' : data['disabled'] || false,
 			'inactive': false
 		};
 		return result;

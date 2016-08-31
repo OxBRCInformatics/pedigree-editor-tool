@@ -35,6 +35,7 @@ var Person = Class.create(AbstractPerson, {
 		this._firstName = "";
 		this._lastName = "";
 		this._NHSNumber = ""; // added for GEL
+		this._participantId = "";
 		this._lastNameAtBirth = "";
 		this._birthDate = null;
 		this._deathDate = null;
@@ -128,6 +129,10 @@ var Person = Class.create(AbstractPerson, {
 		return this._NHSNumber;
 	},
 
+	getParticipantId: function(){
+		return this._participantId;
+	},
+
 
 	/**
 	 * Replaces the first name of this Person with firstName, and displays the label
@@ -145,6 +150,10 @@ var Person = Class.create(AbstractPerson, {
 	setNHSNumber: function(NHSNumber) {
 		this._NHSNumber = NHSNumber;
 		this.getGraphics().updateExternalIDLabel();
+	},
+
+	setParticipantId: function(participantId) {
+		this._participantId = participantId;
 	},
 
 
@@ -1035,6 +1044,7 @@ var Person = Class.create(AbstractPerson, {
 		return {
 			identifier: {value: this.getID()},
 			nhs_number:    {value : this.getNHSNumber()},
+			participant_id:{value : this.getParticipantId()},
 			first_name: {value: this.getFirstName(), disabled: this.isProband()},
 			last_name: {value: this.getLastName(), disabled: this.isProband()},
 			last_name_birth: {value: this.getLastNameAtBirth()}, //, inactive: (this.getGender() != 'F')},
@@ -1086,6 +1096,10 @@ var Person = Class.create(AbstractPerson, {
 			info['fName'] = this.getFirstName();
 		if (this.getLastName() != "")
 			info['lName'] = this.getLastName();
+		if (this.getNHSNumber() != "")
+			info['NHSNumber'] = this.getNHSNumber();
+		if (this.getParticipantId() != "")
+			info['participantId'] = this.getParticipantId();
 		if (this.getLastNameAtBirth() != "")
 			info['lNameAtB'] = this.getLastNameAtBirth();
 		if (this.getExternalID() != "")
@@ -1153,6 +1167,9 @@ var Person = Class.create(AbstractPerson, {
 			}
 			if (info.lName && this.getLastName() != info.lName) {
 				this.setLastName(info.lName);
+			}
+			if(info.NHSNumber && this.getNHSNumber() != info.NHSNumber) {
+				this.setNHSNumber(info.NHSNumber);
 			}
 			if (info.lNameAtB && this.getLastNameAtBirth() != info.lNameAtB) {
 				this.setLastNameAtBirth(info.lNameAtB);

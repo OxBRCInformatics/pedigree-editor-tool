@@ -1316,6 +1316,8 @@ PedigreeImport.initFromGEDCOM = function (inputText, markEvaluated, saveIDAsExte
 PedigreeImport.JSONToInternalPropertyMapping = {
 	"proband": "proband",
 	"lastname": "lName",
+	"nhsnumber":       "NHSNumber",
+	"participantid":   "participantId",
 	"lastnameatbirth": "lNameAtB",
 	"comments": "comments",
 	"twingroup": "twinGroup",
