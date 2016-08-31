@@ -206,7 +206,7 @@ NodeMenu = Class.create({
 									var disorderTypeContainer = new Element('span', {'class': 'disorder-disorder-type'}).insert("(").insert(disorderType).insert(")");
 									displayedValue.insert("").insert(disorderTypeContainer);
 
-									if(valueAll.ageOfOnset != undefined && valueAll.ageOfOnset.length > 0){
+									if(valueAll != undefined && valueAll.ageOfOnset != undefined && valueAll.ageOfOnset.length > 0){
 										var ageOfOnset = valueAll.ageOfOnset;
 										var ageOfOnsetContainer = new Element('span', {'class': 'disorder-age-of-onset'}).insert("OnsetAge(").insert(ageOfOnset).insert(")");
 										displayedValue.insert("").insert(ageOfOnsetContainer);
