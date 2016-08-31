@@ -528,7 +528,7 @@ var PedigreeEditor = Class.create({
 					{'actual': 'OMIM',  displayed: 'OMIM'},
 					{'actual': 'ICD10', displayed: 'ICD10'},
 					{'actual': 'SnomedCT', displayed: 'SnomedCT'},
-					{'actual': '100K', displayed: '100K Disorders'}
+					{'actual': 'GEL', displayed: '100K Disorders'}
 				],
 				'function' : 'setDisorderType'
 			},
@@ -539,7 +539,7 @@ var PedigreeEditor = Class.create({
 				'tab': 'Clinical',
 				'disabled':true,
 				'function' : 'setAgeOfOnset',
-				'dependency' : 'disorderType == 100K',
+				'dependency' : 'disorderType == GEL',
 				'dependencyShowInline': false
 			},
 			{
@@ -797,7 +797,7 @@ var PedigreeEditor = Class.create({
 					{'actual': 'OMIM',  displayed: 'OMIM'},
 					{'actual': 'ICD10', displayed: 'ICD10'},
 					{'actual': 'SnomedCT', displayed: 'SnomedCT'},
-					{'actual': '100K', displayed: '100K Disorders'}
+					{'actual': 'GEL', displayed: '100K Disorders'}
 				],
 				'function' : 'setDisorderType'
 			},
