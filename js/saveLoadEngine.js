@@ -204,6 +204,14 @@ var SaveLoadEngine = Class.create({
 			onCreate: function () {
 				document.fire("pedigree:load:start");
 			},
+			onFailure: function(){
+				probandDataObj.probandData = {};
+				probandDataObj.probandData.firstName = "";
+				probandDataObj.probandData.lastName  = "";
+				probandDataObj.probandData.gender    = "male";
+				new TemplateSelector(true);
+				return;
+			},
 			onSuccess: function (response) {
 
 
