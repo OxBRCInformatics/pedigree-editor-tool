@@ -198,7 +198,7 @@ var SaveLoadEngine = Class.create({
 		//we load the pedigree diagram JSON from backend webservice instead of xWiki XML
 		//new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml').substring(1), {
 		var webservice = new WebService();
-		var path = webservice.getDiagramFromOpenClinicaPath();
+		var path = webservice.getDiagramEndpointPath();
 		new Ajax.Request(path, {
 			method: 'GET',
 			onCreate: function () {
