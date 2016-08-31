@@ -171,7 +171,7 @@ NodeMenu = Class.create({
 					json: true,
 					resultsParameter: "rows",
 					resultId: "id",
-					resultValue: "name",
+					resultValue : "fullDetail",
 					resultInfo: {},
 					enableHierarchy: false,
 					fadeOnClear: false,
