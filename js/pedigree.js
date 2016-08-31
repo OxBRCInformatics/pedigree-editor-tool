@@ -464,6 +464,14 @@ var PedigreeEditor = Class.create({
 				'function': 'setLastName'
 			},
 			{
+				'name' : 'nhs_number',
+				'label': 'NHS#',
+				'type' : 'text',
+				'tab': 'Personal',
+				'columns': 1,
+				'function' : 'setNHSNumber'
+			},
+			{
 				'name': 'last_name_birth',
 				'label': 'Last name at birth',
 				'type': 'text',
@@ -502,6 +510,19 @@ var PedigreeEditor = Class.create({
 				],
 				'default': '',
 				'function': 'setCarrierStatus'
+			},
+			{
+				'label' : 'Please select coding system for disorder search:',
+				'name' : 'disorderType',
+				'type' : 'select',
+				'tab': 'Clinical',
+				'values' : [
+					{'actual': 'OMIM',  displayed: 'OMIM'},
+					{'actual': 'ICD10', displayed: 'ICD10'},
+					{'actual': 'SnomedCT', displayed: 'SnomedCT'},
+					{'actual': '100K', displayed: '100K Rare Diseases'}
+				],
+				'function' : 'setDisorderType'
 			},
 			{
 				'name': 'disorders',

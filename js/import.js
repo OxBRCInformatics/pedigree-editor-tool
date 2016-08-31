@@ -1327,6 +1327,7 @@ PedigreeImport.JSONToInternalPropertyMapping = {
 	"gestationage": "gestationAge",
 	"lifestatus": "lifeStatus",
 	"disorders": "disorders",
+	"disordersfulldetails": "disordersFullDetails",
 	"hpoterms": "hpoTerms",
 	"candidategenes": "candidateGenes",
 	"ethnicities": "ethnicities",

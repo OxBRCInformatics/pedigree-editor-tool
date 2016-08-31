@@ -431,6 +431,7 @@ PedigreeExport.internalToJSONPropertyMapping = {
 	"gestationAge": "gestationAge",
 	"lifeStatus": "lifeStatus",
 	"disorders": "disorders",
+	"disordersFullDetails": "disordersFullDetails",
 	"ethnicities": "ethnicities",
 	"carrierStatus": "carrierStatus",
 	"externalID": "externalId",

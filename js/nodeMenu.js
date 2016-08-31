@@ -145,22 +145,26 @@ NodeMenu = Class.create({
 				item.__datePicker = new PedigreeFuzzyDatePicker(item, inputMode);
 			}
 		});
+		var FORM = this.form;
 		// disease
 		this.form.select('input.suggest-omim').each(function (item) {
 			if (!item.hasClassName('initialized')) {
 				// Create the Suggest.
 				item._suggest = new PhenoTips.widgets.Suggest(item, {
-					script: Disorder.getOMIMServiceURL() + "&",
-					queryProcessor: typeof(PhenoTips.widgets.SolrQueryProcessor) == "undefined" ? null : new PhenoTips.widgets.SolrQueryProcessor({
-						'name': {'wordBoost': 20, 'phraseBoost': 40},
-						'nameSpell': {'wordBoost': 50, 'phraseBoost': 100, 'stubBoost': 20},
-						'keywords': {'wordBoost': 2, 'phraseBoost': 6, 'stubBoost': 2},
-						'text': {'wordBoost': 1, 'phraseBoost': 3, 'stubBoost': 1},
-						'textSpell': {'wordBoost': 2, 'phraseBoost': 5, 'stubBoost': 2, 'stubTrigger': true}
-					}, {
-						'-nameSort': ['\\**', '\\+*', '\\^*']
-					}),
+					scriptFunction: function(){
+						//find disorderType
+						if (FORM.select("select[name='disorderType']").length > 0){
+							var select = FORM.select("select[name='disorderType']")[0];
+							var disorderType = select.options[select.selectedIndex].value;
+							return Disorder.getServiceURL(disorderType)+ "&";
+						}else{
+							return Disorder.getServiceURL("OMIM") + "&";
+						}
+					},
+					script: Disorder.getServiceURL("OMIM") + "&",
+
 					varname: "q",
+					minchars: 3,
 					noresults: "No matching terms",
 					json: true,
 					resultsParameter: "rows",
@@ -200,7 +204,7 @@ NodeMenu = Class.create({
 				var ethnicityServiceURL = new XWiki.Document('EthnicitySearch', 'PhenoTips').getURL("get", "outputSyntax=plain")
 				//console.log("Ethnicity URL: " + ethnicityServiceURL);
 				item._suggest = new PhenoTips.widgets.Suggest(item, {
-					script: ethnicityServiceURL + "&json=true&",
+					script: "/OCService/lookupServices/Ethnicity?",
 					varname: "input",
 					noresults: "No matching terms",
 					resultsParameter: "rows",
@@ -545,14 +549,20 @@ NodeMenu = Class.create({
 		},
 		'disease-picker': function (data) {
 			var result = this._generateEmptyField(data);
-			var diseasePicker = new Element('input', {type: 'text', 'class': 'suggest multi suggest-omim', name: data.name});
+			var style = data.style ? data.style : "";
+			var diseasePicker = new Element('input', {type: 'text', 'class': 'suggest multi suggest-omim', name: data.name, 'style': style});
 			result.insert(diseasePicker);
 			diseasePicker._getValue = function () {
 				var results = [];
 				var container = this.up('.field-box');
 				if (container) {
 					container.select('input[type=hidden][name=' + data.name + ']').each(function (item) {
-						results.push(new Disorder(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value));
+						var li = item.up("li");
+						var valueAll;
+						if(li != undefined){
+							valueAll = li.retrieve("valueAll");
+						}
+						results.push(new Disorder(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value, valueAll));
 					});
 				}
 				return [results];
@@ -671,9 +681,10 @@ NodeMenu = Class.create({
 		'select': function (data) {
 			var result = this._generateEmptyField(data);
 			var span = new Element('span');
+			var style = data.style ? data.style : "";
 			// using raw HTML for options for performace reasons: generating e.g. 50 different gestation week
 			// options is noticeably slow when using more generic methods (e.g. new Element("option"))
-			var optionHTML = '<select name="' + data.name + '">';
+			var optionHTML = '<select name="' + data.name + '" style="' + style +'">';
 			var _generateSelectOption = function (v) {
 				optionHTML += '<option value="' + v.actual + '">' + v.displayed + '</option>';
 			};
@@ -1135,7 +1146,7 @@ NodeMenu = Class.create({
 				target._suggestPicker.clearAcceptedList();
 				if (values) {
 					values.each(function (v) {
-						target._suggestPicker.addItem(v.id, v.value, '');
+						target._suggestPicker.addItem(v.id, v.value, '', null, v.valueAll);
 						_this._updateDisorderColor(v.id, editor.getDisorderLegend().getObjectColor(v.id));
 					})
 				}

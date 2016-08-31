@@ -34,6 +34,7 @@ var Person = Class.create(AbstractPerson, {
 		this._phenotipsId = "";
 		this._firstName = "";
 		this._lastName = "";
+		this._NHSNumber = "";
 		this._lastNameAtBirth = "";
 		this._birthDate = null;
 		this._deathDate = null;
@@ -46,6 +47,14 @@ var Person = Class.create(AbstractPerson, {
 		this._childlessReason = "";
 		this._carrierStatus = "";
 		this._disorders = [];
+		//comment added by Soheil 04.08.2016 for GEL(GenomicsEngland)
+		//_disordersFullDetails: this field will hold all disorders with full details that returned from OCService
+		//it will help to find out disorderName,disorderType ie. OMIM, ICD10,....
+		this._disordersFullDetails = [];
+		//comment added by Soheil 04.08.2016 for GEL(GenomicsEngland)
+		//_disorderType: this field is used to monitor the value of the selected disorderType in the UI
+		//we do not export it into the JSON
+		this._disorderType = "";
 		this._cancers = {};
 		this._hpo = [];
 		this._ethnicities = [];
@@ -114,6 +123,11 @@ var Person = Class.create(AbstractPerson, {
 		return this._firstName;
 	},
 
+	getNHSNumber: function() {
+		return this._NHSNumber;
+	},
+
+
 	/**
 	 * Replaces the first name of this Person with firstName, and displays the label
 	 *
@@ -125,6 +139,13 @@ var Person = Class.create(AbstractPerson, {
 		this._firstName = firstName;
 		this.getGraphics().updateNameLabel();
 	},
+
+
+	setNHSNumber: function(NHSNumber) {
+		this._NHSNumber = NHSNumber;
+		this.getGraphics().updateExternalIDLabel();
+	},
+
 
 	/**
 	 * Returns the last name of this Person
@@ -577,6 +598,11 @@ var Person = Class.create(AbstractPerson, {
 		return this._disorders;
 	},
 
+
+	getDisorderType: function() {
+		return this._disorderType;
+	},
+
 	/**
 	 * Returns a list of disorders of this person, with non-scrambled IDs
 	 *
@@ -599,8 +625,9 @@ var Person = Class.create(AbstractPerson, {
 			disorder = editor.getDisorderLegend().getDisorder(disorder);
 		}
 		if (!this.hasDisorder(disorder.getDisorderID())) {
-			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), this.getID());
+			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), disorder._valueAll, this.getID());
 			this.getDisorders().push(disorder.getDisorderID());
+			this._disordersFullDetails.push(disorder);
 		}
 		else {
 			alert("This person already has the specified disorder");
@@ -623,6 +650,13 @@ var Person = Class.create(AbstractPerson, {
 		if (this.hasDisorder(disorderID)) {
 			editor.getDisorderLegend().removeCase(disorderID, this.getID());
 			this._disorders = this.getDisorders().without(disorderID);
+
+			for(var i = 0;i < this._disordersFullDetails.length; i++){
+				if(this._disordersFullDetails[i]._disorderID == disorderID){
+					this._disordersFullDetails.splice(i, 1);
+					break;
+				}
+			}
 		}
 		else {
 			if (disorderID != "affected") {
@@ -648,6 +682,11 @@ var Person = Class.create(AbstractPerson, {
 		this.getGraphics().updateDisorderShapes();
 		this.setCarrierStatus(); // update carrier status
 	},
+
+	setDisorderType: function(disorderType) {
+		this._disorderType = disorderType;
+	},
+
 
 	/**
 	 * Returns a list of all HPO terms associated with the patient
@@ -938,7 +977,8 @@ var Person = Class.create(AbstractPerson, {
 		var disorders = [];
 		this.getDisorders().forEach(function (disorder) {
 			var disorderName = editor.getDisorderLegend().getDisorder(disorder).getName();
-			disorders.push({id: disorder, value: disorderName});
+			var disorderObj  = editor.getDisorderLegend().getDisorder(disorder);
+			disorders.push({id: disorder, value: disorderName, valueAll:disorderObj._valueAll});
 		});
 		var hpoTerms = [];
 		this.getHPO().forEach(function (hpo) {
@@ -987,6 +1027,7 @@ var Person = Class.create(AbstractPerson, {
 
 		return {
 			identifier: {value: this.getID()},
+			nhs_number:    {value : this.getNHSNumber()},
 			first_name: {value: this.getFirstName(), disabled: this.isProband()},
 			last_name: {value: this.getLastName(), disabled: this.isProband()},
 			last_name_birth: {value: this.getLastNameAtBirth()}, //, inactive: (this.getGender() != 'F')},
@@ -995,6 +1036,8 @@ var Person = Class.create(AbstractPerson, {
 			date_of_birth: {value: this.getBirthDate(), inactive: this.isFetus(), disabled: this.isProband()},
 			carrier: {value: this.getCarrierStatus(), disabled: inactiveCarriers},
 			disorders: {value: disorders, disabled: this.isProband()},
+			disordersFullDetails:     {value : this._disordersFullDetails},
+			disorderType:  {value : this.getDisorderType()},
 			ethnicity: {value: this.getEthnicities()},
 			candidate_genes: {value: this.getGenes(), disabled: this.isProband()},
 			adopted: {value: this.getAdopted(), inactive: cantChangeAdopted},
@@ -1056,6 +1099,11 @@ var Person = Class.create(AbstractPerson, {
 		}
 		if (this.getDisorders().length > 0)
 			info['disorders'] = this.getDisordersForExport();
+
+		if (this._disordersFullDetails.length > 0)
+			info['disordersFullDetails'] = this._disordersFullDetails;
+
+
 		if (!Helpers.isObjectEmpty(this.getCancers()))
 			info['cancers'] = this.getCancers();
 		if (this.getHPO().length > 0)
@@ -1108,9 +1156,27 @@ var Person = Class.create(AbstractPerson, {
 			if (info.dob && this.getBirthDate() != info.dob) {
 				this.setBirthDate(info.dob);
 			}
-			if (info.disorders) {
-				this.setDisorders(info.disorders);
+
+			//First load _disordersFullDetails
+			if(info.disordersFullDetails) {
+				this._disordersFullDetails = info.disordersFullDetails.slice();
 			}
+
+			//then load disorders
+			if (info.disorders) {
+				var disorders = [];
+				//if we have disordersFullDetails, then complete the disorders objects absed on that
+				if (this._disordersFullDetails != undefined && this._disordersFullDetails.length > 0) {
+					for (var i = 0; i < this._disordersFullDetails.length; i++) {
+						var disorder = new Disorder(this._disordersFullDetails[i]._disorderID,this._disordersFullDetails[i]._name,this._disordersFullDetails[i]._valueAll);
+						disorders.push(disorder);
+					}
+					this.setDisorders(disorders);
+				}else{
+					this.setDisorders(info.disorders);
+				}
+			}
+
 			if (info.cancers) {
 				this.setCancers(info.cancers);
 			}

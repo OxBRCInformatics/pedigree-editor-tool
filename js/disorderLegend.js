@@ -30,7 +30,7 @@ var DisorderLegend = Class.create(Legend, {
 			var whenNameIsLoaded = function () {
 				this._updateDisorderName(disorderID);
 			}
-			this._disorderCache[disorderID] = new Disorder(disorderID, null, whenNameIsLoaded.bind(this));
+			this._disorderCache[disorderID] = new Disorder(disorderID, null, null, whenNameIsLoaded.bind(this));
 		}
 		return this._disorderCache[disorderID];
 	},
@@ -57,11 +57,11 @@ var DisorderLegend = Class.create(Legend, {
 	 * @param {String} disorderName The name of the disorder
 	 * @param {Number} nodeID ID of the Person who has this disorder
 	 */
-	addCase: function ($super, disorderID, disorderName, nodeID) {
+	addCase: function($super, disorderID, disorderName, valueAll, nodeID) {
 		if (!this._disorderCache.hasOwnProperty(disorderID))
-			this._disorderCache[disorderID] = new Disorder(disorderID, disorderName);
+			this._disorderCache[disorderID] = new Disorder(disorderID, disorderName, valueAll);
 
-		$super(disorderID, disorderName, nodeID);
+		$super(disorderID, disorderName, valueAll, nodeID);
 	},
 
 	/**

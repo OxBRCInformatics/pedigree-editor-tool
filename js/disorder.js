@@ -7,12 +7,13 @@
  */
 var Disorder = Class.create({
 
-	initialize: function (disorderID, name, callWhenReady) {
+	initialize: function(disorderID, name, valueAll, callWhenReady) {
 		// user-defined disorders
 		if (name == null && !Helpers.isInt(disorderID)) {
 			name = disorderID;
 		}
 
+		this._valueAll = valueAll;
 		this._disorderID = disorderID;
 		this._name = name ? name : "loading...";
 
@@ -35,8 +36,12 @@ var Disorder = Class.create({
 	},
 
 	load: function (callWhenReady) {
-		var baseOMIMServiceURL = Disorder.getOMIMServiceURL();
-		var queryURL = baseOMIMServiceURL + "&q=id:" + this._disorderID;
+		//Comment added by Soheil for GEL(GenomicsEngland)
+		//if we are here, it means that, the disorder details ie _valueAll is not available
+		//and the disorder list just has OMIM codes, so we will load the details from OMIM service
+		var baseOMIMServiceURL = Disorder.getServiceURL("OMIM");
+		var queryURL           = baseOMIMServiceURL + "&id=" + this._disorderID;
+
 		//console.log("queryURL: " + queryURL);
 		new Ajax.Request(queryURL, {
 			method: "GET",
@@ -52,12 +57,21 @@ var Disorder = Class.create({
 			//console.log(Helpers.stringifyObject(parsed));
 			console.log("LOADED DISORDER: disorder id = " + this._disorderID + ", name = " + parsed.rows[0].name);
 			this._name = parsed.rows[0].name;
+			this._valueAll = parsed.rows[0];
 		} catch (err) {
 			console.log("[LOAD DISORDER] Error: " + err);
 		}
 	}
 });
 
-Disorder.getOMIMServiceURL = function () {
-	return new XWiki.Document('OmimService', 'PhenoTips').getURL("get", "outputSyntax=plain");
+Disorder.getServiceURL = function(disorderType){
+	var webservice = new WebService();
+
+	if(disorderType == "OMIM"){
+		return webservice.getOmimLookupPath();
+	}else if(disorderType == "ICD10"){
+		return webservice.getIcd10LookupPath();
+	} else{
+		return webservice.getOmimLookupPath();
+	}
 };

@@ -147,7 +147,7 @@ var Legend = Class.create({
 	 * @param {String} Name The description of the object to be displayed
 	 * @param {Number} nodeID ID of the Person who has this object associated with it
 	 */
-	addCase: function (id, name, nodeID) {
+	addCase: function(id, name, valueAll, nodeID) {
 		if (Object.keys(this._affectedNodes).length == 0) {
 			this._legendBox.show();
 			!editor.getPreferencesManager().getConfigurationOption("hideDraggingHint") &&
@@ -155,7 +155,7 @@ var Legend = Class.create({
 		}
 		if (!this._hasAffectedNodes(id)) {
 			this._affectedNodes[id] = [nodeID];
-			var listElement = this._generateElement(id, name);
+			var listElement = this._generateElement(id, name, valueAll);
 			this._list.insert(listElement);
 		}
 		else {
@@ -240,10 +240,11 @@ var Legend = Class.create({
 	 * @param {String} name The human-readable object name or description
 	 * @return {HTMLLIElement} List element to be insert in the legend
 	 */
-	_generateElement: function (id, name) {
+	_generateElement: function(id, name, valueAll) {
 		var color = this.getObjectColor(id);
 		var HTMLid = Helpers.isInt(id) ? id : this._hashID(id);
 		var item = new Element('li', {'class': 'abnormality ' + 'drop-' + this._getPrefix(), 'id': this._getPrefix() + '-' + HTMLid}).update(new Element('span', {'class': 'disorder-name'}).update(name.escapeHTML()));
+		item.store("valueAll",valueAll);
 		item.insert(new Element('input', {'type': 'hidden', 'value': id}));
 		var bubble = new Element('span', {'class': 'abnormality-color'});
 		bubble.style.backgroundColor = color;
