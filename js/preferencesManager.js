@@ -9,11 +9,33 @@
             var preferencesJsonURL = new XWiki.Document('PedigreeInterface', 'PhenoTips').getURL('get', 'action=getPreferences');
             preferencesJsonURL += "&rand=" + Math.random();
 
-            new Ajax.Request(preferencesJsonURL, {
-                method: "GET",
-                onSuccess: this.onPreferencesAvailable.bind(this),
-                onComplete: callWhenReady ? callWhenReady : {}
-            });
+
+			//added by Soheil 31.0.2016
+			//These lines will load the default hardcoded configuration, instead of calling
+			//the backend service which is used in Phenotips
+			var defaultResponse = {
+				"user": {
+					"firstName": "",
+					"lastName": "",
+					"hideDraggingHint": false
+				},
+				"global": {
+					"disabledFields": [],
+					"dateDisplayFormat": "MDY",
+					"dateEditFormat": "YMD",
+					"nonStandardAdoptedOutGraphic": false,
+					"propagateFatherLastName": true,
+					"lineStyle": "regular"
+				}
+			};
+			this.onPreferencesAvailable(defaultResponse);
+			//commented by Soheil ..........................................
+            //new Ajax.Request(preferencesJsonURL, {
+            //    method: "GET",
+            //    onSuccess: this.onPreferencesAvailable.bind(this),
+            //    onComplete: callWhenReady ? callWhenReady : {}
+            //});
+			//...............................................................
         },
 
         onPreferencesAvailable : function(response) {
