@@ -520,7 +520,7 @@ var PedigreeEditor = Class.create({
 				'function': 'setCarrierStatus'
 			},
 			{
-				'label' : 'Please select disorder type:',
+				'label' : 'Please select coding system for disorder search:',
 				'name' : 'disorderType',
 				'type' : 'select',
 				'tab': 'Clinical',
@@ -787,6 +787,19 @@ var PedigreeEditor = Class.create({
 				'type': 'ethnicity-picker',
 				'tab': 'Personal',
 				'function': 'setEthnicities'
+			},
+			{
+				'label' : 'Please select coding system for disorder search:',
+				'name' : 'disorderType',
+				'type' : 'select',
+				'tab': 'Clinical',
+				'values' : [
+					{'actual': 'OMIM',  displayed: 'OMIM'},
+					{'actual': 'ICD10', displayed: 'ICD10'},
+					{'actual': 'SnomedCT', displayed: 'SnomedCT'},
+					{'actual': '100K', displayed: '100K Disorders'}
+				],
+				'function' : 'setDisorderType'
 			},
 			{
 				'name': 'disorders',
