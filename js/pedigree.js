@@ -61,9 +61,10 @@ var PedigreeEditor = Class.create({
 		this._preferencesManager.load(function () {
 			Helpers.copyProperties(PedigreeEditorParameters.styles.blackAndWhite, PedigreeEditorParameters.attributes);
 
-			// load proband data and load the graph after proband data is available
-			debugger
-			///this._probandData.load( this._saveLoadEngine.load.bind(this._saveLoadEngine) );
+			//The line is commented by Soheil for GEL(GenomicsEngland)
+			//_saveLoadEngine will set the proband details
+			//this._probandData.load( this._saveLoadEngine.load.bind(this._saveLoadEngine) );
+			this._saveLoadEngine.load(this._probandData);
 
 			// generate various dialogues after preferences have been loaded
 			this._nodeMenu = this.generateNodeMenu();
