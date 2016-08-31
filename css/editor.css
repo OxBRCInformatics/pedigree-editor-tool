@@ -279,7 +279,7 @@
  */
 .menu-box {
 	position: absolute;
-	/*width: 27em;*/
+	width: 27em; /* This line is commented in original code but uncommented by Soheil 31.08.2016*/
 	color: #000000;
 	z-index: 100000;
 }
