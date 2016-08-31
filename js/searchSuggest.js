@@ -10,7 +10,7 @@ var XWiki = (function (XWiki) {
 		 * Constructor. Prepares a light modal container on the same model as the modalPopup
 		 * and registers event listerners.
 		 */
-		initialize: function(searchInput, sources) {
+		initialize: function (searchInput, sources) {
 
 			this.sources = sources;
 
@@ -31,22 +31,22 @@ var XWiki = (function (XWiki) {
 		/**
 		 * Callback triggered when the original suggest clears its suggestions.
 		 */
-		onClearSuggestions: function(event) {
+		onClearSuggestions: function (event) {
 			if (event.memo.suggest == this.suggest) {
 				// Restore bottom border style
-				this.searchInput.setStyle({'borderBottomStyle' : this.searchInputBorderBottomSavedStyle});
+				this.searchInput.setStyle({'borderBottomStyle': this.searchInputBorderBottomSavedStyle});
 			}
 		},
 
 		/**
 		 * Callback triggered when the original suggest has created its results container.
 		 */
-		onSuggestContainerCreated: function(event) {
+		onSuggestContainerCreated: function (event) {
 			if (event.memo.suggest == this.suggest) {
 				// Save the style of the bottom border of the input field so that we can restore it later on
 				this.searchInputBorderBottomSavedStyle = this.searchInput.getStyle('borderBottomStyle');
 				// Hide bottom border of input field to not double the container border just under the field
-				this.searchInput.setStyle({'borderBottomStyle' : 'none'});
+				this.searchInput.setStyle({'borderBottomStyle': 'none'});
 			}
 		},
 
@@ -54,7 +54,7 @@ var XWiki = (function (XWiki) {
 		 * Callback triggered just before the suggest sends a new set of requests to fetch the suggestions from all the
 		 * configured sources. At this point the list of suggestions is empty and all sources are marked as loading.
 		 */
-		onSuggestContainerPrepared: function(event) {
+		onSuggestContainerPrepared: function (event) {
 			// Hide the "No results!" message.
 			this.noResultsMessage.addClassName('hidden');
 		},
@@ -63,7 +63,7 @@ var XWiki = (function (XWiki) {
 		 * Callback triggered after the suggest receives the list of suggestions from all configured sources (even if the
 		 * list of suggestions from one source is empty).
 		 */
-		onSuggestUpdated: function(event) {
+		onSuggestUpdated: function (event) {
 			// Check if there are any suggestions, taking into account that there is at least one suggestion used to link the
 			// search page.
 			if (event.memo.container.select('.suggestItem').length == 1) {
@@ -76,7 +76,7 @@ var XWiki = (function (XWiki) {
 		 * Callback triggered when a suggestion is selected.
 		 * Submits the form or go to a selected page according to selection.
 		 */
-		onSuggestionSelected: function(event) {
+		onSuggestionSelected: function (event) {
 			if (event.memo.suggest == this.suggest) {
 				event.stop();
 				// Also stop the browser event that triggered the custom "xwiki:suggest:selected" event.
@@ -89,7 +89,8 @@ var XWiki = (function (XWiki) {
 				}
 				else {
 					// Go to page
-					window.location = event.memo.id;;
+					window.location = event.memo.id;
+					;
 				}
 			}
 		},
@@ -97,12 +98,12 @@ var XWiki = (function (XWiki) {
 		/**
 		 * Creates the underlaying suggest widget.
 		 */
-		createSuggest: function() {
+		createSuggest: function () {
 			// Create dummy suggestion node to hold the "Go to search page..." option.
 			var valueNode = new Element('div')
-				.insert(new Element('span', {'class':'suggestId'}))
-				.insert(new Element('span', {'class':'suggestValue'}))
-				.insert(new Element('span', {'class':'suggestInfo'}));
+				.insert(new Element('span', {'class': 'suggestId'}))
+				.insert(new Element('span', {'class': 'suggestValue'}))
+				.insert(new Element('span', {'class': 'suggestInfo'}));
 			this.noResultsMessage = new Element('div', {'class': 'hidden'})
 				.update("No results!".escapeHTML());
 			var gotoSearchPageMessage = new Element('div')
@@ -111,21 +112,21 @@ var XWiki = (function (XWiki) {
 			var content = new Element('div').insert(this.noResultsMessage).insert(gotoSearchPageMessage)
 				.insert(new Element('div', {'class': 'clearfloats'}));
 			var allResultsNode = new XWiki.widgets.XList([
-					new XWiki.widgets.XListItem( content, {
+					new XWiki.widgets.XListItem(content, {
 						'containerClasses': 'suggestItem',
 						'classes': 'showAllResults',
-						'eventCallbackScope' : this,
-						'noHighlight' : true,
-						'value' : valueNode
-					} ),
+						'eventCallbackScope': this,
+						'noHighlight': true,
+						'value': valueNode
+					}),
 				],
 				{
-					'classes' : 'suggestList',
-					'eventListeners' : {
-						'click': function(event){
+					'classes': 'suggestList',
+					'eventListeners': {
+						'click': function (event) {
 							this.searchInput.up('form').submit();
 						},
-						'mouseover':function(event){
+						'mouseover': function (event) {
 							this.suggest.clearHighlight();
 							this.suggest.iHighlighted = event.element();
 							event.element().addClassName('xhighlight');
@@ -133,14 +134,14 @@ var XWiki = (function (XWiki) {
 					}
 				});
 			var allResults = allResultsNode.getElement();
-			this.suggest = new XWiki.widgets.Suggest( this.searchInput, {
+			this.suggest = new XWiki.widgets.Suggest(this.searchInput, {
 				parentContainer: $('searchSuggest'),
 				className: 'searchSuggest horizontalLayout',
 				fadeOnClear: false,
 				align: "auto",
 				minchars: 1,
-				sources : this.sources,
-				insertBeforeSuggestions : new Element("div", {'class' : 'results'}).update( allResults ),
+				sources: this.sources,
+				insertBeforeSuggestions: new Element("div", {'class': 'results'}).update(allResults),
 				displayValue: true,
 				displayValueText: "in ",
 				timeout: 0,
@@ -148,16 +149,18 @@ var XWiki = (function (XWiki) {
 				unifiedLoader: true,
 				loaderNode: allResults.down("li"),
 				shownoresults: false,
-				propagateEventKeyCodes : [ Event.KEY_RETURN ]
+				propagateEventKeyCodes: [ Event.KEY_RETURN ]
 			});
 		}
 
 	});
 
-	var init = function() {
+	var init = function () {
 		/*
 		 */
-		var sources = [{"name":"Matching patients","varname":"input","script":"/get/PhenoTips/SuggestPatientsService?outputSyntax=plain&permission=view&query=__INPUT__&nb=5","icon":"/resources/icons/silk/user.png","highlight":false}];
+		var sources = [
+			{"name": "Matching patients", "varname": "input", "script": "/get/PhenoTips/SuggestPatientsService?outputSyntax=plain&permission=view&query=__INPUT__&nb=5", "icon": "/resources/icons/silk/user.png", "highlight": false}
+		];
 		new XWiki.SearchSuggest($('headerglobalsearchinput'), sources);
 		return true;
 	};

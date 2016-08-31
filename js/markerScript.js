@@ -1,1 +1,5 @@
-XWiki.lastScriptLoaded=true;if(XWiki.failedInit){XWiki.initialize()};
+XWiki.lastScriptLoaded = true;
+if (XWiki.failedInit) {
+	XWiki.initialize()
+}
+;
