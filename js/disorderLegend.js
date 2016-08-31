@@ -104,8 +104,10 @@ var DisorderLegend = Class.create(Legend, {
 		}else{
 			disorderType = "OMIM";
 		}
-		var disorderTypeContainer = new Element('span', {'class' : 'disorder-disorder-type'}).insert("(").insert(disorderType).insert(")");
-		item.down('.disorder-name').insert(" ").insert(disorderTypeContainer);
+		if(name != "affected") {
+			var disorderTypeContainer = new Element('span', {'class': 'disorder-disorder-type'}).insert("(").insert(disorderType).insert(")");
+			item.down('.disorder-name').insert(" ").insert(disorderTypeContainer);
+		}
 
 		return item;
 	},
