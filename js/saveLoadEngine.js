@@ -177,7 +177,10 @@ var SaveLoadEngine = Class.create({
 				editor.getUndoRedoManager().addSaveEvent();
 				savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
 			},
-			parameters: {"property#data": jsonData, "property#image": svgText}
+			parameters: {"property#data": jsonData, "property#image": svgText,
+					     "property#export": exportString //The line is added by Soheil for GEL(GenomicEngland), to return the JSON value
+				}
+
 		});
 	},
 
