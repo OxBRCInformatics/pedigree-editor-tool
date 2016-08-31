@@ -353,7 +353,7 @@
 	display: none;
 	float: left;
 	padding: 0;
-	max-width: 300px; /* Added by Soheil for GEL*/
+	max-width: 350px; /* Added by Soheil for GEL*/
 }
 .menu-box .tabs-content > .content.active {
 	display: block;
