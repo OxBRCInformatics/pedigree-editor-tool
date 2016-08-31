@@ -141,7 +141,8 @@
 			this.form.select('.fuzzy-date').each(function(item) {
 				if (!item.__datePicker) {
 					var inputMode = editor.getPreferencesManager().getConfigurationOption("dateEditFormat");
-					item.__datePicker = new DatePicker(item, inputMode);
+					//added by Soheil
+					item.__datePicker = new PedigreeFuzzyDatePickerDropdown(item, inputMode);
 				}
 			});
 			// disease

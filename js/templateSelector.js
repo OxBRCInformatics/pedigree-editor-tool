@@ -14,7 +14,13 @@
 			var closeShortcut = isStartupTemplateSelector ? [] : ['Esc'];
 			this.dialog = new PhenoTips.widgets.ModalPopup(this.mainDiv, {close: {method : this.hide.bind(this), keys : closeShortcut}}, {extraClassName: "pedigree-template-chooser", title: "Please select a pedigree template", displayCloseButton: !isStartupTemplateSelector, verticalPosition: "top"});
 			isStartupTemplateSelector && this.show();
-			new Ajax.Request(new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/'), {
+			//Commented by Soheil for GEL(GenomicsEngland)
+			//ge the right path instead of using xWiki path
+			//new Ajax.Request(new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1), {
+			var settings = new Settings();
+
+			var newURL = settings.getAbsoluteURL(new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1));
+			new Ajax.Request(newURL, {
 				method: 'GET',
 				onSuccess: this._onTemplateListAvailable.bind(this)
 			});
@@ -46,6 +52,8 @@
 				var href = getSelectorFromXML(objects[i], "link", "rel", "http://www.xwiki.org/rel/properties").getAttribute("href");
 				// Use only the path, since the REST module returns the wrong host behind a reverse proxy
 				var path = href.substring(href.indexOf("/", href.indexOf("//") + 2));
+				path = "http://localhost:8080/panogram/rest" + path;
+
 				new Ajax.Request(path, {
 					method: 'GET',
 					onSuccess: this._onTemplateAvailable.bind(this, pictureBox)

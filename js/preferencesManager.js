@@ -13,7 +13,9 @@
 			//added by Soheil 31.0.2016
 			//These lines will load the default hardcoded configuration, instead of calling
 			//the backend service which is used in Phenotips
-			var defaultResponse = {
+
+			var defaultResponse = {};
+			defaultResponse.responseJSON = {
 				"user": {
 					"firstName": "",
 					"lastName": "",
@@ -29,6 +31,7 @@
 				}
 			};
 			this.onPreferencesAvailable(defaultResponse);
+			callWhenReady();
 			//commented by Soheil ..........................................
             //new Ajax.Request(preferencesJsonURL, {
             //    method: "GET",

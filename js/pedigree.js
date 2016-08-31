@@ -62,7 +62,8 @@
 					Helpers.copyProperties(PedigreeEditorParameters.styles.blackAndWhite, PedigreeEditorParameters.attributes);
 
 					// load proband data and load the graph after proband data is available
-					this._probandData.load( this._saveLoadEngine.load.bind(this._saveLoadEngine) );
+					debugger
+					///this._probandData.load( this._saveLoadEngine.load.bind(this._saveLoadEngine) );
 
 					// generate various dialogues after preferences have been loaded
 					this._nodeMenu = this.generateNodeMenu();
