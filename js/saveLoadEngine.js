@@ -184,7 +184,8 @@ var SaveLoadEngine = Class.create({
 		});
 	},
 
-	load: function () {
+	//probandDataObj passed to set  the probandData from the result content returned by the webservice
+	load: function(probandDataObj) {
 		console.log("initiating load process");
 
 		//CALL OpenClinica service to load it ******************************************
@@ -207,6 +208,20 @@ var SaveLoadEngine = Class.create({
 			onSuccess: function (response) {
 
 
+				//These lines are added by Soheil for GEL(GenomicsEngland)
+				//These will set the proband details into probandDataObj
+				probandDataObj.probandData = {};
+				for(var i = 0; i < response.responseJSON.pedigreeJSON.length;i++){
+					var node = response.responseJSON.pedigreeJSON[i];
+					if(node.proband != undefined && node.proband == true){
+						probandDataObj.probandData.firstName = node.firstName;
+						probandDataObj.probandData.lastName  = node.lastName;
+						probandDataObj.probandData.gender    = node.sex;
+						break;
+					}
+				}
+
+				
 				//Load a fixed default value for testing GEL(GenomicsEngland)
 				var jsonContentString = '[{"id":"1","father":"2","mother":"3","sex":"male","firstName":"S","lastName":"S","externalId":"SS","birthDate":{"decade":"2010s","year":2015,"month":3,"day":1},"hpoTerms":[],"nodeNumber":"III-1","lifeStatus":"alive"},{"id":"2","father":"5","mother":"4","sex":"male","nodeNumber":"II-2"},{"id":"3","sex":"other","nodeNumber":"II-3"},{"id":"4","sex":"female","nodeNumber":"I-2"},{"id":"5","sex":"male","nodeNumber":"I-1"},{"id":"6","father":"5","mother":"4","sex":"unknown","lifeStatus":"unborn","twinGroup":0,"nodeNumber":"II-6"},{"id":"7","father":"5","mother":"4","sex":"unknown","twinGroup":0,"nodeNumber":"II-7"},{"id":"8","father":"5","mother":"4","sex":"unknown","lifeStatus":"unborn","nodeNumber":"II-1"},{"id":"9","sex":"unknown","nodeNumber":"II-8"},{"id":"10","father":"7","mother":"9","sex":"unknown","twinGroup":0,"nodeNumber":"III-5"},{"id":"11","father":"7","mother":"9","sex":"unknown","twinGroup":0,"nodeNumber":"III-6"},{"id":"12","sex":"unknown","nodeNumber":"III-4"},{"id":"13","father":"10","mother":"12","sex":"unknown","lifeStatus":"unborn","nodeNumber":"IV-2"},{"id":"14","father":"17","mother":"16","sex":"unknown","nodeNumber":"III-3"},{"id":"15","father":"12","mother":"14","sex":"unknown","nodeNumber":"IV-1"},{"id":"16","sex":"female","nodeNumber":"II-5"},{"id":"17","sex":"male","nodeNumber":"II-4"},{"id":"18","father":"17","mother":"16","sex":"female","nodeNumber":"III-2"}]';
 				var importType = "simpleJSON";
