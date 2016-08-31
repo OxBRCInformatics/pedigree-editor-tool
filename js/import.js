@@ -1327,7 +1327,7 @@ PedigreeImport.JSONToInternalPropertyMapping = {
 	"gestationage": "gestationAge",
 	"lifestatus": "lifeStatus",
 	"disorders": "disorders",
-	"disordersfulldetails": "disordersFullDetails",
+	"disordersfulldetails": "disordersFullDetails", //Added for GEL(GenomicsEngland)
 	"hpoterms": "hpoTerms",
 	"candidategenes": "candidateGenes",
 	"ethnicities": "ethnicities",

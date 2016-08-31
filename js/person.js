@@ -34,7 +34,7 @@ var Person = Class.create(AbstractPerson, {
 		this._phenotipsId = "";
 		this._firstName = "";
 		this._lastName = "";
-		this._NHSNumber = "";
+		this._NHSNumber = ""; // added for GEL
 		this._lastNameAtBirth = "";
 		this._birthDate = null;
 		this._deathDate = null;
@@ -123,6 +123,7 @@ var Person = Class.create(AbstractPerson, {
 		return this._firstName;
 	},
 
+	// added for GEL
 	getNHSNumber: function() {
 		return this._NHSNumber;
 	},
@@ -140,7 +141,7 @@ var Person = Class.create(AbstractPerson, {
 		this.getGraphics().updateNameLabel();
 	},
 
-
+	// added for GEL
 	setNHSNumber: function(NHSNumber) {
 		this._NHSNumber = NHSNumber;
 		this.getGraphics().updateExternalIDLabel();
@@ -598,7 +599,7 @@ var Person = Class.create(AbstractPerson, {
 		return this._disorders;
 	},
 
-
+	//added for GEL.......
 	getDisorderType: function() {
 		return this._disorderType;
 	},
@@ -625,8 +626,10 @@ var Person = Class.create(AbstractPerson, {
 			disorder = editor.getDisorderLegend().getDisorder(disorder);
 		}
 		if (!this.hasDisorder(disorder.getDisorderID())) {
+			//disorder._valueAll passed for GEL
 			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), disorder._valueAll, this.getID());
 			this.getDisorders().push(disorder.getDisorderID());
+			//this is added for GEL .....................
 			this._disordersFullDetails.push(disorder);
 		}
 		else {
@@ -650,13 +653,14 @@ var Person = Class.create(AbstractPerson, {
 		if (this.hasDisorder(disorderID)) {
 			editor.getDisorderLegend().removeCase(disorderID, this.getID());
 			this._disorders = this.getDisorders().without(disorderID);
-
+			//added for GEL ................................................
 			for(var i = 0;i < this._disordersFullDetails.length; i++){
 				if(this._disordersFullDetails[i]._disorderID == disorderID){
 					this._disordersFullDetails.splice(i, 1);
 					break;
 				}
 			}
+			//...............................................................
 		}
 		else {
 			if (disorderID != "affected") {
@@ -682,10 +686,11 @@ var Person = Class.create(AbstractPerson, {
 		this.getGraphics().updateDisorderShapes();
 		this.setCarrierStatus(); // update carrier status
 	},
-
+	//added for GEL......
 	setDisorderType: function(disorderType) {
 		this._disorderType = disorderType;
 	},
+	//..................
 
 
 	/**
@@ -977,8 +982,10 @@ var Person = Class.create(AbstractPerson, {
 		var disorders = [];
 		this.getDisorders().forEach(function (disorder) {
 			var disorderName = editor.getDisorderLegend().getDisorder(disorder).getName();
+			//added for GEL, get disorderObject and push _valueAll into the array ........................
 			var disorderObj  = editor.getDisorderLegend().getDisorder(disorder);
 			disorders.push({id: disorder, value: disorderName, valueAll:disorderObj._valueAll});
+			//............................................................................................
 		});
 		var hpoTerms = [];
 		this.getHPO().forEach(function (hpo) {

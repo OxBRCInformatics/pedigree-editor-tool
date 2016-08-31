@@ -431,7 +431,7 @@ PedigreeExport.internalToJSONPropertyMapping = {
 	"gestationAge": "gestationAge",
 	"lifeStatus": "lifeStatus",
 	"disorders": "disorders",
-	"disordersFullDetails": "disordersFullDetails",
+	"disordersFullDetails": "disordersFullDetails", //Added for GEL(GenomicsEngland)
 	"ethnicities": "ethnicities",
 	"carrierStatus": "carrierStatus",
 	"externalID": "externalId",

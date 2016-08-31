@@ -57,10 +57,13 @@ var DisorderLegend = Class.create(Legend, {
 	 * @param {String} disorderName The name of the disorder
 	 * @param {Number} nodeID ID of the Person who has this disorder
 	 */
+    //Added by Soheil
+	//valueAll is passed for GEL(GenomicsEngland)
 	addCase: function($super, disorderID, disorderName, valueAll, nodeID) {
 		if (!this._disorderCache.hasOwnProperty(disorderID))
+			//valueAll is passed for GEL(GenomicsEngland)
 			this._disorderCache[disorderID] = new Disorder(disorderID, disorderName, valueAll);
-
+		//valueAll is passed for GEL(GenomicsEngland)
 		$super(disorderID, disorderName, valueAll, nodeID);
 	},
 

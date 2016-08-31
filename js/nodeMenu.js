@@ -145,12 +145,14 @@ NodeMenu = Class.create({
 				item.__datePicker = new PedigreeFuzzyDatePicker(item, inputMode);
 			}
 		});
+		//added for GEL(GenomicsEngland)
 		var FORM = this.form;
 		// disease
 		this.form.select('input.suggest-omim').each(function (item) {
 			if (!item.hasClassName('initialized')) {
 				// Create the Suggest.
 				item._suggest = new PhenoTips.widgets.Suggest(item, {
+					//added for GEL(GenomicsEngland)....................
 					scriptFunction: function(){
 						//find disorderType
 						if (FORM.select("select[name='disorderType']").length > 0){
@@ -160,11 +162,11 @@ NodeMenu = Class.create({
 						}else{
 							return Disorder.getServiceURL("OMIM") + "&";
 						}
-					},
+					},//..................................................
 					script: Disorder.getServiceURL("OMIM") + "&",
 
 					varname: "q",
-					minchars: 3,
+					minchars: 3, //Added for GEL(GenomicsEngland)
 					noresults: "No matching terms",
 					json: true,
 					resultsParameter: "rows",
@@ -549,6 +551,8 @@ NodeMenu = Class.create({
 		},
 		'disease-picker': function (data) {
 			var result = this._generateEmptyField(data);
+			//added for GEL........
+			//if element has style in its definition, then use it
 			var style = data.style ? data.style : "";
 			var diseasePicker = new Element('input', {type: 'text', 'class': 'suggest multi suggest-omim', name: data.name, 'style': style});
 			result.insert(diseasePicker);
@@ -557,6 +561,8 @@ NodeMenu = Class.create({
 				var container = this.up('.field-box');
 				if (container) {
 					container.select('input[type=hidden][name=' + data.name + ']').each(function (item) {
+						//commented and replaced by the following for GEL(GenomicsEngland) .........................
+						//results.push(new Disorder(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value));
 						var li = item.up("li");
 						var valueAll;
 						if(li != undefined){
@@ -681,6 +687,8 @@ NodeMenu = Class.create({
 		'select': function (data) {
 			var result = this._generateEmptyField(data);
 			var span = new Element('span');
+			//added for GEL........
+			//if element has style in its definition, then use it
 			var style = data.style ? data.style : "";
 			// using raw HTML for options for performace reasons: generating e.g. 50 different gestation week
 			// options is noticeably slow when using more generic methods (e.g. new Element("option"))
@@ -1146,6 +1154,7 @@ NodeMenu = Class.create({
 				target._suggestPicker.clearAcceptedList();
 				if (values) {
 					values.each(function (v) {
+						//v.valueAll is passed for GEL..........
 						target._suggestPicker.addItem(v.id, v.value, '', null, v.valueAll);
 						_this._updateDisorderColor(v.id, editor.getDisorderLegend().getObjectColor(v.id));
 					})

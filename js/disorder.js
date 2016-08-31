@@ -7,12 +7,15 @@
  */
 var Disorder = Class.create({
 
+	//pass valueAll
+	//this parameter is added by Soheil for GEL(GenomicsEngland)
 	initialize: function(disorderID, name, valueAll, callWhenReady) {
 		// user-defined disorders
 		if (name == null && !Helpers.isInt(disorderID)) {
 			name = disorderID;
 		}
 
+		//Added by Soheil for GEL(GenomicsEngland)
 		this._valueAll = valueAll;
 		this._disorderID = disorderID;
 		this._name = name ? name : "loading...";
@@ -57,6 +60,7 @@ var Disorder = Class.create({
 			//console.log(Helpers.stringifyObject(parsed));
 			console.log("LOADED DISORDER: disorder id = " + this._disorderID + ", name = " + parsed.rows[0].name);
 			this._name = parsed.rows[0].name;
+			//Added by Soheil for GEL(GenomicsEngland)
 			this._valueAll = parsed.rows[0];
 		} catch (err) {
 			console.log("[LOAD DISORDER] Error: " + err);
@@ -64,6 +68,7 @@ var Disorder = Class.create({
 	}
 });
 
+//Added by Soheil for GEL(GenomicsEngland)
 Disorder.getServiceURL = function(disorderType){
 	var webservice = new WebService();
 

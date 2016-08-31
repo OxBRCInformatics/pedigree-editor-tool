@@ -147,6 +147,7 @@ var Legend = Class.create({
 	 * @param {String} Name The description of the object to be displayed
 	 * @param {Number} nodeID ID of the Person who has this object associated with it
 	 */
+	//valueAll is passed for GEL(GenomicsEngland)
 	addCase: function(id, name, valueAll, nodeID) {
 		if (Object.keys(this._affectedNodes).length == 0) {
 			this._legendBox.show();
@@ -155,6 +156,7 @@ var Legend = Class.create({
 		}
 		if (!this._hasAffectedNodes(id)) {
 			this._affectedNodes[id] = [nodeID];
+			//valueAll is passed for GEL(GenomicsEngland)
 			var listElement = this._generateElement(id, name, valueAll);
 			this._list.insert(listElement);
 		}
@@ -240,6 +242,7 @@ var Legend = Class.create({
 	 * @param {String} name The human-readable object name or description
 	 * @return {HTMLLIElement} List element to be insert in the legend
 	 */
+	//valueAll is passed for GEL(GenomicsEngland)
 	_generateElement: function(id, name, valueAll) {
 		var color = this.getObjectColor(id);
 		var HTMLid = Helpers.isInt(id) ? id : this._hashID(id);
