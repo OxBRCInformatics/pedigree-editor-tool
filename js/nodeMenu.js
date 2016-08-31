@@ -179,7 +179,6 @@ NodeMenu = Class.create({
 					tooltip: 'omim-disease-info',
 					parentContainer: $('body'),
 					//showKey:true,	   	  // added for GEL
-					showDisorderType:true // added for GEL
 				});
 				if (item.hasClassName('multi') && typeof(PhenoTips.widgets.SuggestPicker) != "undefined") {
 					item._suggestPicker = new PhenoTips.widgets.SuggestPicker(item, item._suggest, {
@@ -193,7 +192,28 @@ NodeMenu = Class.create({
 						'listInsertionPosition': 'after',
 						'acceptFreeText': true,
 						//'showKey':true,        // added for GEL
-						'showDisorderType':true  // added for GEL
+						'showDisorderType':true,  // added for GEL
+						customizeItemDisplay : function(key, value, valueAll, displayedValue, options){
+							if(options.showDisorderType){
+								// insert the displayed value
+								var disorderType = "";
+								if(valueAll != undefined){
+									disorderType = valueAll.disorderType;
+								}else{
+									disorderType = "OMIM";
+								}
+								if(value != "affected") {
+									var disorderTypeContainer = new Element('span', {'class': 'disorder-disorder-type'}).insert("(").insert(disorderType).insert(")");
+									displayedValue.insert("").insert(disorderTypeContainer);
+
+									if(valueAll.ageOfOnset != undefined && valueAll.ageOfOnset.length > 0){
+										var ageOfOnset = valueAll.ageOfOnset;
+										var ageOfOnsetContainer = new Element('span', {'class': 'disorder-age-of-onset'}).insert("OnsetAge(").insert(ageOfOnset).insert(")");
+										displayedValue.insert("").insert(ageOfOnsetContainer);
+									}
+								}
+							}
+						}
 					});
 				}
 				item.addClassName('initialized');
