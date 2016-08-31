@@ -177,7 +177,9 @@ NodeMenu = Class.create({
 					fadeOnClear: false,
 					timeout: 30000,
 					tooltip: 'omim-disease-info',
-					parentContainer: $('body')
+					parentContainer: $('body'),
+					//showKey:true,	   	  // added for GEL
+					showDisorderType:true // added for GEL
 				});
 				if (item.hasClassName('multi') && typeof(PhenoTips.widgets.SuggestPicker) != "undefined") {
 					item._suggestPicker = new PhenoTips.widgets.SuggestPicker(item, item._suggest, {
@@ -189,7 +191,9 @@ NodeMenu = Class.create({
 						'inputType': 'hidden',
 						'listInsertionElt': 'input',
 						'listInsertionPosition': 'after',
-						'acceptFreeText': true
+						'acceptFreeText': true,
+						//'showKey':true,        // added for GEL
+						'showDisorderType':true  // added for GEL
 					});
 				}
 				item.addClassName('initialized');

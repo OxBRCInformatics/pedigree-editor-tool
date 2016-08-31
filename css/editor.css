@@ -274,6 +274,14 @@
 	font-style: italic;
 	color: #777;
 }
+/* ==== Added by Soheil for GEL(GenomicsEngland) ==== */
+.disorder-disorder-type{
+	font-size: .6em;
+	font-style: italic;
+	color: #777;
+}
+
+
 /* ===========================================
  * NODE MENU
  */

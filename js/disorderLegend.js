@@ -88,14 +88,26 @@ var DisorderLegend = Class.create(Legend, {
 	 * @param {String} name The human-readable disorder name
 	 * @return {HTMLLIElement} List element to be insert in the legend
 	 */
-	_generateElement: function ($super, disorderID, name) {
+	//pass valueAll for GEL(GenomicsEngland)...........
+	_generateElement: function($super, disorderID, name, valueAll) {
 		if (!this._objectColors.hasOwnProperty(disorderID)) {
 			var color = this._generateColor(disorderID);
 			this._objectColors[disorderID] = color;
 			document.fire('disorder:color', {'id': disorderID, color: color});
 		}
 
-		return $super(disorderID, name);
+		//Added by Soheil for Gel(GenomicsEngland) to include (disorderType) in disorderLegend
+		var item = $super(disorderID, name, valueAll);
+		var disorderType = "";
+		if(valueAll != undefined){
+			disorderType = valueAll.disorderType;
+		}else{
+			disorderType = "OMIM";
+		}
+		var disorderTypeContainer = new Element('span', {'class' : 'disorder-disorder-type'}).insert("(").insert(disorderType).insert(")");
+		item.down('.disorder-name').insert(" ").insert(disorderTypeContainer);
+
+		return item;
 	},
 
 	/**
