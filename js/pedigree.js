@@ -520,7 +520,7 @@ var PedigreeEditor = Class.create({
 				'function': 'setCarrierStatus'
 			},
 			{
-				'label' : 'Please select coding system for disorder search:',
+				'label' : 'Please select disorder type:',
 				'name' : 'disorderType',
 				'type' : 'select',
 				'tab': 'Clinical',
@@ -528,9 +528,19 @@ var PedigreeEditor = Class.create({
 					{'actual': 'OMIM',  displayed: 'OMIM'},
 					{'actual': 'ICD10', displayed: 'ICD10'},
 					{'actual': 'SnomedCT', displayed: 'SnomedCT'},
-					{'actual': '100K', displayed: '100K Rare Diseases'}
+					{'actual': '100K', displayed: '100K Disorders'}
 				],
 				'function' : 'setDisorderType'
+			},
+			{
+				'label':'Age of Onset (GEL disorders)',
+				'name' : 'ageOfOnset',
+				'type' : 'text',
+				'tab': 'Clinical',
+				'disabled':true,
+				'function' : 'setAgeOfOnset',
+				'dependency' : 'disorderType == 100K',
+				'dependencyShowInline': false
 			},
 			{
 				'name': 'disorders',
@@ -618,6 +628,7 @@ var PedigreeEditor = Class.create({
 				'name': 'childlessText',
 				'type': 'text',
 				'dependency': 'childlessSelect != none',
+				dependencyShowInline: true,
 				'tip': 'Reason',
 				'tab': 'Personal',
 				'function': 'setChildlessReason'

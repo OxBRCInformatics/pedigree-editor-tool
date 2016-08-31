@@ -426,6 +426,7 @@ NodeMenu = Class.create({
 
 	_restoreCursorPositionIfNecessary: function (field) {
 		if (this.targetNode == this.__lastNodeID &&
+			field != undefined &&
 			field.name == this.__lastSelectedField) {
 			// for text fields in all browsers, and textarea only in IE9
 			if (field.type == "text" || (document.selection && field.type == "textarea")) {
@@ -452,7 +453,9 @@ NodeMenu = Class.create({
 			var dependency = data.dependency.split(' ', 3);
 			var element = this.fieldMap[dependency[0]].element;
 			dependency[0] = this.form[dependency[0]];
-			element.inputsContainer.insert(field.up());
+			if(data.dependencyShowInline != undefined && data.dependencyShowInline == true) {
+				element.inputsContainer.insert(field.up());
+			}
 			this.fieldMap[field.name].element = element;
 			this._updatedDependency(field, dependency);
 			dependency[0].observe('pedigree:change', function () {
@@ -469,7 +472,7 @@ NodeMenu = Class.create({
 				field.disabled = (dependency[0].value == dependency[2]);
 				break;
 			default:
-				field.disabled = (dependency[0].value == dependency[2]);
+				field.disabled = (dependency[0].value != dependency[2]);
 				break;
 		}
 	},
@@ -582,6 +585,16 @@ NodeMenu = Class.create({
 			var _this = this;
 			document.observe('custom:selection:changed', function (event) {
 				if (event.memo && event.memo.fieldName == data.name && event.memo.trigger && event.findElement() != event.memo.trigger && !event.memo.trigger._silent) {
+
+					//Added for GEL..........................................................
+					if (_this.form.select("input[name='ageOfOnset']").length > 0){
+						var ageOfOnset = (_this.form.select("input[name='ageOfOnset']")[0]).getValue();
+						var valueAll  =  event.memo.customElement.retrieve("valueAll");
+						if(valueAll != undefined){
+							valueAll.ageOfOnset = ageOfOnset;
+						}
+					}
+					//........................................................................
 					Event.fire(event.memo.trigger, 'custom:selection:changed');
 					_this.reposition();
 				}
