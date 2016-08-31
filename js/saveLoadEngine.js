@@ -113,6 +113,16 @@ var SaveLoadEngine = Class.create({
 
 		editor.getView().unmarkAll();
 
+
+
+		//Added by Soheil for GEL(GenomicsEngland)
+		//the following line will export the diagram as JSON and pass the param as all
+		var privacySetting = "all";
+		var exportString = PedigreeExport.exportAsSimpleJSON(editor.getGraph().DG, privacySetting);
+		debugger
+
+
+
 		var me = this;
 
 		var jsonData = this.serialize();
@@ -123,7 +133,13 @@ var SaveLoadEngine = Class.create({
 		var svgText = svg.getSVGText();
 
 		var savingNotification = new XWiki.widgets.Notification("Saving", "inprogress");
-		new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0', 'method=PUT'), {
+		//The line is commented by Soheil for GEL(GenomicEngland)
+		//instead of using XWiki rest end point for saving the value into XML
+		//we pass it the backend Webservice URL
+		//new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml', 'method=PUT').substring(1), {
+		var webservice = new WebService();
+		var href = webservice.saveDiagramToOpenClinicaPath();
+		new Ajax.Request(href, {
 			method: 'POST',
 			onCreate: function () {
 				me._saveInProgress = true;
