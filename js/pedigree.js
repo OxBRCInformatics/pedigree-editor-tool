@@ -551,21 +551,18 @@ var PedigreeEditor = Class.create({
 				'function' : 'setDisorderType'
 			},
 			{
-				'label':'Age of Onset (GEL disorders)',
-				'name' : 'ageOfOnset',
-				'type' : 'text',
-				'tab': 'Clinical',
-				'disabled':true,
-				'function' : 'setAgeOfOnset',
-				'dependency' : 'disorderType == GEL',
-				'dependencyShowInline': false
-			},
-			{
 				'name': 'disorders',
-				'label': 'Known disorders of this individual',
+				'label': 'Disorder',
 				'type': 'disease-picker',
 				'tab': 'Clinical',
 				'function': 'setDisorders'
+			},
+			{
+				'label': 'Age of Set',
+				'name' : 'ageOfOnset',
+				'type': 'text',
+				'tab': 'Clinical',
+				'function' : 'setAgeOfOnset'
 			},
 			{
 				'name': 'hpo_positive',
