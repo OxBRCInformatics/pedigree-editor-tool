@@ -621,6 +621,7 @@
 	padding-bottom: 0.5em;
 	padding-right: 0;
 	margin-left: -0.1em;
+	clear: both;
 }
 .menu-box .field-evaluated .field-name {
 	font-weight: normal;
@@ -632,6 +633,8 @@
 	padding-left: 0;
 }
 .menu-box .field-hpo_positive {
+	width: 85%;
+	float: left;
 	padding: 1em 0;
 }
 /* Disable the "browse ontology" button, as ontology browser events are not supported (yet) */
@@ -639,11 +642,33 @@
 	display: none;
 }
 .menu-box .field-disorders {
+	width: 80%;
+	float: left;
+}
+
+.menu-box .field-ageOfOnset {
+	width: 20%;
+	float: right;
 	padding: 0.6em 0;
 }
+
+.menu-box .field-ageOfOnset label.field-name {
+	font-size: 12px !important;
+}
+
+
 .menu-box .field-candidate_genes {
+	width: 85%;
+	float: left;
 	padding: 0.6em 0;
 }
+
+.menu-box .field-commentsClinical{
+	width: 85%;
+	float: left;
+	padding: 0.6em 0;
+}
+
 .menu-box .field-identifier {
 	padding: 0 0;
 }
