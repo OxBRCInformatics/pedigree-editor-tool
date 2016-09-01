@@ -595,6 +595,11 @@
 	margin-top: -5px; /* TODO: investigate why elements float below its intended position */
 	margin-bottom: 7px;
 }
+
+.menu-box .field-state {
+	padding-top:60px ;
+}
+
 .menu-box .accepted-suggestions {
 	margin: 0px 0px 0.3em !important;
 }
