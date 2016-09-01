@@ -1,5 +1,5 @@
 var config = {
-	"codeDefinitionServiceEndpoint": "http://localhost:8081/OCService",
+	"codingDefinitionServiceEndpoint": "/OCService",
 	"diagramEndpoint": {
 		//"service": "mercury",
 		//"service": "openclinica",

@@ -6,11 +6,7 @@ WebService = Class.create({
 
 	initialize: function () {
 		this._settings = new Settings();
-	},
-
-	configure: function(){
 		this._baseURL = this._settings.getSetting('codingDefinitionServiceEndpoint');
-
 	},
 
 	getOmimLookupPath: function(){
