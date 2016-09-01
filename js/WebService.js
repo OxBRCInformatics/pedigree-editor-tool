@@ -6,10 +6,8 @@ WebService = Class.create({
 
 	initialize: function () {
 		this._settings = new Settings();
-		this._settings.load(this.configure.bind(this));
-
-
 	},
+
 	configure: function(){
 		this._baseURL = this._settings.getSetting('codingDefinitionServiceEndpoint');
 
