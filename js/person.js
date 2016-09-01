@@ -553,8 +553,10 @@ var Person = Class.create(AbstractPerson, {
 				status = 'affected';
 			}
 		} else if (numDisorders == 0 && status == 'affected') {
-			this.addDisorder("affected");
-			this.getGraphics().updateDisorderShapes();
+			//commented by Soheil for GEL(GenomicsEngland).........................
+			//we do not need to create a new default disease as 'affected' when the user clicks on 'Affected' radio item
+			//this.addDisorder("affected");
+			//this.getGraphics().updateDisorderShapes();
 		}
 
 		if (status != this._carrierStatus) {
