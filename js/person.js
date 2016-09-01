@@ -593,8 +593,6 @@ var Person = Class.create(AbstractPerson, {
 				if(this._disordersFullDetails[i]._valueAll.disorderType == "GEL") {
 					result.push(editor.getDisorderLegend().getObjectColor(this.getDisorders()[i]));
 				}
-			}else {
-				result.push(editor.getDisorderLegend().getObjectColor(this.getDisorders()[i]));
 			}
 			//..........................................................................................................
 		}

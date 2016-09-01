@@ -57,11 +57,11 @@ var DisorderLegend = Class.create(Legend, {
 	 * @param {String} disorderName The name of the disorder
 	 * @param {Number} nodeID ID of the Person who has this disorder
 	 */
-    //Added by Soheil
+	//Added by Soheil
 	//valueAll is passed for GEL(GenomicsEngland)
 	addCase: function($super, disorderID, disorderName, valueAll, nodeID) {
 		if (!this._disorderCache.hasOwnProperty(disorderID))
-			//valueAll is passed for GEL(GenomicsEngland)
+		//valueAll is passed for GEL(GenomicsEngland)
 			this._disorderCache[disorderID] = new Disorder(disorderID, disorderName, valueAll);
 		//valueAll is passed for GEL(GenomicsEngland)
 		$super(disorderID, disorderName, valueAll, nodeID);
@@ -96,7 +96,11 @@ var DisorderLegend = Class.create(Legend, {
 			//Added by Soheil for GEL(GenomicsEngland) 01.10.2016
 			//We need to show color for just GEL disorders,
 			//for other disorders types such as OMIM, IDC10, SnomedCT we just use WHITE color ..........................
-			if(valueAll != undefined && valueAll.disorderType != "ICD10"){
+			if(valueAll != undefined){
+				if(valueAll.disorderType != "GEL") {
+					color = "#FFF";
+				}
+			}else{
 				color = "#FFF";
 			}
 			//..........................................................................................................
