@@ -584,7 +584,19 @@ var Person = Class.create(AbstractPerson, {
 	getAllNodeColors: function () {
 		var result = [];
 		for (var i = 0; i < this.getDisorders().length; i++) {
-			result.push(editor.getDisorderLegend().getObjectColor(this.getDisorders()[i]));
+			//commented by Soheil for GEL(GenomicsEngland) 01.10.2016
+			//result.push(editor.getDisorderLegend().getObjectColor(this.getDisorders()[i]));
+			//and added the following lines
+			//We need to show color for just GEL disorders,
+			//for other disorders types such as OMIM, IDC10 and SnomedCT we just use WHITE color .......................
+			if(this._disordersFullDetails != undefined && this._disordersFullDetails[i]._valueAll != undefined){
+				if(this._disordersFullDetails[i]._valueAll.disorderType == "GEL") {
+					result.push(editor.getDisorderLegend().getObjectColor(this.getDisorders()[i]));
+				}
+			}else {
+				result.push(editor.getDisorderLegend().getObjectColor(this.getDisorders()[i]));
+			}
+			//..........................................................................................................
 		}
 		for (var i = 0; i < this.getGenes().length; i++) {
 			result.push(editor.getGeneLegend().getObjectColor(this.getGenes()[i]));

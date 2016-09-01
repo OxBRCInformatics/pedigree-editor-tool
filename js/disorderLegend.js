@@ -91,7 +91,16 @@ var DisorderLegend = Class.create(Legend, {
 	//pass valueAll for GEL(GenomicsEngland)...........
 	_generateElement: function($super, disorderID, name, valueAll) {
 		if (!this._objectColors.hasOwnProperty(disorderID)) {
-			var color = this._generateColor(disorderID);
+			var color = this._generateColor(disorderID, valueAll);
+
+			//Added by Soheil for GEL(GenomicsEngland) 01.10.2016
+			//We need to show color for just GEL disorders,
+			//for other disorders types such as OMIM, IDC10, SnomedCT we just use WHITE color ..........................
+			if(valueAll != undefined && valueAll.disorderType != "ICD10"){
+				color = "#FFF";
+			}
+			//..........................................................................................................
+
 			this._objectColors[disorderID] = color;
 			document.fire('disorder:color', {'id': disorderID, color: color});
 		}
