@@ -399,6 +399,7 @@ NodeMenu = Class.create({
 			'crtValue': data["default"] || '',
 			'function': data['function'],
 			'disabled' : data['disabled'] || false,
+			'isMultipleSelect' : data['isMultipleSelect'] || false, //added for GEL(GenomicsEngland), 'isMultipleSelect' is true when the select is a 'multiple' select
 			'inactive': false
 		};
 		return result;
@@ -412,7 +413,18 @@ NodeMenu = Class.create({
 				if (_this._updating) return; // otherwise a field change triggers an update which triggers field change etc
 				var target = _this.targetNode;
 				if (!target) return;
-				_this.fieldMap[field.name].crtValue = field._getValue && field._getValue()[0];
+
+				//commented by Soheil for GEL(GenomicsEngland) ....................................................................
+				//_this.fieldMap[field.name].crtValue = field._getValue && field._getValue()[0];
+				//added for GEL(GenomicsEngland), if the element is a select element with 'isMultipleSelect' equals to true
+				//we need to load all the values, not just the first item in the list
+				if(_this.fieldMap[field.name].isMultipleSelect == undefined || _this.fieldMap[field.name].isMultipleSelect == false) {
+					_this.fieldMap[field.name].crtValue = field._getValue && field._getValue()[0];
+				}else{
+					_this.fieldMap[field.name].crtValue = field._getValue && field._getValue();
+				}
+				//.................................................................................................................
+
 				var method = _this.fieldMap[field.name]['function'];
 
 				if (target.getSummary()[field.name].value == _this.fieldMap[field.name].crtValue) {
@@ -728,9 +740,16 @@ NodeMenu = Class.create({
 			//added for GEL........
 			//if element has style in its definition, then use it
 			var style = data.style ? data.style : "";
+			//added for GEL........
+			//check if the select is a 'multiple' select
+			var isMultipleSelect = data.isMultipleSelect ? data.isMultipleSelect : "";
+			var multiple = "";
+			if(isMultipleSelect != undefined && isMultipleSelect == true){
+				multiple = "multiple";
+			}
 			// using raw HTML for options for performace reasons: generating e.g. 50 different gestation week
 			// options is noticeably slow when using more generic methods (e.g. new Element("option"))
-			var optionHTML = '<select name="' + data.name + '" style="' + style +'">';
+			var optionHTML = '<select name="' + data.name + '" style="' + style +'" ' + multiple + '>';
 			var _generateSelectOption = function (v) {
 				optionHTML += '<option value="' + v.actual + '">' + v.displayed + '</option>';
 			};
@@ -749,7 +768,19 @@ NodeMenu = Class.create({
 			select = span.firstChild;
 			result.inputsContainer.insert(span);
 			select._getValue = function () {
-				return [(this.selectedIndex >= 0) && this.options[this.selectedIndex].value || ''];
+				//commented by Soheil for GEL(GenomicsEngland) ......................................................
+				//return [(this.selectedIndex >= 0) && this.options[this.selectedIndex].value || ''];
+				//if the select element is a 'multiple' element, then we need to get all the selected options and return all
+				if(isMultipleSelect == undefined || isMultipleSelect == false){
+					return [(this.selectedIndex >= 0) && this.options[this.selectedIndex].value || ''];
+				}else{
+					var selected = [];
+					for(var i = 0; i < this.selectedOptions.length ; i++){
+						selected.push(this.selectedOptions[i].value);
+					}
+					return selected;
+				}
+				//....................................................................................................
 			}.bind(select);
 			this._attachFieldEventListeners(select, ['change']);
 			return result;
@@ -1258,10 +1289,24 @@ NodeMenu = Class.create({
 			}
 		},
 		'select': function (container, value) {
-			var target = container.down('select option[value=' + value + ']');
-			if (target) {
-				target.selected = 'selected';
+			//added by Soheil for GEL(GenomicsEngland) .................................................................
+			//check if the element is a 'multiple' element and then mark all of the selected options
+			//else if it is not a 'multiple' element, then just set one option
+			if(container.down('select').multiple == undefined || container.down('select').multiple == false){
+				var target = container.down('select option[value=' + value + ']');
+				if (target) {
+					target.selected = 'selected';
+				}
+			}else{
+				for(var i = 0; i < value.length ; i++){
+					var target = container.down('select option[value=' + value[i] + ']');
+					if (target) {
+						target.selected = 'selected';
+					}
+				}
 			}
+			//..........................................................................................................
+
 		},
 		'cancerlist': function (container, value) {
 			var cancerList = editor.getCancerLegend()._getAllSupportedCancers();
