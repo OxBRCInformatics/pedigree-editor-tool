@@ -526,16 +526,13 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'carrier',
-				'label': 'Carrier status',
+				'label': 'Affection status',
 				'type': 'radio',
 				'tab': 'Clinical',
 				'values': [
-					{ 'actual': '', 'displayed': 'Not affected' },
-					{ 'actual': 'carrier', 'displayed': 'Carrier' },
-					//{ 'actual' : 'obligate', 'displayed' : 'Obligate carrier' },
-					{ 'actual': 'uncertain', 'displayed': 'Uncertain' },
+					{ 'actual': '', 'displayed': 'Unaffected' },
 					{ 'actual': 'affected', 'displayed': 'Affected' },
-					{ 'actual': 'presymptomatic', 'displayed': 'Pre-symptomatic' }
+					{ 'actual': 'uncertain', 'displayed': 'Uncertain' }
 				],
 				'default': '',
 				'function': 'setCarrierStatus'
