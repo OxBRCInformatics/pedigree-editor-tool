@@ -468,11 +468,11 @@ PedigreeExport.convertProperty = function (internalPropertyName, value) {
 	var externalPropertyName = PedigreeExport.internalToJSONPropertyMapping[internalPropertyName];
 
 	if (externalPropertyName == "sex") {
-		if (value == "M") {
+		if (value == "M" || value == "m" || value == "1") {
 			value = "male";
-		} else if (value == "F") {
+		} else if (value == "F" || value == "f" || value == "2") {
 			value = "female";
-		} else if (value == "O") {
+		} else if (value == "O" || value == "9") {
 			value = "other";
 		} else {
 			value = "unknown";

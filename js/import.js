@@ -57,11 +57,11 @@ PedigreeImport.initFromPhenotipsInternal = function (inputG) {
 
 			if (inputG[v].hasOwnProperty("gender")) {
 				var genderString = inputG[v]["gender"].toLowerCase();
-				if (genderString == "female" || genderString == "f")
+				if (genderString == "female" || genderString == "f" || genderString == "2")
 					properties["gender"] = "F";
-				if (genderString == "other" || genderString == "o")
+				if (genderString == "other" || genderString == "o"  || genderString == "9")
 					properties["gender"] = "O";
-				else if (genderString == "male" || genderString == "m")
+				else if (genderString == "male" || genderString == "m" || genderString == "1")
 					properties["gender"] = "M";
 			}
 		}
@@ -757,11 +757,11 @@ PedigreeImport.initFromSimpleJSON = function (inputText) {
 
 				if (property == "sex") {
 					var genderString = value.toLowerCase();
-					if (genderString == "female" || genderString == "f")
+					if (genderString == "female" || genderString == "f" || genderString == "2")
 						properties["gender"] = "F";
-					else if (genderString == "male" || genderString == "m")
+					else if (genderString == "male" || genderString == "m" || genderString == "1")
 						properties["gender"] = "M";
-					else if (genderString == "other" || genderString == "o")
+					else if (genderString == "other" || genderString == "o" || genderString == "9")
 						properties["gender"] = "O";
 				} else if (property == "id") {
 					if (externalIDToID.hasOwnProperty(value)) {
