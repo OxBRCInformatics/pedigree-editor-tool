@@ -22,9 +22,9 @@ var ExportSelector = Class.create({
 			return optionWrapper;
 		};
 		var typeListElement = new Element('table');
-		typeListElement.insert(_addTypeOption(true, "PED", "ped"));
+		typeListElement.insert(_addTypeOption(true, "Simple JSON", "simpleJSON"));
+		typeListElement.insert(_addTypeOption(false, "PED", "ped"));
 		typeListElement.insert(_addTypeOption(false, "BOADICEA", "BOADICEA"));
-		typeListElement.insert(_addTypeOption(false, "Simple JSON", "simpleJSON"));
 		//TODO: typeListElement.insert(_addTypeOption(false, "Phenotips Pedigree JSON", "phenotipsJSON"));
 
 		var fileDownload = new Element('a', {"id": 'downloadLink', "style": 'display:none'});
