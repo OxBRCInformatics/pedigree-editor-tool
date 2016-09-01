@@ -499,10 +499,30 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'ethnicity',
-				'label': 'Ethnicities',
-				'type': 'ethnicity-picker',
+				'label': 'Ethnicity',
+				'values': [
+					{'actual': 'Z',displayed:'Not stated'},
+					{'actual': 'A',displayed:'White: British'},
+					{'actual': 'B',displayed:'White: Irish'},
+					{'actual': 'C',displayed:'White: Any other White background'},
+					{'actual': 'D',displayed:'Mixed: White and Black Caribbean'},
+					{'actual': 'E',displayed:'Mixed: White and Black African'},
+					{'actual': 'F',displayed:'Mixed: White and Asian'},
+					{'actual': 'G',displayed:'Mixed: Any other mixed background'},
+					{'actual': 'H',displayed:'Asian or Asian British: Indian'},
+					{'actual': 'J',displayed:'Asian or Asian British: Pakistani'},
+					{'actual': 'K',displayed:'Asian or Asian British: Bangladeshi'},
+					{'actual': 'L',displayed:'Asian or Asian British: Any other Asian background'},
+					{'actual': 'M',displayed:'Black or Black British: Caribbean'},
+					{'actual': 'N',displayed:'Black or Black British: African'},
+					{'actual': 'P',displayed:'Black or Black British: Any other Black background'},
+					{'actual': 'R',displayed:'Other Ethnic Groups: Chinese'},
+					{'actual': 'S',displayed:'Other Ethnic Groups: Any other ethnic group'}
+				],
+				'type': 'select',
 				'tab': 'Personal',
-				'function': 'setEthnicities'
+				'function': 'setEthnicities',
+				'isMultipleSelect': false
 			},
 			{
 				'name': 'carrier',
@@ -785,9 +805,29 @@ var PedigreeEditor = Class.create({
 			{
 				'name': 'ethnicity',
 				'label': 'Ethnicities<br>(common to all individuals in the group)',
-				'type': 'ethnicity-picker',
+				'values': [
+					{'actual': 'A',displayed:'White: British'},
+					{'actual': 'B',displayed:'White: Irish'},
+					{'actual': 'C',displayed:'White: Any other White background'},
+					{'actual': 'D',displayed:'Mixed: White and Black Caribbean'},
+					{'actual': 'E',displayed:'Mixed: White and Black African'},
+					{'actual': 'F',displayed:'Mixed: White and Asian'},
+					{'actual': 'G',displayed:'Mixed: Any other mixed background'},
+					{'actual': 'H',displayed:'Asian or Asian British: Indian'},
+					{'actual': 'J',displayed:'Asian or Asian British: Pakistani'},
+					{'actual': 'K',displayed:'Asian or Asian British: Bangladeshi'},
+					{'actual': 'L',displayed:'Asian or Asian British: Any other Asian background'},
+					{'actual': 'M',displayed:'Black or Black British: Caribbean'},
+					{'actual': 'N',displayed:'Black or Black British: African'},
+					{'actual': 'P',displayed:'Black or Black British: Any other Black background'},
+					{'actual': 'R',displayed:'Other Ethnic Groups: Chinese'},
+					{'actual': 'S',displayed:'Other Ethnic Groups: Any other ethnic group'},
+					{'actual': 'Z',displayed:'Not stated'}
+				],
+				'type': 'select',
 				'tab': 'Personal',
-				'function': 'setEthnicities'
+				'function': 'setEthnicities',
+				'isMultipleSelect': true
 			},
 			{
 				'label' : 'Please select coding system for disorder search:',
