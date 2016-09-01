@@ -1333,7 +1333,7 @@ PedigreeImport.JSONToInternalPropertyMapping = {
 	"hpoterms": "hpoTerms",
 	"candidategenes": "candidateGenes",
 	"ethnicities": "ethnicities",
-	"carrierstatus": "carrierStatus",
+	"affectionstatus": "carrierStatus",
 	"externalid": "externalID",
 	"numpersons": "numPersons",
 	"lostcontact": "lostContact",
