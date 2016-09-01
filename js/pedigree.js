@@ -912,24 +912,6 @@ var PedigreeEditor = Class.create({
 		var _this = this;
 		return new NodeMenu([
 			{
-				'label': 'Heredity options',
-				'name': 'childlessSelect',
-				'values': [
-					{'actual': 'none', displayed: 'None'},
-					{'actual': 'childless', displayed: 'Childless'},
-					{'actual': 'infertile', displayed: 'Infertile'}
-				],
-				'type': 'select',
-				'function': 'setChildlessStatus'
-			},
-			{
-				'name': 'childlessText',
-				'type': 'text',
-				'dependency': 'childlessSelect != none',
-				'tip': 'Reason',
-				'function': 'setChildlessReason'
-			},
-			{
 				'name': 'consangr',
 				'label': 'Consanguinity of this relationship',
 				'type': 'radio',
