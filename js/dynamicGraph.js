@@ -1551,7 +1551,9 @@ DynamicPositionedGraph.prototype = {
 
 		var newNodes = this._getAllNodes();
 
-		return {"new": newNodes, "removed": removedNodes};
+		//unRendered is passed for GEL(GenomicsEngland) .......................................................
+		return {"new": newNodes, "removed": removedNodes, "unRendered": baseGraph.unRenderedNodes};
+		//.....................................................................................................
 	},
 
 	getPathToParents: function (v) {

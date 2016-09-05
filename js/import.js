@@ -726,11 +726,26 @@ PedigreeImport.initFromSimpleJSON = function (inputText) {
 	var ambiguousReferences = {};
 	var hasID = {}
 
+	//Added for GEL .................................
+	var unRenderedNodes = undefined;
+	// ..............................................
+
 	// first pass: add all vertices and assign vertex IDs
 	for (var i = 0; i < inputArray.length; i++) {
 		if (inputArray[i].hasOwnProperty("relationshipId")) {
 			continue;
 		}
+
+		//Added for GEL ...........................................................................................
+		//IF it has 'unrendered', which means it's an ambiguous node and we should just show it in unRenderedLegend
+		if (inputArray[i].hasOwnProperty("unrendered")) {
+			if(!unRenderedNodes){
+				unRenderedNodes = [];
+			}
+			unRenderedNodes.push(inputArray[i]);
+			continue;
+		}
+		//.........................................................................................................
 
 		var nextPerson = inputArray[i];
 
@@ -926,6 +941,10 @@ PedigreeImport.initFromSimpleJSON = function (inputText) {
 
 	PedigreeImport.validateBaseGraph(newG);
 
+	//Added for GEL .................................
+	//Add unRenderedNodes into this field
+	newG.unRenderedNodes = unRenderedNodes;
+	//...............................................
 	return newG;
 }
 
