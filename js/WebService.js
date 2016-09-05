@@ -24,6 +24,11 @@ WebService = Class.create({
 		return endpoint + "/lookupServices/Ethnicity?";
 	},
 
+	getHPOLookupPath: function(){
+		var endpoint = this._baseURL ? this._baseURL : this._settings.getSetting('codingDefinitionServiceEndpoint');
+		return endpoint + "/OntologyService/LookupService?";
+	},
+
 	getDiagramEndpointPath: function(){
 		var config = this._settings.getSetting('diagramEndpoint');
 		switch(config.service){

@@ -306,13 +306,14 @@ NodeMenu = Class.create({
 			}
 		});
 		// HPO terms
+		var webService = new WebService();
 		this.form.select('input.suggest-hpo').each(function (item) {
 			if (!item.hasClassName('initialized')) {
 				var solrServiceURL = HPOTerm.getServiceURL()
 				//console.log("HPO\SOLR URL: " + solrServiceURL);
 				item._suggest = new PhenoTips.widgets.Suggest(item, {
-					script: solrServiceURL + "rows=100&",
-					varname: "q",
+					script: webService.getHPOLookupPath() + "&",
+					varname: "term",
 					noresults: "No matching terms",
 					json: true,
 					resultsParameter: "rows",
