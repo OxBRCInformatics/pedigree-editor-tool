@@ -1048,3 +1048,50 @@
 	font-weight: bold;
 	/*text-indent: 0;*/
 }
+
+
+.UnRendered-legend-container {
+	bottom:5px;
+	position: absolute;
+	z-index: 10000;
+	min-width: 140px;
+	max-width: 255px;
+}
+
+
+#UnRendered-legend-box {
+	background-color: #F7F0F0;
+}
+
+span.unRenderedItemName{
+	font-size: 12px;
+	font-weight: bold;
+	width: 65px;
+	display: inline-block;
+	text-align: left;
+}
+
+span.unRenderedItemValue{
+	font-size: 12px;
+	display: inline-block;
+	text-align: left;
+	padding-left: 4px;
+}
+
+#UnRendered-legend-box > h2.legend-title {
+	padding: 4px;
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
+	border-radius: 4px;
+	font-weight: bold;
+}
+
+.UnRendered-abnormality-color {
+	display: inline-block;
+	width: .5em;
+	height: .5em;
+	margin: 0 .5em .2em 0;
+	background-color: #a94442 !important;
+	vertical-align: middle;
+}
