@@ -75,6 +75,14 @@ var SaveLoadEngine = Class.create({
 
 		try {
 			var changeSet = editor.getGraph().fromImport(importString, importType, importOptions);
+
+			//The following is added for GEL(GenomicsEngland) by Soheil ................................................
+			//This will make remove all unRenderedNode from unRenderedNodeLegend and adds the new one if any exists
+			editor._unRenderedLegend.removeAllNodes();
+			var unRenderedNodes = changeSet.unRendered;
+			editor._unRenderedLegend.addAllNodes(unRenderedNodes);
+			//..........................................................................................................
+
 			if (changeSet == null) throw "unable to create a pedigree from imported data";
 		}
 		catch (err) {
