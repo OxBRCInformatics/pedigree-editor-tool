@@ -58,7 +58,7 @@ var HPOLegend = Class.create(Legend, {
 		if (!this._termCache.hasOwnProperty(id))
 			this._termCache[id] = new HPOTerm(id, name);
 
-		$super(id, name, nodeID);
+		$super(id, name, null, nodeID);
 	},
 
 	/**
