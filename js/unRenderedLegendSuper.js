@@ -77,7 +77,7 @@ var unRenderedLegendSuper = Class.create(Legend, {
 	_generateNode: function(id, node ) {
 
 		var color = this.getObjectColor(id);
-		var HTMLContent = "ID" + "<br>";
+		var HTMLContent = node.participantId + "<br>";
 
 		var item = new Element('li', {'class': 'abnormality ' + 'drop-' + this._getPrefix(), 'id': this._getPrefix() + id}).update(HTMLContent);//new Element('span', {'class': 'disorder-name'}).update("ID"));
 
