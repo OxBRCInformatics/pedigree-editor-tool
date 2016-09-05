@@ -94,10 +94,47 @@ var unRenderedLegendSuper = Class.create(Legend, {
 		item.insert(new Element('span', {}).update("<br>"));
 
 		item.insert(new Element('span', {class:'unRenderedItemName'}).update("Relation: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.relation));
+		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.relationshipToProband));
 		item.insert(new Element('span', {}).update("<br>"));
 
-		item.insert(new Element('span', {style:'cursor:pointer;font-size: 90%;'}).update('<i class="fa fa-plus-square-o" aria-hidden="true"></i>' + " ..."));
+
+
+		//Hidden elements should has .unRenderedHidden CSS Class ......................................................
+		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("Surname: "));
+		item.insert(new Element('span', {class:'unRenderedItemValue unRenderedHidden'}).update(node.lastName));
+		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+
+
+		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("Hidden2: "));
+		item.insert(new Element('span', {class:'unRenderedItemValue unRenderedHidden'}).update(node.lastName));
+		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+
+		//.............................................................................................................
+
+
+		var moreValuesDots = new Element('span', {class:'moreValueDots'}).update("...&nbsp;");
+		var plusElement = new Element('span', {style:'cursor:pointer;font-size: 90%;'}).insert(moreValuesDots).insert('<i class="fa fa-plus-square-o" aria-hidden="true"></i>');
+		item.insert(plusElement);
+
+
+		item.select("span.unRenderedHidden").each(Element.hide);
+
+		plusElement.observe('click', function(event) {
+			var plusIcon = this.select("i")[0];
+			if(plusIcon.hasClassName('fa-plus-square-o')){
+				plusIcon.removeClassName('fa-plus-square-o');
+				plusIcon.addClassName('fa-minus-square-o');
+				//SHOW THE VALUES
+				item.select("span.unRenderedHidden").each(Element.show);
+				moreValuesDots.hide();
+			}else{
+				plusIcon.addClassName('fa-plus-square-o');
+				plusIcon.removeClassName('fa-minus-square-o');
+				//HIDE THE VALUES
+				item.select("span.unRenderedHidden").each(Element.hide);
+				moreValuesDots.show();
+			}
+		});
 
 
  		item.insert(new Element('input', {'type': 'hidden', 'value': id}));
