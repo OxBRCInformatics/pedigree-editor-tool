@@ -309,8 +309,7 @@ NodeMenu = Class.create({
 		var webService = new WebService();
 		this.form.select('input.suggest-hpo').each(function (item) {
 			if (!item.hasClassName('initialized')) {
-				var solrServiceURL = HPOTerm.getServiceURL()
-				//console.log("HPO\SOLR URL: " + solrServiceURL);
+ 				//console.log("HPO\SOLR URL: " + solrServiceURL);
 				item._suggest = new PhenoTips.widgets.Suggest(item, {
 					script: webService.getHPOLookupPath() + "&",
 					varname: "term",
@@ -669,7 +668,14 @@ NodeMenu = Class.create({
 				var container = this.up('.field-box');
 				if (container) {
 					container.select('input[type=hidden][name=' + data.name + ']').each(function (item) {
-						results.push(new HPOTerm(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value));
+						//commented and replaced by the following for GEL(GenomicsEngland) .........................
+						//results.push(new HPOTerm(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value));
+						var li = item.up("li");
+						var valueAll;
+						if(li != undefined){
+							valueAll = li.retrieve("valueAll");
+						}
+						results.push(new HPOTerm(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value, valueAll));
 					});
 				}
 				return [results];
@@ -1224,9 +1230,10 @@ NodeMenu = Class.create({
 				target._suggestPicker.clearAcceptedList();
 				if (values) {
 					values.each(function (v) {
-						//v.valueAll is passed for GEL..........
+						//v.valueAll is passed for GEL..........................................................
 						target._suggestPicker.addItem(v.id, v.value, '', null, v.valueAll);
 						_this._updateDisorderColor(v.id, editor.getDisorderLegend().getObjectColor(v.id));
+						//......................................................................................
 					})
 				}
 				target._silent = false;
@@ -1254,7 +1261,9 @@ NodeMenu = Class.create({
 				target._suggestPicker.clearAcceptedList();
 				if (values) {
 					values.each(function (v) {
-						target._suggestPicker.addItem(v.id, v.value, '');
+						//v.valueAll is passed for GEL........................................
+						target._suggestPicker.addItem(v.id, v.value, '', null, v.valueAll);
+						//....................................................................
 					})
 				}
 				target._silent = false;

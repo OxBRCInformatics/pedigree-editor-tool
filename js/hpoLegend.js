@@ -30,7 +30,10 @@ var HPOLegend = Class.create(Legend, {
 			var whenNameIsLoaded = function () {
 				this._updateTermName(hpoID);
 			};
-			this._termCache[hpoID] = new HPOTerm(hpoID, null, whenNameIsLoaded.bind(this));
+			//commented for GEL(GenomicsEngland) ......................................................
+			//this._termCache[hpoID] = new HPOTerm(hpoID, null, whenNameIsLoaded.bind(this));
+			this._termCache[hpoID] = new HPOTerm(hpoID, null, null, whenNameIsLoaded.bind(this));
+			//..........................................................................................
 		}
 		return this._termCache[hpoID];
 	},
@@ -53,12 +56,13 @@ var HPOLegend = Class.create(Legend, {
 	 * @param {Number|String} id ID for this term taken from the HPO database
 	 * @param {String} name The description of the phenotype
 	 * @param {Number} nodeID ID of the Person who has this phenotype
+	 * @valueAll added for GEL(GenomicsEngland)
 	 */
-	addCase: function ($super, id, name, nodeID) {
+	addCase: function ($super, id, name, valueAll, nodeID) {
 		if (!this._termCache.hasOwnProperty(id))
-			this._termCache[id] = new HPOTerm(id, name);
+			this._termCache[id] = new HPOTerm(id, name, valueAll); //commented for GEL(GenomicsEngland) this._termCache[id] = new HPOTerm(id, name);
 
-		$super(id, name, null, nodeID);
+		$super(id, name, valueAll, nodeID); //commented for GEL(GenomicsEngland) $super(id, name, nodeID);
 	},
 
 	/**
@@ -96,5 +100,13 @@ var HPOLegend = Class.create(Legend, {
 		} else {
 			this._onFailedDrag(node, "This person already has the selected phenotype", "Can't drag this phenotype to this person");
 		}
+	},
+	//This method is added for GEL(GenomicsEngland).............................................................
+	//actually to override _generateElement and call the super _generateElement
+	_generateElement: function($super, disorderID, name, valueAll) {
+		//Added by Soheil for Gel(GenomicsEngland) to include (disorderType) in disorderLegend
+		var item = $super(disorderID, name, valueAll);
+		return item;
 	}
+	//...........................................................................................................
 });

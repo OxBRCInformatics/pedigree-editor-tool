@@ -58,6 +58,7 @@ var Person = Class.create(AbstractPerson, {
 		this._disorderType = "";
 		this._cancers = {};
 		this._hpo = [];
+		this._hpoFullDetails = [];
 		this._ethnicities = [];
 		this._candidateGenes = [];
 		this._twinGroup = null;
@@ -650,8 +651,9 @@ var Person = Class.create(AbstractPerson, {
 			//disorder._valueAll passed for GEL
 			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), disorder._valueAll, this.getID());
 			this.getDisorders().push(disorder.getDisorderID());
-			//this is added for GEL .....................
+			//this is added for GEL ...........................................................................
 			this._disordersFullDetails.push(disorder);
+			//.................................................................................................
 		}
 		else {
 			alert("This person already has the specified disorder");
@@ -707,11 +709,11 @@ var Person = Class.create(AbstractPerson, {
 		this.getGraphics().updateDisorderShapes();
 		this.setCarrierStatus(); // update carrier status
 	},
-	//added for GEL......
+	//added for GEL................................................................................
 	setDisorderType: function(disorderType) {
 		this._disorderType = disorderType;
 	},
-	//..................
+	//.............................................................................................
 
 
 	/**
@@ -746,8 +748,12 @@ var Person = Class.create(AbstractPerson, {
 			hpo = editor.getHPOLegend().getTerm(hpo);
 		}
 		if (!this.hasHPO(hpo.getID())) {
-			editor.getHPOLegend().addCase(hpo.getID(), hpo.getName(), this.getID());
+			//hpo._valueAll passed for GEL
+			editor.getHPOLegend().addCase(hpo.getID(), hpo.getName(), hpo._valueAll, this.getID());
 			this.getHPO().push(hpo.getID());
+			//this is added for GEL .......................................................................
+			this._hpoFullDetails.push(hpo);
+			//.............................................................................................
 		}
 		else {
 			alert("This person already has the specified phenotype");
@@ -764,6 +770,15 @@ var Person = Class.create(AbstractPerson, {
 		if (this.hasHPO(hpoID)) {
 			editor.getHPOLegend().removeCase(hpoID, this.getID());
 			this._hpo = this.getHPO().without(hpoID);
+
+			//added for GEL ................................................
+			for(var i = 0;i < this._hpoFullDetails.length; i++){
+				if(this._hpoFullDetails[i]._hpoID == hpoID){
+					this._hpoFullDetails.splice(i, 1);
+					break;
+				}
+			}
+			//...............................................................
 		}
 		else {
 			alert("This person doesn't have the specified HPO term");
@@ -1011,7 +1026,10 @@ var Person = Class.create(AbstractPerson, {
 		var hpoTerms = [];
 		this.getHPO().forEach(function (hpo) {
 			var termName = editor.getHPOLegend().getTerm(hpo).getName();
-			hpoTerms.push({id: hpo, value: termName});
+			//Added for GEL(GenomicsEngland) ................................................................
+			var hpoObj  = editor.getHPOLegend().getTerm(hpo);
+			hpoTerms.push({id: hpo, value: termName, valueAll:hpoObj._valueAll});
+			//...............................................................................................
 		});
 
 		var cantChangeAdopted = this.isFetus() || editor.getGraph().hasToBeAdopted(this.getID());
@@ -1082,6 +1100,7 @@ var Person = Class.create(AbstractPerson, {
 			monozygotic: {value: this.getMonozygotic(), inactive: inactiveMonozygothic, disabled: disableMonozygothic },
 			evaluated: {value: this.getEvaluated() },
 			hpo_positive: {value: hpoTerms, disabled: this.isProband() },
+			hpo_positiveFullDetails:     {value : this._hpoFullDetails}, //Added for GEL(GenomicsEngland)..........
 			nocontact: {value: this.getLostContact(), inactive: inactiveLostContact },
 			cancers: {value: this.getCancers() },
 			phenotipsid: {value: this.getPhenotipsPatientId() }
@@ -1141,6 +1160,11 @@ var Person = Class.create(AbstractPerson, {
 			info['cancers'] = this.getCancers();
 		if (this.getHPO().length > 0)
 			info['hpoTerms'] = this.getHPOForExport();
+		//Added for GEL(GenomicsEngland) ............................................................
+		if (this._hpoFullDetails.length > 0)
+			info['hpoTermsFullDetails'] = this._hpoFullDetails;
+		//...........................................................................................
+
 		if (this.getEthnicities().length > 0)
 			info['ethnicities'] = this.getEthnicities();
 		if (this.getGenes().length > 0)
@@ -1193,15 +1217,15 @@ var Person = Class.create(AbstractPerson, {
 				this.setBirthDate(info.dob);
 			}
 
-			//First load _disordersFullDetails
-			if(info.disordersFullDetails) {
-				this._disordersFullDetails = info.disordersFullDetails.slice();
-			}
+			//We don't need to first load _disordersFullDetails, as 'this.setDisorders(disorders)' in next lines will add disordersFullDetails
+			//if(info.disordersFullDetails) {
+			//	this._disordersFullDetails = info.disordersFullDetails.slice();
+			//}
 
 			//then load disorders
 			if (info.disorders) {
 				var disorders = [];
-				//if we have disordersFullDetails, then complete the disorders objects absed on that
+				//if we have disordersFullDetails, then complete the disorders objects based on that
 				if (this._disordersFullDetails != undefined && this._disordersFullDetails.length > 0) {
 					for (var i = 0; i < this._disordersFullDetails.length; i++) {
 						var disorder = new Disorder(this._disordersFullDetails[i]._disorderID,this._disordersFullDetails[i]._name,this._disordersFullDetails[i]._valueAll);
@@ -1216,8 +1240,24 @@ var Person = Class.create(AbstractPerson, {
 			if (info.cancers) {
 				this.setCancers(info.cancers);
 			}
+
+			//We don't need to first load _hpoTermsFullDetails, as 'this.setHPO(terms);' in the next lines will load them as well
+			//if(info.hpoTermsFullDetails) {
+			//	this._hpoTermsFullDetails = info.hpoTermsFullDetails.slice();
+			//}
+
 			if (info.hpoTerms) {
-				this.setHPO(info.hpoTerms);
+				var terms = [];
+				//if we have hpoTermsFullDetails, then complete the hpoTerms objects based on that
+				if (this._hpoTermsFullDetails != undefined && this._hpoTermsFullDetails.length > 0) {
+					for (var i = 0; i < this._hpoTermsFullDetails.length; i++) {
+						var term = new HPOTerm(this._hpoTermsFullDetails[i]._hpoID,this._hpoTermsFullDetails[i]._name,this._hpoTermsFullDetails[i]._valueAll);
+						terms.push(term);
+					}
+					this.setHPO(terms);
+				}else{
+					this.setHPO(info.hpoTerms);
+				}
 			}
 			if (info.ethnicities) {
 				this.setEthnicities(info.ethnicities);

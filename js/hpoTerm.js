@@ -7,12 +7,14 @@
  */
 var HPOTerm = Class.create({
 
-	initialize: function (hpoID, name, callWhenReady) {
+	initialize: function (hpoID, name, valueAll, callWhenReady) {
 		// user-defined terms
 		if (name == null && !HPOTerm.isValidID(hpoID)) {
 			name = hpoID;
 		}
 
+		//Added by Soheil for GEL(GenomicsEngland)
+		this._valueAll = valueAll;
 		this._hpoID = hpoID;
 		this._name = name ? name : "loading...";
 
@@ -35,8 +37,13 @@ var HPOTerm = Class.create({
 	},
 
 	load: function (callWhenReady) {
-		var baseServiceURL = HPOTerm.getServiceURL();
-		var queryURL = baseServiceURL + "&q=" + this._hpoID.replace(":", "%3A");
+		//Comment added by Soheil for GEL(GenomicsEngland)
+		//if we are here, it means that, the HPO details ie _valueAll is not available
+		//so we will load the details from HPO service
+		var webService = new WebService();
+		var baseOMIMServiceURL = webService.getHPOLookupPath();
+		var queryURL           = baseOMIMServiceURL + "id=" + this._hpoID;
+
 		//console.log("QueryURL: " + queryURL);
 		new Ajax.Request(queryURL, {
 			method: "GET",
@@ -52,6 +59,8 @@ var HPOTerm = Class.create({
 			//console.log(Helpers.stringifyObject(parsed));
 			console.log("LOADED HPO TERM: id = " + this._hpoID + ", name = " + parsed.rows[0].name);
 			this._name = parsed.rows[0].name;
+			//Added by Soheil for GEL(GenomicsEngland)
+			this._valueAll = parsed.rows[0];
 		} catch (err) {
 			console.log("[LOAD HPO TERM] Error: " + err);
 		}
