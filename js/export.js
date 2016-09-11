@@ -440,6 +440,7 @@ PedigreeExport.internalToJSONPropertyMapping = {
 	"gender": "sex",
 	"numPersons": "numPersons",
 	"hpoTerms": "hpoTerms",
+	"hpoTermsFullDetails": "hpoTermsFullDetails", //Added for GEL(GenomicsEngland)
 	"candidateGenes": "candidateGenes",
 	"lostContact": "lostContact",
 	"nodeNumber": "nodeNumber",
