@@ -71,7 +71,3 @@ HPOTerm.isValidID = function (id) {
 	var pattern = /^HP\:(\d)+$/i;
 	return pattern.test(id);
 }
-
-HPOTerm.getServiceURL = function () {
-	return new XWiki.Document('SolrService', 'PhenoTips').getURL("get") + "?";
-}
