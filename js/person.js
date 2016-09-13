@@ -39,6 +39,7 @@ var Person = Class.create(AbstractPerson, {
 		this._gelSuperFamilyId = "";// added for GEL
 		this._consanguineousPopulation = "";// added for GEL
 		this._karyotypicSex = "";// added for GEL
+		this._ancestries = "";//added for GEL
 		this._participantId = "";
 		this._lastNameAtBirth = "";
 		this._birthDate = null;
@@ -148,6 +149,10 @@ var Person = Class.create(AbstractPerson, {
 		return this._karyotypicSex;
 	},
 
+	getAncestries: function(){
+		return this._ancestries;
+	},
+
 	// added for GEL
 	getCHINumber: function() {
 		return this._CHINumber;
@@ -190,6 +195,11 @@ var Person = Class.create(AbstractPerson, {
 	// added for GEL
 	setKaryotypicSex: function(karyotypicSex) {
 		this._karyotypicSex = karyotypicSex;
+	},
+
+	// added for GEL
+	setAncestries: function(ancestries) {
+		this._ancestries = ancestries;
 	},
 
 
@@ -1140,6 +1150,7 @@ var Person = Class.create(AbstractPerson, {
 			gel_super_family_id: {value : this.getGelSuperFamilyId()},
 			consanguineous_population: {value : this.getConsanguineousPopulation()},
 			karyotypic_sex: {value : this.getKaryotypicSex()},
+			ancestries: {value : this.getAncestries()},
 			participant_id:{value : this.getParticipantId()},
 			first_name: {value: this.getFirstName()},
 			last_name: {value: this.getLastName()},
@@ -1201,6 +1212,8 @@ var Person = Class.create(AbstractPerson, {
 			info['karyotypicSex'] = this.getKaryotypicSex();
 		if (this.getConsanguineousPopulation() != "")
 			info['consanguineousPopulation'] = this.getConsanguineousPopulation();
+		if (this.getAncestries() != "")
+			info['ancestries'] = this.getAncestries();
 		if (this.getCHINumber() != "")
 			info['CHINumber'] = this.getCHINumber();
 		if (this.getParticipantId() != "")
@@ -1289,6 +1302,9 @@ var Person = Class.create(AbstractPerson, {
 			}
 			if(info.consanguineousPopulation && this.getConsanguineousPopulation() != info.consanguineousPopulation) {
 				this.setConsanguineousPopulation(info.consanguineousPopulation);
+			}
+			if(info.ancestries && this.getAncestries() != info.ancestries) {
+				this.setAncestries(info.ancestries);
 			}
 			if(info.CHINumber && this.getCHINumber() != info.CHINumber) {
 				this.setCHINumber(info.CHINumber);

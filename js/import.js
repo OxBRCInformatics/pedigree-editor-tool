@@ -1340,6 +1340,7 @@ PedigreeImport.JSONToInternalPropertyMapping = {
 	"gelsuperfamilyid": "gelSuperFamilyId",
 	"consanguineouspopulation":"consanguineousPopulation",
 	"karyotypicsex":"karyotypicSex",
+	"ancestries": "ancestries",
 	"participantid":   "participantId",
 	"lastnameatbirth": "lNameAtB",
 	"comments": "comments",

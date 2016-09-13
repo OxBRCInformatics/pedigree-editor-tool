@@ -555,6 +555,13 @@ var PedigreeEditor = Class.create({
 				'function': 'setConsanguineousPopulation'
 			},
 			{
+				'name': 'ancestries',
+				'label': 'Ancestries',
+				'type': 'text',
+				'tab': 'Personal',
+				'function': 'setAncestries'
+			},
+			{
 				'name': 'carrier',
 				'label': 'Affection status',
 				'type': 'radio',
