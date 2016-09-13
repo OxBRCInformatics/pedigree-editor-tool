@@ -177,9 +177,16 @@ NodeMenu = Class.create({
 					minchars: 3, //Added for GEL(GenomicsEngland)
 					noresults: "No matching terms",
 					json: true,
-					resultsParameter: "rows",
 					resultId: "id",
 					resultValue : "fullDetail",
+					resultsParameter: function(){
+						var select = FORM.select("select[name='disorderType']")[0];
+						var disorderType = select.options[select.selectedIndex].value;
+						if(disorderType == "GEL"){
+							return "resultFlat";
+						}
+						return "rows"
+					},
 					resultInfo: {},
 					enableHierarchy: false,
 					fadeOnClear: false,
