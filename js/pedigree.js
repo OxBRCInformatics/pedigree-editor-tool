@@ -548,6 +548,13 @@ var PedigreeEditor = Class.create({
 				'isMultipleSelect': false
 			},
 			{
+				'name': 'consanguineous_population',
+				'label': 'Consanguineous Population',
+				'type': 'text',
+				'tab': 'Personal',
+				'function': 'setConsanguineousPopulation'
+			},
+			{
 				'name': 'carrier',
 				'label': 'Affection status',
 				'type': 'radio',

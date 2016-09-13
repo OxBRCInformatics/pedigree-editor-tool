@@ -1338,6 +1338,7 @@ PedigreeImport.JSONToInternalPropertyMapping = {
 	"nhsnumber":       "NHSNumber",
 	"chinumber":       "CHINumber",
 	"gelsuperfamilyid": "gelSuperFamilyId",
+	"consanguineouspopulation":"consanguineousPopulation",
 	"karyotypicsex":"karyotypicSex",
 	"participantid":   "participantId",
 	"lastnameatbirth": "lNameAtB",

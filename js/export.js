@@ -424,6 +424,7 @@ PedigreeExport.internalToJSONPropertyMapping = {
 	"CHINumber":      "CHINumber",
 	"gelSuperFamilyId": "gelSuperFamilyId",
 	"karyotypicSex":"karyotypicSex",
+	"consanguineousPopulation": "consanguineousPopulation",
 	"participantId": "participantId",
 	"lNameAtB": "lastNameAtBirth",
 	"comments": "comments",

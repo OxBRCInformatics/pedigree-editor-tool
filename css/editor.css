@@ -578,6 +578,12 @@
 	float: left;
 }
 
+
+.menu-box .field-consanguineous_population {
+	width: 100%;
+	float: left;
+}
+
 .menu-box .field-karyotypic_sex {
 	width: 48%;
 	float: right;

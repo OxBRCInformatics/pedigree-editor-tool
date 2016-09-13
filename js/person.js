@@ -37,6 +37,7 @@ var Person = Class.create(AbstractPerson, {
 		this._NHSNumber = ""; // added for GEL
 		this._CHINumber = ""; // added for GEL
 		this._gelSuperFamilyId = "";// added for GEL
+		this._consanguineousPopulation = "";// added for GEL
 		this._karyotypicSex = "";// added for GEL
 		this._participantId = "";
 		this._lastNameAtBirth = "";
@@ -138,6 +139,11 @@ var Person = Class.create(AbstractPerson, {
 		return this._gelSuperFamilyId
 	},
 
+	//added for GEL
+	getConsanguineousPopulation: function(){
+		return this._consanguineousPopulation;
+	},
+
 	getKaryotypicSex: function(){
 		return this._karyotypicSex;
 	},
@@ -174,6 +180,11 @@ var Person = Class.create(AbstractPerson, {
 	// added for GEL
 	setGelSuperFamilyId: function(gelSuperFamilyId) {
 		this._gelSuperFamilyId = gelSuperFamilyId;
+	},
+
+	//added for GEL
+	setConsanguineousPopulation: function(consanguineousPopulation){
+		this._consanguineousPopulation = consanguineousPopulation;
 	},
 
 	// added for GEL
@@ -1127,6 +1138,7 @@ var Person = Class.create(AbstractPerson, {
 			nhs_number:    {value : this.getNHSNumber()},
 			chi_number:    {value : this.getCHINumber()},
 			gel_super_family_id: {value : this.getGelSuperFamilyId()},
+			consanguineous_population: {value : this.getConsanguineousPopulation()},
 			karyotypic_sex: {value : this.getKaryotypicSex()},
 			participant_id:{value : this.getParticipantId()},
 			first_name: {value: this.getFirstName()},
@@ -1187,6 +1199,8 @@ var Person = Class.create(AbstractPerson, {
 			info['gelSuperFamilyId'] = this.getGelSuperFamilyId();
 		if (this.getKaryotypicSex() != "")
 			info['karyotypicSex'] = this.getKaryotypicSex();
+		if (this.getConsanguineousPopulation() != "")
+			info['consanguineousPopulation'] = this.getConsanguineousPopulation();
 		if (this.getCHINumber() != "")
 			info['CHINumber'] = this.getCHINumber();
 		if (this.getParticipantId() != "")
@@ -1272,6 +1286,9 @@ var Person = Class.create(AbstractPerson, {
 			}
 			if(info.karyotypicSex && this.getKaryotypicSex() != info.karyotypicSex) {
 				this.setKaryotypicSex(info.karyotypicSex);
+			}
+			if(info.consanguineousPopulation && this.getConsanguineousPopulation() != info.consanguineousPopulation) {
+				this.setConsanguineousPopulation(info.consanguineousPopulation);
 			}
 			if(info.CHINumber && this.getCHINumber() != info.CHINumber) {
 				this.setCHINumber(info.CHINumber);
