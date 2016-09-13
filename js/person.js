@@ -157,13 +157,14 @@ var Person = Class.create(AbstractPerson, {
 	// added for GEL
 	setNHSNumber: function(NHSNumber) {
 		this._NHSNumber = NHSNumber;
-		this.getGraphics().updateExternalIDLabel();
+		this.getGraphics().updateNHSNumberLabel();
 	},
 
 
 	// added for GEL
 	setCHINumber: function(CHINumber) {
 		this._CHINumber = CHINumber;
+		this.getGraphics().updateNHSNumberLabel();
 	},
 
 	setParticipantId: function(participantId) {
