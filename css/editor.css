@@ -574,6 +574,17 @@
 	width: 48%;
 	float: right;
 }
+
+.menu-box .field-nhs_number {
+	width: 48%;
+	float: left;
+}
+.menu-box .field-chi_number {
+	width: 48%;
+	float: right;
+}
+
+
 .menu-box .field-last_name_birth {
 	width: 48%;
 	float: left;

@@ -452,20 +452,6 @@ var PedigreeEditor = Class.create({
 				'function': 'setGender'
 			},
 			{
-				'name': 'first_name',
-				'label': 'First name',
-				'type': 'text',
-				'tab': 'Personal',
-				'function': 'setFirstName'
-			},
-			{
-				'name': 'last_name',
-				'label': 'Last name',
-				'type': 'text',
-				'tab': 'Personal',
-				'function': 'setLastName'
-			},
-			{
 				'name' : 'participant_id',
 				'label': 'Participant ID',
 				'type' : 'text',
@@ -478,8 +464,28 @@ var PedigreeEditor = Class.create({
 				'label': 'NHS Number',
 				'type' : 'text',
 				'tab': 'Personal',
-				'columns': 1,
-				'function' : 'setNHSNumber'
+ 				'function' : 'setNHSNumber'
+			},
+			{
+				'name' : 'chi_number',
+				'label': 'CHI Number',
+				'type' : 'text',
+				'tab': 'Personal',
+ 				'function' : 'setCHINumber'
+			},
+			{
+				'name': 'first_name',
+				'label': 'First name',
+				'type': 'text',
+				'tab': 'Personal',
+				'function': 'setFirstName'
+			},
+			{
+				'name': 'last_name',
+				'label': 'Last name',
+				'type': 'text',
+				'tab': 'Personal',
+				'function': 'setLastName'
 			},
 			{
 				'name': 'last_name_birth',

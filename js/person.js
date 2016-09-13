@@ -35,6 +35,7 @@ var Person = Class.create(AbstractPerson, {
 		this._firstName = "";
 		this._lastName = "";
 		this._NHSNumber = ""; // added for GEL
+		this._CHINumber = ""; // added for GEL
 		this._participantId = "";
 		this._lastNameAtBirth = "";
 		this._birthDate = null;
@@ -130,6 +131,12 @@ var Person = Class.create(AbstractPerson, {
 		return this._NHSNumber;
 	},
 
+	// added for GEL
+	getCHINumber: function() {
+		return this._CHINumber;
+	},
+
+
 	getParticipantId: function(){
 		return this._participantId;
 	},
@@ -151,6 +158,12 @@ var Person = Class.create(AbstractPerson, {
 	setNHSNumber: function(NHSNumber) {
 		this._NHSNumber = NHSNumber;
 		this.getGraphics().updateExternalIDLabel();
+	},
+
+
+	// added for GEL
+	setCHINumber: function(CHINumber) {
+		this._CHINumber = CHINumber;
 	},
 
 	setParticipantId: function(participantId) {
@@ -1090,6 +1103,7 @@ var Person = Class.create(AbstractPerson, {
 		return {
 			identifier: {value: this.getID()},
 			nhs_number:    {value : this.getNHSNumber()},
+			chi_number:    {value : this.getCHINumber()},
 			participant_id:{value : this.getParticipantId()},
 			first_name: {value: this.getFirstName()},
 			last_name: {value: this.getLastName()},
@@ -1145,6 +1159,8 @@ var Person = Class.create(AbstractPerson, {
 			info['lName'] = this.getLastName();
 		if (this.getNHSNumber() != "")
 			info['NHSNumber'] = this.getNHSNumber();
+		if (this.getCHINumber() != "")
+			info['CHINumber'] = this.getCHINumber();
 		if (this.getParticipantId() != "")
 			info['participantId'] = this.getParticipantId();
 		if (this.getLastNameAtBirth() != "")
@@ -1222,6 +1238,9 @@ var Person = Class.create(AbstractPerson, {
 			}
 			if(info.NHSNumber && this.getNHSNumber() != info.NHSNumber) {
 				this.setNHSNumber(info.NHSNumber);
+			}
+			if(info.CHINumber && this.getCHINumber() != info.CHINumber) {
+				this.setCHINumber(info.CHINumber);
 			}
 			if (info.lNameAtB && this.getLastNameAtBirth() != info.lNameAtB) {
 				this.setLastNameAtBirth(info.lNameAtB);

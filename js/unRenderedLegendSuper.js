@@ -85,6 +85,10 @@ var unRenderedLegendSuper = Class.create(Legend, {
 		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.nhsNumber));
 		item.insert(new Element('span', {}).update("<br>"));
 
+		item.insert(new Element('span', {class:'unRenderedItemName'}).update("CHI#: "));
+		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.chiNumber));
+		item.insert(new Element('span', {}).update("<br>"));
+
 		item.insert(new Element('span', {class:'unRenderedItemName'}).update("Forenames: "));
 		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.firstName));
 		item.insert(new Element('span', {}).update("<br>"));

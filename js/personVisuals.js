@@ -146,7 +146,12 @@ var PersonVisuals = Class.create(AbstractPersonVisuals, {
 		this._externalIDLabel && this._externalIDLabel.remove();
 
 		if (this.getNode().getExternalID()) {
-			var text = '[' + this.getNode().getExternalID() + "]" + "[" + this.getNode().getNHSNumber()  + "]";
+			var number = this.getNode().getNHSNumber();
+			if(number == null || number == undefined || number.length == 0) {
+				number = this.getNode().getCHINumber();
+			}
+
+			var text = '[' + this.getNode().getExternalID() + "]" + "[" + number  + "]";
 			this._externalIDLabel = editor.getPaper().text(this.getX(), this.getY() + PedigreeEditorParameters.attributes.radius, text).attr(PedigreeEditorParameters.attributes.externalIDLabels);
 		} else {
 			this._externalIDLabel = null;
