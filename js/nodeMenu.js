@@ -163,6 +163,14 @@ NodeMenu = Class.create({
 							return Disorder.getServiceURL("OMIM") + "&";
 						}
 					},//..................................................
+					resultUsePagination: function(){
+						var select = FORM.select("select[name='disorderType']")[0];
+						var disorderType = select.options[select.selectedIndex].value;
+						if(disorderType == "SnomedCT"){
+							return true;
+						}
+						return false;
+					},
 					script: Disorder.getServiceURL("OMIM") + "&",
 
 					varname: "q",
