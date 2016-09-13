@@ -23,7 +23,7 @@ var TemplateSelector = Class.create({
 		//ge the right path instead of using xWiki path
 		//new Ajax.Request(new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1), {
 		var settings = new Settings();
-		var newURL = settings.getAbsoluteURL("/" + new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1));
+		var newURL = new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1);
 		new Ajax.Request(newURL , {
 			method: 'GET',
 			onSuccess: this._onTemplateListAvailable.bind(this)
@@ -56,8 +56,7 @@ var TemplateSelector = Class.create({
 			var href = getSelectorFromXML(objects[i], "link", "rel", "http://www.xwiki.org/rel/properties").getAttribute("href");
 			// Use only the path, since the REST module returns the wrong host behind a reverse proxy
 			var path = href.substring(href.indexOf("/", href.indexOf("//") + 2));
-			var settings = new Settings();
-			var newURL = settings.getAbsoluteURL("/rest" + path);
+			var newURL = "rest" + path;
 			//new Ajax.Request(href, {
 			new Ajax.Request(newURL, {
 				method: 'GET',

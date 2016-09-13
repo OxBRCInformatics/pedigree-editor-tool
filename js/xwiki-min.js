@@ -837,7 +837,7 @@ XWiki.currentDocument = new XWiki.Document();
 	})
 })();
 document.observe("xwiki:dom:loaded", function () {
-	var b = {documents: {script: XWiki.Document.getRestSearchURL("scope=name&number=10&"), varname: "q", icon: "/resources/icons/silk/page_white_text.png", noresults: "Document not found", json: true, resultsParameter: "searchResults", resultId: "id", resultValue: "pageFullName", resultInfo: "pageFullName"}, spaces: {script: XWiki.Document.getRestSearchURL("scope=spaces&number=10&"), varname: "q", icon: "/resources/icons/silk/folder.png", noresults: "Space not found", json: true, resultsParameter: "searchResults", resultId: "id", resultValue: "space", resultInfo: "space"}};
+	var b = {documents: {script: XWiki.Document.getRestSearchURL("scope=name&number=10&"), varname: "q", icon: "resources/icons/silk/page_white_text.png", noresults: "Document not found", json: true, resultsParameter: "searchResults", resultId: "id", resultValue: "pageFullName", resultInfo: "pageFullName"}, spaces: {script: XWiki.Document.getRestSearchURL("scope=spaces&number=10&"), varname: "q", icon: "resources/icons/silk/folder.png", noresults: "Space not found", json: true, resultsParameter: "searchResults", resultId: "id", resultValue: "space", resultInfo: "space"}};
 	var a = function (f) {
 		if (typeof(XWiki.widgets.Suggest) != "undefined") {
 			var e = Object.keys(b);
@@ -1440,7 +1440,7 @@ var XWiki = (function (c) {
 			if (typeof(c.widgets.Suggest) != "undefined") {
 				new c.widgets.Suggest(this.input, {
 					/*!*/
-					script: "/rest/wikis/xwiki/search?scope=name&number=10&", varname: "q", noresults: "No documents found", icon: "/resources/icons/silk/page_white_text.png", json: true, resultsParameter: "searchResults", resultId: "id", resultValue: "pageFullName", resultInfo: "pageFullName", timeout: 30000, parentContainer: this.dialogBox, propagateEventKeyCodes: [Event.KEY_RETURN]})
+					script: "/rest/wikis/xwiki/search?scope=name&number=10&", varname: "q", noresults: "No documents found", icon: "resources/icons/silk/page_white_text.png", json: true, resultsParameter: "searchResults", resultId: "id", resultValue: "pageFullName", resultInfo: "pageFullName", timeout: 30000, parentContainer: this.dialogBox, propagateEventKeyCodes: [Event.KEY_RETURN]})
 			}
 		}, showDialog: function ($super) {
 			$super();

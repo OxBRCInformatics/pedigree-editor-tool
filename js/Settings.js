@@ -5,7 +5,7 @@
 Settings = Class.create({
 
 	initialize: function (baseURL) {
-		this._baseURL = baseURL ? baseURL : "http://localhost:8080/panogram";
+		this._baseURL = baseURL ? baseURL : "http://localhost:8080/pedigree_editor";
 		this._settings = config; //load it from config.js
 	},
 

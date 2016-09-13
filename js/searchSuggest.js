@@ -159,7 +159,7 @@ var XWiki = (function (XWiki) {
 		/*
 		 */
 		var sources = [
-			{"name": "Matching patients", "varname": "input", "script": "/get/PhenoTips/SuggestPatientsService?outputSyntax=plain&permission=view&query=__INPUT__&nb=5", "icon": "/resources/icons/silk/user.png", "highlight": false}
+			{"name": "Matching patients", "varname": "input", "script": "/get/PhenoTips/SuggestPatientsService?outputSyntax=plain&permission=view&query=__INPUT__&nb=5", "icon": "resources/icons/silk/user.png", "highlight": false}
 		];
 		new XWiki.SearchSuggest($('headerglobalsearchinput'), sources);
 		return true;
