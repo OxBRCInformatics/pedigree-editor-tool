@@ -2886,7 +2886,7 @@ var PhenoTips = (function (PhenoTips) {
 
 					//Added for GEL (GenomicsEngland) ..................................................................
 					// "your text, not a standard term" add this text just in the beginning of the results list
-					var pagination = (this.options.resultUsePagination ? this.options.resultUsePagination() : false);
+					var pagination     = (this.options.resultUsePagination ? this.options.resultUsePagination() : false);
 					var searchTermCanBeSelected = (this.options.enableInputTermSelection ? this.options.enableInputTermSelection() : true);
 					if((!pagination && searchTermCanBeSelected) || (pagination && this.resultPage == 0 && searchTermCanBeSelected)){
 						list.addItem(this.generateListItem({
@@ -2939,6 +2939,15 @@ var PhenoTips = (function (PhenoTips) {
 				//}
 				//......................................................................................................
 				return list.getElement();
+			},
+
+			/*
+			 Added for GEL(GenomicsEngland), this method will make the searchTerm bold in
+			 the search result
+			 */
+			highLightSearchResult: function(text, queryTerm){
+				 var newText = text.replace(new RegExp(queryTerm, "ig"), '<strong>$&</strong>')
+				 return newText;
 			},
 
 			generateListItem: function (data, cssClass, disableTooltip) {
