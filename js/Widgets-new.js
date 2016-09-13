@@ -2929,7 +2929,27 @@ var PhenoTips = (function (PhenoTips) {
 				if (this.options.displayId) {
 					displayNode.insert(new Element('span', {'class': 'suggestId'}).update(data.id.escapeHTML()));
 				}
-				displayNode.insert(new Element('span', {'class': 'suggestValue'}).update(data.value.escapeHTML()));
+
+				//commented for GEL(GenomicsEngland)
+				//displayNode.insert(new Element('span', {'class': 'suggestValue'}).update(data.value.escapeHTML()));
+				//Added for GEL(GenomicsEngland)
+				//Check if 'displaySuggestItemFunction' exists and then call it to format the
+				//search result item ...............................................................................
+				if(this.options.displaySuggestItemFunction){
+					var displaySuggestItem = this.options.displaySuggestItemFunction(this.sInput, data, this);
+					//if it returns an element (and not null)
+					if(displaySuggestItem) {
+						displayNode.insert(displaySuggestItem);
+					}else{
+						//if the function exists but it returns null
+						var newDataValue = this.highLightSearchResult(data.value.escapeHTML(), this.sInput);
+						displayNode.insert(new Element('span', {'class': 'suggestValue'}).update(newDataValue));
+					}
+				}else{
+					var newDataValue = this.highLightSearchResult(data.value.escapeHTML(), this.sInput);
+					displayNode.insert(new Element('span', {'class': 'suggestValue'}).update(newDataValue));
+				}
+				//..................................................................................................
 
 				if (this.options.tooltip && !disableTooltip) {
 					var infoTool = new Element('span', {'class': 'fa fa-info-circle xHelpButton ' + this.options.tooltip, 'title': data.id});

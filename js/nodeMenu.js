@@ -197,6 +197,23 @@ NodeMenu = Class.create({
 						return "fullDetail"
 					},
 					resultInfo: {},
+					displaySuggestItemFunction : function(searchTerm, data, pedigreeWidget){
+						if(!data.valueAll){
+							return null;
+						}
+						var select = FORM.select("select[name='disorderType']")[0];
+						var disorderType = select.options[select.selectedIndex].value;
+						if(disorderType == "GEL"){
+							var newDataValue = pedigreeWidget.highLightSearchResult(data.value.escapeHTML(), searchTerm);
+							var suggestedValue = new Element('span', {'class': 'suggestValue'}).update(newDataValue);
+							var diseaseGroup   = new Element('span').update("<br><br> Group: " + "<span style='font-size: 11px'>" +  pedigreeWidget.highLightSearchResult(data.valueAll.groupName, searchTerm) + "</span>" );
+							var diseaseSubGroup= new Element('span').update("<br> SubGroup: "  + "<span style='font-size: 11px'>" +  pedigreeWidget.highLightSearchResult(data.valueAll.subGroupName, searchTerm) + "</span>" );
+							suggestedValue.insert(diseaseGroup);
+							suggestedValue.insert(diseaseSubGroup);
+							return suggestedValue;
+						}
+						return null;
+					},
 					enableHierarchy: false,
 					fadeOnClear: false,
 					timeout: 30000,
