@@ -118,9 +118,9 @@ var PhenoTips = (function (PhenoTips) {
 			method: "post",
 			json: true,
 			responseFormat: "application/json",
-			resultsParameter: "rows",
-			resultId: "id",
-			resultValue: "name",
+			resultsParameter: function(){return "rows"}, //Added for GEL(GenomicsEngland), use function instead of fixed-value
+			resultId: function(){return "id"}, //Added for GEL(GenomicsEngland), use function instead of fixed-value
+			resultValue: function(){return "name"}, //Added for GEL(GenomicsEngland), use function instead of fixed-value
 			resultCategory: "term_category",
 			resultParent: {
 				selector: 'is_a',
