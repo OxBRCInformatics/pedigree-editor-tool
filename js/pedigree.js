@@ -456,8 +456,14 @@ var PedigreeEditor = Class.create({
 				'label': 'Participant ID',
 				'type' : 'text',
 				'tab': 'Personal',
-				'columns': 1,
 				'function' : 'setParticipantId'
+			},
+			{
+				'name': 'gel_super_family_id',
+				'label': 'GEL Super Family ID',
+				'type': 'text',
+				'tab': 'Personal',
+				'function': 'setGelSuperFamilyId'
 			},
 			{
 				'name' : 'nhs_number',
@@ -493,16 +499,6 @@ var PedigreeEditor = Class.create({
 				'type': 'text',
 				'tab': 'Personal',
 				'function': 'setLastNameAtBirth'
-			},
-			{
-				'name': 'external_id',
-				'label': 'External ID',
-				'type': 'text',
-				'tab': 'Personal',
-				'function': 'setExternalID',
-				// UI fix: if 'last_name_birth' is disabled, left-floating externalID element does not
-				//         play nicely with ethnicities element; setting width to 100% fixes this
-				'addCSS': Helpers.arrayContains(disabledFields, 'last_name_birth') ? {"width": "100%"} : null
 			},
 			{
 				'name': 'ethnicity',

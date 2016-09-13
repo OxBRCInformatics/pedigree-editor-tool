@@ -584,12 +584,6 @@
 	float: right;
 }
 
-
-.menu-box .field-last_name_birth {
-	width: 48%;
-	float: left;
-	padding: .5em 0 0.9em;
-}
 .menu-box .field-external_id {
 	width: 48%;
 	float: right;
@@ -610,6 +604,19 @@
 .menu-box .field-state {
 	padding-top:60px ;
 }
+
+
+.menu-box .field-participant_id {
+	width: 48%;
+	float: left;
+}
+
+.menu-box .field-gel_super_family_id {
+	width: 48%;
+	float: right;
+}
+
+
 
 .menu-box .accepted-suggestions {
 	margin: 0px 0px 0.3em !important;
@@ -1111,3 +1118,4 @@ span.unRenderedItemValue{
 div.suggestItems * {
 	line-height: normal !important;
 }
+

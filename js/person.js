@@ -36,6 +36,7 @@ var Person = Class.create(AbstractPerson, {
 		this._lastName = "";
 		this._NHSNumber = ""; // added for GEL
 		this._CHINumber = ""; // added for GEL
+		this._gelSuperFamilyId = "";// added for GEL
 		this._participantId = "";
 		this._lastNameAtBirth = "";
 		this._birthDate = null;
@@ -132,6 +133,11 @@ var Person = Class.create(AbstractPerson, {
 	},
 
 	// added for GEL
+	getGelSuperFamilyId: function() {
+		return this._gelSuperFamilyId
+	},
+
+	// added for GEL
 	getCHINumber: function() {
 		return this._CHINumber;
 	},
@@ -158,6 +164,11 @@ var Person = Class.create(AbstractPerson, {
 	setNHSNumber: function(NHSNumber) {
 		this._NHSNumber = NHSNumber;
 		this.getGraphics().updateNHSNumberLabel();
+	},
+
+	// added for GEL
+	setGelSuperFamilyId: function(gelSuperFamilyId) {
+		this._gelSuperFamilyId = gelSuperFamilyId;
 	},
 
 
@@ -1105,6 +1116,7 @@ var Person = Class.create(AbstractPerson, {
 			identifier: {value: this.getID()},
 			nhs_number:    {value : this.getNHSNumber()},
 			chi_number:    {value : this.getCHINumber()},
+			gel_super_family_id: {value : this.getGelSuperFamilyId()},
 			participant_id:{value : this.getParticipantId()},
 			first_name: {value: this.getFirstName()},
 			last_name: {value: this.getLastName()},
@@ -1160,6 +1172,8 @@ var Person = Class.create(AbstractPerson, {
 			info['lName'] = this.getLastName();
 		if (this.getNHSNumber() != "")
 			info['NHSNumber'] = this.getNHSNumber();
+		if (this.getGelSuperFamilyId() != "")
+			info['gelSuperFamilyId'] = this.getGelSuperFamilyId();
 		if (this.getCHINumber() != "")
 			info['CHINumber'] = this.getCHINumber();
 		if (this.getParticipantId() != "")
@@ -1239,6 +1253,9 @@ var Person = Class.create(AbstractPerson, {
 			}
 			if(info.NHSNumber && this.getNHSNumber() != info.NHSNumber) {
 				this.setNHSNumber(info.NHSNumber);
+			}
+			if(info.gelSuperFamilyId && this.getGelSuperFamilyId() != info.gelSuperFamilyId) {
+				this.setGelSuperFamilyId(info.gelSuperFamilyId);
 			}
 			if(info.CHINumber && this.getCHINumber() != info.CHINumber) {
 				this.setCHINumber(info.CHINumber);
