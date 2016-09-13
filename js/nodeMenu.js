@@ -225,7 +225,7 @@ NodeMenu = Class.create({
 					enableHierarchy: false,
 					fadeOnClear: false,
 					timeout: 30000,
-					tooltip: 'omim-disease-info',
+					//tooltip: 'omim-disease-info', //commented for GEL
 					parentContainer: $('body'),
 					//showKey:true,	   	  // added for GEL
 				});
@@ -372,7 +372,7 @@ NodeMenu = Class.create({
 					resultInfo: {},
 					enableHierarchy: false,
 					resultParent: "is_a",
-					tooltip: 'phenotype-info',
+					//tooltip: 'phenotype-info', //commented for GEL
 					fadeOnClear: false,
 					timeout: 30000,
 					parentContainer: $('body')
