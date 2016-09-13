@@ -563,14 +563,22 @@
 	margin-bottom: 5px;
 	padding-top: 0.8em;
 }
-.menu-box .field-gender {
-	padding-top: 0.8em;
-}
+
 .menu-box .field-first_name {
 	width: 48%;
 	float: left;
 }
 .menu-box .field-last_name {
+	width: 48%;
+	float: right;
+}
+
+.menu-box .field-gender {
+	width: 48%;
+	float: left;
+}
+
+.menu-box .field-karyotypic_sex {
 	width: 48%;
 	float: right;
 }

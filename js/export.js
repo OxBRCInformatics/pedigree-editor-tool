@@ -423,6 +423,7 @@ PedigreeExport.internalToJSONPropertyMapping = {
 	"NHSNumber":      "NHSNumber",
 	"CHINumber":      "CHINumber",
 	"gelSuperFamilyId": "gelSuperFamilyId",
+	"karyotypicSex":"karyotypicSex",
 	"participantId": "participantId",
 	"lNameAtB": "lastNameAtBirth",
 	"comments": "comments",

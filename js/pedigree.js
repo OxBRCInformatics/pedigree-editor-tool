@@ -439,9 +439,8 @@ var PedigreeEditor = Class.create({
 			{
 				'name': 'gender',
 				'label': 'Gender',
-				'type': 'radio',
+				'type': 'select',
 				'tab': 'Personal',
-				'columns': 3,
 				'values': [
 					{ 'actual': 'M', 'displayed': 'Male' },
 					{ 'actual': 'F', 'displayed': 'Female' },
@@ -450,6 +449,27 @@ var PedigreeEditor = Class.create({
 				],
 				'default': 'U',
 				'function': 'setGender'
+			},
+			{
+				'name': 'karyotypic_sex',
+				'label': 'Karyotypic Sex',
+				'values': [
+					{'actual': 'Unknown',displayed:'Unknown'},
+					{'actual': 'XY',displayed:'XY'},
+					{'actual': 'XX',displayed:'XX'},
+					{'actual': 'XO',displayed:'XO'},
+					{'actual': 'XY',displayed:'XY'},
+					{'actual': 'YY',displayed:'YY'},
+					{'actual': 'XX',displayed:'XX'},
+					{'actual': 'XXYY',displayed:'XXYY'},
+					{'actual': 'XXXY',displayed:'XXXY'},
+					{'actual': 'XXXX',displayed:'XXXX'},
+					{'actual': 'Other',displayed:'Other'}
+				],
+				'type': 'select',
+				'tab': 'Personal',
+				'function': 'setKaryotypicSex',
+				'isMultipleSelect': false
 			},
 			{
 				'name' : 'participant_id',
@@ -762,7 +782,7 @@ var PedigreeEditor = Class.create({
 			{
 				'name': 'gender',
 				'label': 'Gender',
-				'type': 'radio',
+				'type': 'select',
 				'columns': 3,
 				'values': [
 					{ 'actual': 'M', 'displayed': 'Male' },
@@ -773,6 +793,27 @@ var PedigreeEditor = Class.create({
 				'default': 'U',
 				'tab': 'Personal',
 				'function': 'setGender'
+			},
+			{
+				'name': 'karyotypic_sex',
+				'label': 'Karyotypic Sex',
+				'values': [
+					{'actual': 'Unknown',displayed:'Unknown'},
+					{'actual': 'XY',displayed:'XY'},
+					{'actual': 'XX',displayed:'XX'},
+					{'actual': 'XO',displayed:'XO'},
+					{'actual': 'XY',displayed:'XY'},
+					{'actual': 'YY',displayed:'YY'},
+					{'actual': 'XX',displayed:'XX'},
+					{'actual': 'XXYY',displayed:'XXYY'},
+					{'actual': 'XXXY',displayed:'XXXY'},
+					{'actual': 'XXXX',displayed:'XXXX'},
+					{'actual': 'Other',displayed:'Other'}
+				],
+				'type': 'select',
+				'tab': 'Personal',
+				'function': 'setKaryotypicSex',
+				'isMultipleSelect': false
 			},
 			{
 				'name': 'numInGroup',
