@@ -652,7 +652,15 @@ var Person = Class.create(AbstractPerson, {
 			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), disorder._valueAll, this.getID());
 			this.getDisorders().push(disorder.getDisorderID());
 			//this is added for GEL ...........................................................................
-			this._disordersFullDetails.push(disorder);
+			var alreadyExists = false;
+			for(var i = 0; i < this._disordersFullDetails.length;i++){
+				if(this._disordersFullDetails[i]._disorderID == disorder){
+					alreadyExists = true;
+				}
+			}
+			if(!alreadyExists) {
+				this._disordersFullDetails.push(disorder);
+			}
 			//.................................................................................................
 		}
 		else {
@@ -752,7 +760,15 @@ var Person = Class.create(AbstractPerson, {
 			editor.getHPOLegend().addCase(hpo.getID(), hpo.getName(), hpo._valueAll, this.getID());
 			this.getHPO().push(hpo.getID());
 			//this is added for GEL .......................................................................
-			this._hpoFullDetails.push(hpo);
+			var alreadyExists = false;
+			for(var i = 0; i < this._hpoFullDetails.length;i++){
+				if(this._hpoFullDetails[i]._hpoID == hpo){
+					alreadyExists = true;
+				}
+			}
+			if(!alreadyExists) {
+				this._hpoFullDetails.push(hpo);
+			}
 			//.............................................................................................
 		}
 		else {
@@ -1217,10 +1233,9 @@ var Person = Class.create(AbstractPerson, {
 				this.setBirthDate(info.dob);
 			}
 
-			//We don't need to first load _disordersFullDetails, as 'this.setDisorders(disorders)' in next lines will add disordersFullDetails
-			//if(info.disordersFullDetails) {
-			//	this._disordersFullDetails = info.disordersFullDetails.slice();
-			//}
+			if(info.disordersFullDetails) {
+				this._disordersFullDetails = info.disordersFullDetails.slice();
+			}
 
 			//then load disorders
 			if (info.disorders) {
@@ -1241,10 +1256,9 @@ var Person = Class.create(AbstractPerson, {
 				this.setCancers(info.cancers);
 			}
 
-			//We don't need to first load _hpoTermsFullDetails, as 'this.setHPO(terms);' in the next lines will load them as well
-			//if(info.hpoTermsFullDetails) {
-			//	this._hpoTermsFullDetails = info.hpoTermsFullDetails.slice();
-			//}
+			if(info.hpoTermsFullDetails) {
+				this._hpoTermsFullDetails = info.hpoTermsFullDetails.slice();
+			}
 
 			if (info.hpoTerms) {
 				var terms = [];
