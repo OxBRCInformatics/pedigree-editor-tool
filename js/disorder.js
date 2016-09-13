@@ -78,6 +78,8 @@ Disorder.getServiceURL = function(disorderType){
 		return webservice.getIcd10LookupPath();
 	}else if(disorderType == "SnomedCT"){
 		return webservice.getSnomedCTLookupPath();
+	}else if(disorderType == "GEL"){
+		return webservice.getGELLookupPath();
 	}else{
 		return webservice.getOmimLookupPath();
 	}
