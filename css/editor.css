@@ -1095,3 +1095,8 @@ span.unRenderedItemValue{
 	background-color: #a94442 !important;
 	vertical-align: middle;
 }
+/*Added for GEL(GenomicsEngland)*/
+/* Added for removing spaces in between lines in disorder suggests*/
+div.suggestItems * {
+	line-height: normal !important;
+}
