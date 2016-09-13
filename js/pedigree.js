@@ -742,7 +742,8 @@ var PedigreeEditor = Class.create({
 				'type': 'checkbox',
 				'tab': 'Clinical',
 				'function': 'setEvaluated'
-			},
+			}
+			/*,
 			{   'name': 'cancers',
 				'label': 'Common Cancers',
 				'type': 'cancerlist',
@@ -756,7 +757,7 @@ var PedigreeEditor = Class.create({
 				'tab': 'Cancers',
 				'rows': 2,
 				'function': 'setComments'
-			}
+			}*/
 		];
 
 		function isDisabled(field) {
@@ -766,7 +767,9 @@ var PedigreeEditor = Class.create({
 			return true;
 		}
 
-		return new NodeMenu(fieldList.filter(isDisabled), ["Personal", "Clinical", "Cancers"]);
+		//'Cancers' tab removed for GEL(GenomicsEngland) 
+		//return new NodeMenu(fieldList.filter(isDisabled), ["Personal", "Clinical", "Cancers"]);
+		return new NodeMenu(fieldList.filter(isDisabled), ["Personal", "Clinical"]);
 	},
 
 	/**
