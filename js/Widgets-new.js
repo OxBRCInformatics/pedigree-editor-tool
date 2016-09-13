@@ -352,7 +352,9 @@ var PhenoTips = (function (PhenoTips) {
 		},
 
 		buildTree: function (data) {
-			var results = this._getResultset(data, this.options.resultsParameter);
+			//Added for GEL(GenomicsEngland), use function instead of fixed-value
+			//var results = this._getResultset(data, this.options.resultsParameter);
+			var results = this._getResultset(data, this.options.resultsParameter());
 			if (results.length == 0) {
 				return new Element('div', {'class': 'error'}).update(this.options.noresults);
 			}
@@ -373,9 +375,17 @@ var PhenoTips = (function (PhenoTips) {
 				}
 				Event.fire(document, "obrowser:content:added", {added: parents, obrowser: this});
 			}
+
+			//Commented for GEL(GenomicsEngland), use function instead of fixed-value
+			//var data = {
+			//	id: this._getResultFieldValue(targetResult, this.options.resultId),
+			//	value: this._getResultFieldValue(targetResult, this.options.resultValue),
+			//	category: this._generateEntryCategory(targetResult)
+			//}
+			//Added for GEL(GenomicsEngland), use function instead of fixed-value
 			var data = {
-				id: this._getResultFieldValue(targetResult, this.options.resultId),
-				value: this._getResultFieldValue(targetResult, this.options.resultValue),
+				id: this._getResultFieldValue(targetResult, this.options.resultId()),
+				value: this._getResultFieldValue(targetResult, this.options.resultValue()),
 				category: this._generateEntryCategory(targetResult)
 			}
 			var root = this._createRoot(data);
@@ -386,16 +396,26 @@ var PhenoTips = (function (PhenoTips) {
 		},
 
 		countDescendents: function (xml) {
-			return this._getResultset(xml, this.options.resultsParameter).length;
+			//Added for GEL(GenomicsEngland), use function instead of fixed-value
+			//return this._getResultset(xml, this.options.resultsParameter).length;
+			return this._getResultset(xml, this.options.resultsParameter()).length;
 		},
 
 		buildDescendentsList: function (xml) {
-			var results = this._getResultset(xml, this.options.resultsParameter);
+			//Added for GEL(GenomicsEngland), use function instead of fixed-value
+			//var results = this._getResultset(xml, this.options.resultsParameter);
+			var results = this._getResultset(xml, this.options.resultsParameter());
 			var list = new Element('ul', {'class': 'descendents'});
 			for (var i = 0; i < results.length; i++) {
+				//Added for GEL(GenomicsEngland), use function instead of fixed-value
+				//var data = {
+				//	id: this._getResultFieldValue(results[i], this.options.resultId),
+				//	value: this._getResultFieldValue(results[i], this.options.resultValue),
+				//	category: this._generateEntryCategory(results[i])
+				//};
 				var data = {
-					id: this._getResultFieldValue(results[i], this.options.resultId),
-					value: this._getResultFieldValue(results[i], this.options.resultValue),
+					id: this._getResultFieldValue(results[i], this.options.resultId()),
+					value: this._getResultFieldValue(results[i], this.options.resultValue()),
 					category: this._generateEntryCategory(results[i])
 				};
 				list.insert({'bottom': this._createDescendentBranch(data)});
@@ -1925,13 +1945,13 @@ var PhenoTips = (function (PhenoTips) {
 				icon: null,
 				// The name of the JSON variable or XML element holding the results.
 				// "results" for the old suggest, "searchResults" for the REST search.
-				resultsParameter: "results",
+				resultsParameter: function(){return "results";},
 				// The name of the JSON parameter or XML attribute holding the result identifier.
 				// "id" for both the old suggest and the REST search.
-				resultId: "id",
+				resultId: function(){return "id"},
 				// The name of the JSON parameter or XML attribute holding the result value.
 				// "value" for the old suggest, "pageFullName" for the REST page search.
-				resultValue: "value",
+				resultValue: function(){return "value";},
 				// The name of the JSON parameter or XML attribute holding the result auxiliary information.
 				// "info" for the old suggest, "pageFullName" for the REST search.
 				resultInfo: "info",
@@ -2342,7 +2362,7 @@ var PhenoTips = (function (PhenoTips) {
 					if (!jsondata) {
 						return false;
 					}
-					var results = jsondata[source.resultsParameter || this.options.resultsParameter];
+					var results = jsondata[source.resultsParameter() || this.options.resultsParameter()];
 
 					var _getResultFieldValue = function (data, fieldName) {
 						return data && data[fieldName] || '';
@@ -2356,7 +2376,7 @@ var PhenoTips = (function (PhenoTips) {
 					if (!xmldata) {
 						return false;
 					}
-					var results = xmldata.getElementsByTagName((source && source.resultsParameter) || this.options.resultsParameter);
+					var results = xmldata.getElementsByTagName((source && source.resultsParameter()) || this.options.resultsParameter());
 
 					var _getResultFieldValue = function (data, selector) {
 						var element = data && Element.down(data, selector);
@@ -2446,7 +2466,7 @@ var PhenoTips = (function (PhenoTips) {
 
 					if (this.options.resultAltName) {
 						var bestNameMatch = '';
-						var name = _getResultFieldValue(results[i], source.resultValue || this.options.resultValue);
+						var name = _getResultFieldValue(results[i], source.resultValue() || this.options.resultValue());
 						var altNames = _getResultFieldValueAsArray(results[i], source.resultAltName || this.options.resultAltName);
 						var nameMatchScore = this.computeSimilarity(name, this.sInput);
 						for (var k = 0; k < altNames.length; ++k) {
@@ -2459,8 +2479,8 @@ var PhenoTips = (function (PhenoTips) {
 					}
 
 					aSuggestions.push({
-						'id': _getResultFieldValue(results[i], source.resultId || this.options.resultId),
-						'value': _getResultFieldValue(results[i], source.resultValue || this.options.resultValue),
+						'id': _getResultFieldValue(results[i], source.resultId() || this.options.resultId()),
+						'value': _getResultFieldValue(results[i], source.resultValue() || this.options.resultValue()),
 						'valueAll': results[i],
 						'altName': bestNameMatch,
 						'info': info,
