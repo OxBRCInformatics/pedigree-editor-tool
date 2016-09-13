@@ -19,6 +19,11 @@ WebService = Class.create({
 		return endpoint + "/lookupServices/ICDLookupService?";
 	},
 
+	getSnomedCTLookupPath: function(){
+		var endpoint = this._baseURL ? this._baseURL : this._settings.getSetting('codingDefinitionServiceEndpoint');
+		return endpoint + "/lookupServices/SNOMEDCTLookupService?";
+	},
+
 	getEthnicityLookupPath: function(){
 		var endpoint = this._baseURL ? this._baseURL : this._settings.getSetting('codingDefinitionServiceEndpoint');
 		return endpoint + "/lookupServices/Ethnicity?";

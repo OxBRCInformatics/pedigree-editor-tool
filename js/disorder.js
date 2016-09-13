@@ -76,7 +76,9 @@ Disorder.getServiceURL = function(disorderType){
 		return webservice.getOmimLookupPath();
 	}else if(disorderType == "ICD10"){
 		return webservice.getIcd10LookupPath();
-	} else{
+	}else if(disorderType == "SnomedCT"){
+		return webservice.getSnomedCTLookupPath();
+	}else{
 		return webservice.getOmimLookupPath();
 	}
 };
