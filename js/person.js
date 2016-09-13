@@ -234,7 +234,7 @@ var Person = Class.create(AbstractPerson, {
 	 */
 	setExternalID: function (externalID) {
 		this._externalID = externalID;
-		this.getGraphics().updateExternalIDLabel();
+		//this.getGraphics().updateExternalIDLabel();
 	},
 
 	/**
