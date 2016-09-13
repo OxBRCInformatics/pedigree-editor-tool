@@ -1350,6 +1350,7 @@ PedigreeImport.JSONToInternalPropertyMapping = {
 	"disorders": "disorders",
 	"disordersfulldetails": "disordersFullDetails", //Added for GEL(GenomicsEngland)
 	"hpoterms": "hpoTerms",
+	"hpotermsfulldetails": "hpoTermsFullDetails", //Added for GEL(GenomicsEngland)
 	"candidategenes": "candidateGenes",
 	"ethnicities": "ethnicities",
 	"affectionstatus": "carrierStatus",
