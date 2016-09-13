@@ -1978,6 +1978,14 @@ var PhenoTips = (function (PhenoTips) {
 			iHighlighted: null,
 			isActive: false,
 
+			//Added for GEL(GenomicsEngland)................................................
+			//to get track of the number of rows loaded in case of using pagination
+			resultTotal:0,
+			resultPage:-1,
+			resultLimit:10,
+			resultHasMore: false,
+			//..............................................................................
+
 			/**
 			 * Initialize the suggest
 			 *
@@ -2185,11 +2193,20 @@ var PhenoTips = (function (PhenoTips) {
 
 					return false;
 				} else {
+
+					//Added for GEL(GenomicsEngland)................................................
+					//As it is a new request, set resultPage offset to -1
+					this.resultPage = -1;
+					//..............................................................................
+
 					// do new request
 					this.sInput = val;
 					this.nInputChars = val.length;
 
-					this.prepareContainer();
+					//Added for GEL(GenomicsEngland).....................................................................
+					//this.container is the main container of the suggestion and we use it later to access LoadMore text
+					this.container = this.prepareContainer();
+					//...................................................................................................
 
 					this.latestRequest++;
 					var pointer = this;
@@ -2241,7 +2258,18 @@ var PhenoTips = (function (PhenoTips) {
 					} else {
 						headers.Accept = "application/xml";
 					}
+
 					var _GELThisAjaxCall = this;
+					//Added for GEL(GenomicsEngland) .........................................................................
+					//If the suggestion configured to use pagination, then pass "page" and "limit" parameters into the query
+					//it is used for GEL SnomedCT queries
+					if(_GELThisAjaxCall.options.resultUsePagination && _GELThisAjaxCall.options.resultUsePagination()) {
+						this.resultPage = this.resultPage + 1;
+						url = url + "&page=" + this.resultPage + "&limit=" + this.resultLimit;
+					}
+					//........................................................................................................
+
+
 					var ajx = new Ajax.Request(url, {
 						method: method,
 						parameters: parameters,
@@ -2250,9 +2278,25 @@ var PhenoTips = (function (PhenoTips) {
 							this.fld.addClassName("loading");
 						}.bind(this),
 						onSuccess: function(_GELResult){
+
+							//Added for GEL(GenomicsEngland) .........................................................................
+							//If the request is a pagination one, then get 'more' and 'total' values from the result
+							if(_GELThisAjaxCall.options.resultUsePagination && _GELThisAjaxCall.options.resultUsePagination()){
+								var result = _GELResult.responseJSON;
+								_GELThisAjaxCall.resultHasMore = result.more;
+								_GELThisAjaxCall.resultTotal   = result.total;
+								if(!result.more){
+									_GELThisAjaxCall.hideLoadMore();
+								}else{
+									_GELThisAjaxCall.updateLoadMore(_GELThisAjaxCall.resultPage, _GELThisAjaxCall.resultLimit, _GELThisAjaxCall.resultTotal)
+								}
+							}
+							//........................................................................................................
+
+
 							//Changed by SOHEIL for GEL(GenomicsEngland)
 							//this.setSuggestions.bindAsEventListener(this, source, requestId)
-							_GELThisAjaxCall.setSuggestions(_GELResult, source, requestId)
+							_GELThisAjaxCall.setSuggestions(_GELResult, source, requestId);
 						},
 						onFailure: function (response) {
 
@@ -2649,15 +2693,66 @@ var PhenoTips = (function (PhenoTips) {
 				this.container.__targetField = this.fld;
 				if (this.options.enableHideButton && !this.container.down('.hide-button')) {
 
-					var hideButton = new Element('span', {'class': 'hide-button'}).update("hide suggestions");
-					hideButton.observe('click', this.clearSuggestions.bindAsEventListener(this));
-					this.container.insert({top: new Element('div', {'class': 'hide-button-wrapper'}).update(hideButton)});
+					//Commented for GEL(GenomicsEngland) .........................................................................
+					//We do not need to show "hide suggestions" text
+					//var hideButton = new Element('span', {'class': 'hide-button', 'style':'float:left;'}).update("hide suggestions");
+					//hideButton.observe('click', this.clearSuggestions.bindAsEventListener(this));
+					//this.container.insert({top: new Element('div', {'class': 'hide-button-wrapper'}).update(hideButton)});
 
-					hideButton = new Element('span', {'class': 'hide-button'}).update("hide suggestions");
-					hideButton.observe('click', this.clearSuggestions.bindAsEventListener(this));
-					this.container.insert({bottom: new Element('div', {'class': 'hide-button-wrapper'}).update(hideButton)});
+					//hideButton = new Element('span', {'class': 'hide-button'}).update("hide suggestions");
+					//hideButton.observe('click', this.clearSuggestions.bindAsEventListener(this));
+					//this.container.insert({bottom: new Element('div', {'class': 'hide-button-wrapper'}).update(hideButton)});
+					//............................................................................................................
+
+					//Added for GEL(GenomicsEngland) ...................................................................
+					//If suggestion uses 'pagination', then show 'Load more' text
+					var pagination = (this.options.resultUsePagination ? this.options.resultUsePagination() : false);
+					if(pagination){
+						hideButton = new Element('span', {'class': 'hide-button loadMore', 'style':'float:left;'}).update("Load more");
+						hideButton.observe('click', this.loadMode.bindAsEventListener(this));
+						this.container.insert({bottom: new Element('div', {'class': 'hide-button-wrapper'}).update(hideButton)});
+					}
+					//..................................................................................................
 				}
 				return this.container;
+			},
+
+			//Added for GEL(GenomicsEngland) ...................................................................
+			//This will hide 'Load More' text
+			hideLoadMore: function(){
+				var container = this.container;
+				if(container && container.select("span.loadMore").length > 0){
+					(container.select("span.loadMore")[0]).hide();
+				}
+			},
+
+			//Added for GEL(GenomicsEngland) ...............................................................................
+			//This will update 'Load More' text and add the number of items that are loaded already and the total number
+			updateLoadMore: function(page, limit, total){
+				var container = this.container;
+				var loadMoreSpan = container.select("span.loadMore");
+				if(container && loadMoreSpan.length > 0){
+					loadMoreSpan[0].update("(" + (page + 1) * 10 +"/"+ total+") Load more");
+				}
+			},
+
+			//Added for GEL(GenomicsEngland) ...............................................................................
+			//This will call the back-end service to load more, this is called when the user clicks on 'Load more' text
+			loadMode : function(){
+				// do new request
+				var val = this.fld.value;
+				this.sInput = val;
+				this.nInputChars = val.length;
+
+				this.latestRequest++;
+				var pointer = this;
+				var requestId = this.latestRequest;
+				clearTimeout(this.ajID);
+				this.ajID = setTimeout(function () {
+					pointer.doAjaxRequests(requestId)
+				}, this.options.delay);
+
+				return false;
 			},
 
 			/**
@@ -2698,15 +2793,37 @@ var PhenoTips = (function (PhenoTips) {
 					return false;
 				}
 
+				//Commented for GEL(GenomicsEngland) .................................................
 				// Ensure any previous list of results for this source gets removed
-				if (div.down('ul')) {
-					div.down('ul').remove();
-				}
+				//if (div.down('ul')) {
+				//	div.down('ul').remove();
+				//}
+				//....................................................................................
 
+				//Added for GEL(GenomicsEngland) .....................................................
+				//If we are loading more items and the 'ul' is already there,
+				//then just add new item in it otherwise create 'ul'
+				var list = undefined;
+				if (div.down('ul')) {
+					var oldUL = div.down('ul');
+					var newUL = this.createListElement(arr, pointer);
+					for(var i = 0; i < newUL.select("li").length;i++) {
+						oldUL.appendChild(newUL.select("li")[i]);
+					}
+					list = oldUL;
+				}
+				else{
+					list = this.createListElement(arr, pointer);
+					div.appendChild(list);
+				}
+				//....................................................................................
+
+				//Commented for GEL(GenomicsEngland) .................................................
 				// create and populate list
-				var list = this.createListElement(arr, pointer);
-				div.appendChild(list);
-				Event.fire(document, "xwiki:dom:updated", {elements: [list]})
+				//var list = this.createListElement(arr, pointer);
+				//div.appendChild(list);
+				//....................................................................................
+				Event.fire(document, "xwiki:dom:updated", {elements: [list]});
 
 				this.suggest = div;
 
@@ -2735,6 +2852,34 @@ var PhenoTips = (function (PhenoTips) {
 					}
 				});
 
+				if (this.fld.hasClassName('accept-value')) {
+					var customItemId = this.fld.value.replace(/[^a-z0-9_]+/gi, "_");
+					var customItemCategoryInfo = this.fld.next('input[name="_category"]');
+					var customItemCategories = customItemCategoryInfo && customItemCategoryInfo.value.split(",") || [];
+					var customItemCategoriesElt = new Element('div', {'class': 'hidden term-category'});
+					var categoryFieldName = this.fld.name + "__" + customItemId + "__category";
+					customItemCategories.each(function (c) {
+						if (c) {
+							customItemCategoriesElt.insert(new Element('input', {'type': 'hidden', name: categoryFieldName, value: c}));
+						}
+					});
+
+					//Added for GEL (GenomicsEngland) ..................................................................
+					// "your text, not a standard term" add this text just in the begining of the results list
+					var pagination = (this.options.resultUsePagination ? this.options.resultUsePagination() : false);
+					if(!pagination || (pagination && this.resultPage == 0)){
+						list.addItem(this.generateListItem({
+							id: this.fld.value,
+							value: this.fld.value,
+							category: customItemCategoriesElt,
+							info: new Element('div', {'class': 'hint'}).update('(your text, not a standard term)')
+						}, 'custom-value', true));
+					}
+					//..................................................................................................
+				}
+
+
+
 				// loop throught arr of suggestions
 				// creating an XlistItem for each suggestion
 				//
@@ -2749,24 +2894,29 @@ var PhenoTips = (function (PhenoTips) {
 						'classes': 'noSuggestion',
 						noHighlight: true }));
 				}
-				if (this.fld.hasClassName('accept-value')) {
-					var customItemId = this.fld.value.replace(/[^a-z0-9_]+/gi, "_");
-					var customItemCategoryInfo = this.fld.next('input[name="_category"]');
-					var customItemCategories = customItemCategoryInfo && customItemCategoryInfo.value.split(",") || [];
-					var customItemCategoriesElt = new Element('div', {'class': 'hidden term-category'});
-					var categoryFieldName = this.fld.name + "__" + customItemId + "__category";
-					customItemCategories.each(function (c) {
-						if (c) {
-							customItemCategoriesElt.insert(new Element('input', {'type': 'hidden', name: categoryFieldName, value: c}));
-						}
-					});
-					list.addItem(this.generateListItem({
-						id: this.fld.value,
-						value: this.fld.value,
-						category: customItemCategoriesElt,
-						info: new Element('div', {'class': 'hint'}).update('(your text, not a standard term)')
-					}, 'custom-value', true));
-				}
+
+
+				//Commented for GEL(GenomicsEngland) ...................................................................
+				//show the text '(your text, not a standard term)' in the begining of the list not at the end
+				//if (this.fld.hasClassName('accept-value')) {
+				//	var customItemId = this.fld.value.replace(/[^a-z0-9_]+/gi, "_");
+				//	var customItemCategoryInfo = this.fld.next('input[name="_category"]');
+				//	var customItemCategories = customItemCategoryInfo && customItemCategoryInfo.value.split(",") || [];
+				//	var customItemCategoriesElt = new Element('div', {'class': 'hidden term-category'});
+				//	var categoryFieldName = this.fld.name + "__" + customItemId + "__category";
+				//	customItemCategories.each(function (c) {
+				//		if (c) {
+				//			customItemCategoriesElt.insert(new Element('input', {'type': 'hidden', name: categoryFieldName, value: c}));
+				//		}
+				//	});
+				//	list.addItem(this.generateListItem({
+				//		id: this.fld.value,
+				//		value: this.fld.value,
+				//		category: customItemCategoriesElt,
+				//		info: new Element('div', {'class': 'hint'}).update('(your text, not a standard term)')
+				//	}, 'custom-value', true));
+				//}
+				//......................................................................................................
 				return list.getElement();
 			},
 
