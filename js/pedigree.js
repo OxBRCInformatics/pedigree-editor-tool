@@ -767,7 +767,7 @@ var PedigreeEditor = Class.create({
 			return true;
 		}
 
-		//'Cancers' tab removed for GEL(GenomicsEngland) 
+		//'Cancers' tab removed for GEL(GenomicsEngland)
 		//return new NodeMenu(fieldList.filter(isDisabled), ["Personal", "Clinical", "Cancers"]);
 		return new NodeMenu(fieldList.filter(isDisabled), ["Personal", "Clinical"]);
 	},

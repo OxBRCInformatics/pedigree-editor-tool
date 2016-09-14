@@ -26,7 +26,7 @@
 	width: 200px;
 }
 #body .xnotification-inprogress {
-	background-image: url("/resources/icons/xwiki/spinner.gif") !important;
+	background-image: url("../resources/icons/xwiki/spinner.gif") !important;
 }
 #body .xnotification-error {
 	background-image: url("/resources/icons/silk/delete.png") !important;

@@ -341,7 +341,7 @@ span.wikicreatelink a:after {
 }
 
 .loading {
-	background: transparent url("/resources/icons/xwiki/spinner.gif") no-repeat center;
+	background: transparent url("../resources/icons/xwiki/spinner.gif") no-repeat center;
 }
 
 .separator {
