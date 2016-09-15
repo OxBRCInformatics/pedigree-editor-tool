@@ -595,7 +595,7 @@ var PedigreeEditor = Class.create({
 				'function': 'setDisorders'
 			},
 			{
-				'label': 'Age of Set',
+				'label': 'Age onset (y)',
 				'name' : 'ageOfOnset',
 				'type': 'text',
 				'tab': 'Clinical',
