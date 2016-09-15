@@ -563,7 +563,7 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'carrier',
-				'label': 'Affection status',
+				'label': 'Disease status',
 				'type': 'radio',
 				'tab': 'Clinical',
 				'values': [
@@ -580,10 +580,10 @@ var PedigreeEditor = Class.create({
 				'type' : 'select',
 				'tab': 'Clinical',
 				'values' : [
+					{'actual': 'GEL', displayed: 'GEL Disorders'},
 					{'actual': 'OMIM',  displayed: 'OMIM'},
 					{'actual': 'ICD10', displayed: 'ICD10'},
-					{'actual': 'SnomedCT', displayed: 'SnomedCT'},
-					{'actual': 'GEL', displayed: '100K Disorders'}
+					{'actual': 'SnomedCT', displayed: 'SnomedCT'}
 				],
 				'function' : 'setDisorderType'
 			},
@@ -890,10 +890,10 @@ var PedigreeEditor = Class.create({
 				'type' : 'select',
 				'tab': 'Clinical',
 				'values' : [
+					{'actual': 'GEL', displayed: 'GEL Disorders'},
 					{'actual': 'OMIM',  displayed: 'OMIM'},
 					{'actual': 'ICD10', displayed: 'ICD10'},
-					{'actual': 'SnomedCT', displayed: 'SnomedCT'},
-					{'actual': 'GEL', displayed: '100K Disorders'}
+					{'actual': 'SnomedCT', displayed: 'SnomedCT'}
 				],
 				'function' : 'setDisorderType'
 			},
