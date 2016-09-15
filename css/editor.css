@@ -64,8 +64,8 @@
 /*}*/
 .editor-menu .action-group:not(:last-of-type) {
 	border-right: 1px solid #777;
-	margin-right: 1em;
-	padding-right: 1em;
+	margin-right: 0.4em;
+	padding-right: 0.4em;
 }
 .editor-menu .menu-item {
 	border-radius: 4px;
