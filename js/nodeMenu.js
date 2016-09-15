@@ -367,7 +367,7 @@ NodeMenu = Class.create({
 					json: true,
 					resultsParameter: function(){return "rows"},
 					resultId: function(){return "id"},
-					resultValue: function(){return "name"},
+					resultValue: function(){return "fullDetail"},
 					resultAltName: "synonym",
 					resultCategory: "term_category",
 					resultInfo: {},
