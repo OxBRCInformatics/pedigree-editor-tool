@@ -375,6 +375,7 @@ NodeMenu = Class.create({
 					//tooltip: 'phenotype-info', //commented for GEL
 					fadeOnClear: false,
 					timeout: 30000,
+					minchars: 3, //Added for GEL(GenomicsEngland)
 					parentContainer: $('body')
 				});
 				if (item.hasClassName('multi') && typeof(PhenoTips.widgets.SuggestPicker) != "undefined") {
