@@ -611,10 +611,22 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'hpo_positive',
-				'label': 'Clinical symptoms: observed phenotypes',
+				'label': 'Phenotype',
 				'type': 'hpo-picker',
 				'tab': 'Clinical',
 				'function': 'setHPO'
+			},
+			{
+				'name' : 'hpoPresent',
+				'label': 'Present',
+				'type': 'select',
+				'tab': 'Clinical',
+				'values' : [
+					{'actual': 'yes', displayed: 'Yes'},
+					{'actual': 'no', displayed: 'No'},
+					{'actual': 'unknown', displayed: 'UnKnow'}
+				],
+				'function' : 'setHPOPresent'
 			},
 			//Commented for GEL(GenomicsEngland)
 			//{
