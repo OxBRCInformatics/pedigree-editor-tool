@@ -1446,7 +1446,7 @@ div#xwikiobjects input[type="checkbox"], div#xwikiclassproperties input[type="ch
 }
 
 .xform .xHelp {
-	background: transparent url("/resources/icons/silk/information.png") 0 0 no-repeat;
+	background: transparent url("../resources/icons/silk/information.png") 0 0 no-repeat;
 	float: right;
 	height: 16px;
 	line-height: 250px; /* Push the text away. */
@@ -1534,16 +1534,16 @@ input.icon-button {
 	width: 16px;
 }
 .icon-button.add-button {
-	background-image: url("/resources/icons/silk/add.png");
+	background-image: url("../resources/icons/silk/add.png");
 }
 .icon-button.remove-button {
-	background-image: url("/resources/icons/silk/cross.png");
+	background-image: url("../resources/icons/silk/cross.png");
 }
 .icon-button.accept-button {
-	background-image: url("/resources/icons/silk/accept.png");
+	background-image: url("../resources/icons/silk/accept.png");
 }
 .icon-button.search-button {
-	background-image: url("/resources/icons/xwiki/search.png");
+	background-image: url("../resources/icons/xwiki/search.png");
 }
 
 *:disabled, input.disabled, button.disabled, .buttonwrapper a.disabled, .edit_section.disabled {
@@ -1946,24 +1946,24 @@ ul.xlist li.space, ul.xlist li.page, ul.xlist li.comment, ul.xlist li.attachment
 }
 
 ul.xlist li.space {
-	background-image: url("/resources/icons/silk/folder.png");
+	background-image: url("../resources/icons/silk/folder.png");
 }
 
 ul.xlist li.page {
-	background-image: url("/resources/icons/silk/page_white_text.png");
+	background-image: url("../resources/icons/silk/page_white_text.png");
 }
 
 ul.xlist li.comment {
-	background-image: url("/resources/icons/silk/comment.png");
+	background-image: url("../resources/icons/silk/comment.png");
 }
 
 ul.xlist li.attachment {
-	background-image: url("/resources/icons/silk/attach.png");
+	background-image: url("../resources/icons/silk/attach.png");
 	padding-bottom: 0;
 }
 
 ul.xlist li.create a {
-	background: url("/resources/icons/silk/bullet_add.png") 7px 3px no-repeat;
+	background: url("../resources/icons/silk/bullet_add.png") 7px 3px no-repeat;
 	color: #9F9F9F;
 	text-decoration: none;
 	padding-left: 1.5em;
@@ -2018,22 +2018,22 @@ ul.xlist li.xitem div.xitemcontainer ul.xlist {
 }
 
 .infomessage {
-	background-image: url("/resources/icons/silk/information.png");
+	background-image: url("../resources/icons/silk/information.png");
 	color: #336699;
 }
 
 .warningmessage {
-	background-image: url("/resources/icons/silk/error.png");
+	background-image: url("../resources/icons/silk/error.png");
 	color: #D09000;
 }
 
 .errormessage {
-	background-image: url("/resources/icons/silk/exclamation.png");
+	background-image: url("../resources/icons/silk/exclamation.png");
 	color: #CC3333;
 }
 
 .successmessage {
-	background-image: url("/resources/icons/silk/tick.png");
+	background-image: url("../resources/icons/silk/tick.png");
 	color: #008000;
 }
 
@@ -2104,7 +2104,7 @@ fieldset.xwikimessage .xwikimessage {
 /* Note that h6 styling is provided in order to ensure backward compatibility after XSCOLIBRI-160 */
 .accordionTabTitleBar h1, .accordionTabTitleBar h6 {
 	display:block;
-	background: #E1E1E1 url("/resources/icons/xwiki/accordion.png") no-repeat left;
+	background: #E1E1E1 url("../resources/icons/xwiki/accordion.png") no-repeat left;
 	border-bottom: 1px solid #E8E8E8;
 	border-top: 1px solid #FFFFFF;
 	color: #4D5860;
@@ -2183,7 +2183,7 @@ div.panellayoutcontainer-1col, div.panellayoutcontainer-2col, div.panellayoutcon
 }
 
 .iconRSS {
-	background-image: url("/resources/icons/silk/feed.png");
+	background-image: url("../resources/icons/silk/feed.png");
 }
 
 /* @group MACROS */

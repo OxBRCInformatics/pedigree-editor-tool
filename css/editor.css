@@ -91,7 +91,7 @@
 	margin: 0;
 }
 .loading-indicator {
-	background-image: url("/resources/icons/xwiki/ajax-loader-large.gif");
+	background-image: url("../resources/icons/xwiki/ajax-loader-large.gif");
 	background-position: center;
 	background-repeat: no-repeat;
 	height: 100px;
