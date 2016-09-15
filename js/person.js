@@ -84,6 +84,7 @@ var Person = Class.create(AbstractPerson, {
 		//_disorderType: this field is used to monitor the value of the selected disorderType in the UI
 		//we do not export it into the JSON
 		this._disorderType = "";
+		this._ageOfOnset = "";
 
 		this._cancers = {};
 		Person.setMethods["cancers"] = "setCancers";
@@ -128,6 +129,21 @@ var Person = Class.create(AbstractPerson, {
 	 */
 	isProband: function () {
 		return this._isProband;
+	},
+
+
+	/**
+	 * Returns True if this node has participant-id
+	 *
+	 * @method isProband
+	 * @return {Boolean}
+	 */
+	hasParticipantId : function () {
+		if(this._participantId && this._participantId.length > 0){
+			return true;
+		}else{
+			return false;
+		}
 	},
 
 	/**
@@ -1119,12 +1135,13 @@ var Person = Class.create(AbstractPerson, {
 		var onceAlive = editor.getGraph().hasRelationships(this.getID());
 		var inactiveStates = onceAlive ? ['unborn', 'aborted', 'miscarriage', 'stillborn'] : false;
 		var disabledStates = false;
-		if (this.isProband()) {
+
+		if (this.isProband() || this.hasParticipantId()) {
 			disabledStates = ['alive', 'deceased', 'unborn', 'aborted', 'miscarriage', 'stillborn']; // all possible
 			Helpers.removeFirstOccurrenceByValue(disabledStates, this.getLifeStatus())
 		}
 
-		var disabledGenders = this.isProband() ? [] : false;
+		var disabledGenders = (this.isProband() || this.hasParticipantId()) ? [] : false;
 		var inactiveGenders = false;
 		var genderSet = editor.getGraph().getPossibleGenders(this.getID());
 		for (gender in genderSet) {
@@ -1193,50 +1210,57 @@ var Person = Class.create(AbstractPerson, {
 		if (this.getLifeStatus() == "aborted" || this.getLifeStatus() == "miscarriage") {
 			inactiveCarriers.push('presymptomatic');
 		}
+		//If it has participantId, then disable all options
+		if(this.hasParticipantId()){
+			inactiveCarriers = ['','carrier','uncertain','affected','presymptomatic'];
+		}
 
-		var inactiveLostContact = this.isProband() || !editor.getGraph().isRelatedToProband(this.getID());
+
+		var inactiveLostContact = this.isProband() || !editor.getGraph().isRelatedToProband(this.getID()) || this.hasParticipantId();
 
 		// TODO: only suggest posible birth dates which are after the latest
 		//       birth date of any ancestors; only suggest death dates which are after birth date
 
 		return {
 			identifier: {value: this.getID()},
-			nhs_number:    {value : this.getNHSNumber()},
-			chi_number:    {value : this.getCHINumber()},
+			nhs_number:    {value : this.getNHSNumber(), disabled: this.hasParticipantId()},
+			chi_number:    {value : this.getCHINumber(), disabled: this.hasParticipantId()},
 			gel_super_family_id: {value : this.getGelSuperFamilyId()},
 			consanguineous_population: {value : this.getConsanguineousPopulation()},
 			karyotypic_sex: {value : this.getKaryotypicSex()},
 			ancestries: {value : this.getAncestries()},
 			participant_id:{value : this.getParticipantId()},
-			first_name: {value: this.getFirstName()},
-			last_name: {value: this.getLastName()},
-			last_name_birth: {value: this.getLastNameAtBirth()}, //, inactive: (this.getGender() != 'F')},
-			external_id: {value: this.getExternalID()},
-			gender: {value: this.getGender(), inactive: inactiveGenders},
-			date_of_birth: {value: this.getBirthDate(), inactive: this.isFetus()},
+			first_name: {value: this.getFirstName(), disabled: this.hasParticipantId()},
+			last_name: {value: this.getLastName(), disabled: this.hasParticipantId()},
+			last_name_birth: {value: this.getLastNameAtBirth(), disabled: this.hasParticipantId()}, //, inactive: (this.getGender() != 'F')},
+			external_id: {value: this.getExternalID(), disabled: this.hasParticipantId()},
+			gender: {value: this.getGender(), inactive: inactiveGenders, disabled: this.hasParticipantId()},
+			date_of_birth: {value: this.getBirthDate(), inactive: this.isFetus(), disabled: this.hasParticipantId()},
 			carrier: {value: this.getCarrierStatus(), disabled: inactiveCarriers},
-			disorders: {value: disorders },
+			disorders: {value: disorders, disabled: this.hasParticipantId()},
 			disordersFullDetails:     {value : this._disordersFullDetails},
-			disorderType:  {value : this.getDisorderType()},
-			ethnicity: {value: this.getEthnicities()},
-			candidate_genes: {value: this.getGenes()},
-			adopted: {value: this.getAdopted(), inactive: cantChangeAdopted},
-			state: {value: this.getLifeStatus(), inactive: inactiveStates, disabled: disabledStates},
-			date_of_death: {value: this.getDeathDate(), inactive: this.isFetus()},
+			disorderType:  {value : this.getDisorderType(), disabled: this.hasParticipantId()},
+			ethnicity: {value: this.getEthnicities(), disabled: this.hasParticipantId() },
+			candidate_genes: {value: this.getGenes(), disabled: this.hasParticipantId()},
+			adopted: {value: this.getAdopted(), inactive: cantChangeAdopted, disabled: this.hasParticipantId()},
+			state: {value: this.getLifeStatus(), inactive: inactiveStates, disabled: disabledStates },
+			date_of_death: {value: this.getDeathDate(), inactive: this.isFetus(), disabled: this.hasParticipantId()},
 			commentsClinical: {value: this.getComments(), inactive: false},
 			commentsPersonal: {value: this.getComments(), inactive: false},  // so far the same set of comments is displayed on all tabs
 			commentsCancers: {value: this.getComments(), inactive: false},
-			gestation_age: {value: this.getGestationAge(), inactive: !this.isFetus()},
-			childlessSelect: {value: this.getChildlessStatus() ? this.getChildlessStatus() : 'none', inactive: childlessInactive},
-			childlessText: {value: this.getChildlessReason() ? this.getChildlessReason() : undefined, inactive: childlessInactive, disabled: !this.getChildlessStatus()},
+			gestation_age: {value: this.getGestationAge(), inactive: !this.isFetus(), disabled: this.hasParticipantId()},
+			childlessSelect: {value: this.getChildlessStatus() ? this.getChildlessStatus() : 'none', inactive: childlessInactive, disabled: this.hasParticipantId()},
+			childlessText: {value: this.getChildlessReason() ? this.getChildlessReason() : undefined, inactive: childlessInactive, disabled: !this.getChildlessStatus() || this.hasParticipantId()},
 			placeholder: {value: false, inactive: true },
-			monozygotic: {value: this.getMonozygotic(), inactive: inactiveMonozygothic, disabled: disableMonozygothic },
-			evaluated: {value: this.getEvaluated() },
-			hpo_positive: {value: hpoTerms },
+			monozygotic: {value: this.getMonozygotic(), inactive: inactiveMonozygothic, disabled: disableMonozygothic || this.hasParticipantId()},
+			evaluated: {value: this.getEvaluated(), disabled: this.hasParticipantId() },
+			hpo_positive: {value: hpoTerms , disabled: this.hasParticipantId()},
 			hpo_positiveFullDetails:     {value : this._hpoFullDetails}, //Added for GEL(GenomicsEngland)..........
 			nocontact: {value: this.getLostContact(), inactive: inactiveLostContact },
-			cancers: {value: this.getCancers() },
-			phenotipsid: {value: this.getPhenotipsPatientId() }
+			cancers: {value: this.getCancers() , disabled: this.hasParticipantId()},
+			phenotipsid: {value: this.getPhenotipsPatientId() , disabled: this.hasParticipantId()},
+
+			ageOfOnset: {value: "" , disabled: this.hasParticipantId()}
 		};
 	},
 

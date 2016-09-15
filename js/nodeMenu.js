@@ -1600,7 +1600,22 @@ NodeMenu = Class.create({
 			// FIXME: Not implemented
 		},
 		'select': function (container, inactive) {
-			// FIXME: Not implemented
+			//Added for GEL(GenomicsEngland) .........................................................
+			Element.select(container, 'select').forEach(function (element) {
+				if (inactive) {
+					// IE9 & IE10 do not support "pointer-events:none" (and IE11 does not seem to support this for <select>)
+					// so add some JS to prevent clicks on disabled select
+					Helpers.disableMouseclicks(element);
+					element.addClassName('disabled-select');
+					element.addClassName('no-mouse-interaction');
+				} else {
+					// emove IE-specific workaround handler
+					Helpers.enableMouseclicks(element);
+					element.removeClassName('disabled-select');
+					element.removeClassName('no-mouse-interaction');
+				}
+			});
+			//..........................................................................................
 		},
 		'cancerlist': function (container, inactive) {
 			// FIXME: Not implemented
