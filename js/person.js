@@ -91,7 +91,7 @@ var Person = Class.create(AbstractPerson, {
 		//_disorderType: this field is used to monitor the value of the selected disorderType in the UI
 		//we do not export it into the JSON
 		this._disorderType = "";
-		this._ageOfOnset = "";
+		this._ageOfOnset = ""; //This field is used internally for assigning ageOfOnset to disorder rows
 		this._familyId = "";
 
 		this._cancers = {};
@@ -1290,7 +1290,8 @@ var Person = Class.create(AbstractPerson, {
 			cancers: {value: this.getCancers() , disabled: this.hasParticipantId()},
 			phenotipsid: {value: this.getPhenotipsPatientId() , disabled: this.hasParticipantId()},
 
-			ageOfOnset: {value: "" , disabled: this.hasParticipantId()}
+			//These two fields are used internally for creating rows in disorder and hpo, we do not export them
+			ageOfOnset: {value: "" , disabled: this.hasParticipantId()},
 		};
 	},
 
