@@ -1457,3 +1457,84 @@ Person.addMethods(ChildlessBehavior);
 //Added for GEL(GenomicsEngland)
 //we hold name of set methods for each property in this map, this will be used in "Person.assignValues" for assigning values into each property dynamically
 Person.setMethods = {};
+
+//Added for GEL(GenomicsEngland)
+//This will be used to assign values into a node and dynamically update the UI. Mainly used for drag/drop and copying an unRendered node into a node in the UI
+Person.assignValues = function(person, unRenderedValueAll){
+	var disorderLoaded = false;
+	var hpoLoaded = false;
+	for (var property in unRenderedValueAll) {
+		if (Object.prototype.hasOwnProperty.call(unRenderedValueAll, property)) {
+			var value = unRenderedValueAll[property];
+			var setMethod = Person.setMethods[property];
+			if(!setMethod){
+				console.log("Set method '"+ setMethod + "' for property '" + property +"' not specified in Person.setMethods");
+				continue;
+			}
+
+			//We need to follow a certain order to fill disorder and disorderFullDetails
+			if((property == "disordersFullDetails" || property == "disorders")){
+
+				if(disorderLoaded){
+					continue;
+				}
+
+				if(!unRenderedValueAll.disordersFullDetails){
+					//disordersFullDetails must have been included, otherwise we can not load disorders from "disorders" in unRendered Nodes
+					console.log("disordersFullDetails must have been included, otherwise we can not load disorders from 'disorders' in unRendered Nodes");
+					continue;
+				}
+
+				if(unRenderedValueAll.disordersFullDetails){
+					var disorders = unRenderedValueAll.disordersFullDetails;
+					var newDisorderArray = [];
+					for(var i = 0; i < disorders.length; i++){
+						var disorder = new Disorder(disorders[i]._disorderID, disorders[i]._name,disorders[i]._valueAll);
+						newDisorderArray.push(disorder);
+					}
+					var properties = {};
+					properties["setDisorders"] = newDisorderArray;
+					var event = { "nodeID": person.getID(), "properties": properties };
+					document.fire("pedigree:node:setproperty", event);
+				}
+
+				disorderLoaded = true;
+				continue;
+			}
+
+			//We need to follow a certain order to fill hpoTerms and hpoTermsFullDetails
+			if((property == "hpoTerms" || property == "hpoTermsFullDetails")){
+
+				if(hpoLoaded){
+					continue;
+				}
+
+				if(!unRenderedValueAll.hpoTermsFullDetails){
+					//hpoTermsFullDetails must have been included, otherwise we can not load HPO from "hpoTerms" in unRendered Nodes
+					console.log("hpoTermsFullDetails must have been included, otherwise we can not load HPOs from 'hpoTerms' in unRendered Nodes");
+					continue;
+				}
+
+				if(unRenderedValueAll.hpoTermsFullDetails){
+					var HPOs = unRenderedValueAll.hpoTermsFullDetails;
+					var newHPOArray = [];
+					for(var i = 0; i < HPOs.length; i++){
+						var HPO = new HPOTerm(HPOs[i]._hpoID, HPOs[i]._name,HPOs[i]._valueAll);
+						newHPOArray.push(HPO);
+					}
+					var properties = {};
+					properties["setHPO"] = newHPOArray;
+					var event = { "nodeID": person.getID(), "properties": properties };
+					document.fire("pedigree:node:setproperty", event);
+				}
+				hpoLoaded = true;
+				continue;
+			}
+
+			var properties = {};
+			properties[setMethod] = value;
+			var event = { "nodeID": person.getID(), "properties": properties };
+			document.fire("pedigree:node:setproperty", event);
+		}
+	}
+};
