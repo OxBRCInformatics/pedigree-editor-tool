@@ -389,7 +389,21 @@ NodeMenu = Class.create({
 						'inputType': 'hidden',
 						'listInsertionElt': 'input',
 						'listInsertionPosition': 'after',
-						'acceptFreeText': true
+						'acceptFreeText': true,
+						'showHPOPresentStatus':true,
+						customizeItemDisplay : function(key, value, valueAll, displayedValue, options){
+							if(options.showHPOPresentStatus){
+								// insert the displayed value
+								var hpoPresent = "";
+								if(valueAll != undefined){
+									hpoPresent = valueAll.hpoPresent ? valueAll.hpoPresent : "unknown";
+								}else{
+									hpoPresent = "unknown";
+								}
+								var hpoPresentContainer = new Element('span', {'class': 'hpo-present'}).insert("(").insert(hpoPresent).insert(")");
+								displayedValue.insert("").insert(hpoPresentContainer);
+							}
+						}
 					});
 				}
 				item.addClassName('initialized');
@@ -735,6 +749,15 @@ NodeMenu = Class.create({
 			var _this = this;
 			document.observe('custom:selection:changed', function (event) {
 				if (event.memo && event.memo.fieldName == data.name && event.memo.trigger && event.findElement() != event.memo.trigger && !event.memo.trigger._silent) {
+					//Added for GEL.....................................................................................
+					if (_this.form.select("select[name='hpoPresent']").length > 0){
+						var hpoPresent = (_this.form.select("select[name='hpoPresent']")[0]).getValue();
+						var valueAll  =  event.memo.customElement.retrieve("valueAll");
+						if(valueAll != undefined){
+							valueAll.hpoPresent = hpoPresent;
+						}
+					}
+					//..................................................................................................
 					Event.fire(event.memo.trigger, 'custom:selection:changed');
 					_this.reposition();
 				}
