@@ -609,13 +609,14 @@ var PedigreeEditor = Class.create({
 				'tab': 'Clinical',
 				'function': 'setHPO'
 			},
-			{
-				'name': 'candidate_genes',
-				'label': 'Genotype information: candidate genes',
-				'type': 'gene-picker',
-				'tab': 'Clinical',
-				'function': 'setGenes'
-			},
+			//Commented for GEL(GenomicsEngland)
+			//{
+			//	'name': 'candidate_genes',
+			//	'label': 'Genotype information: candidate genes',
+			//	'type': 'gene-picker',
+			//	'tab': 'Clinical',
+			//	'function': 'setGenes'
+			//},
 			{
 				'name': 'date_of_birth',
 				'label': 'Date of birth',
