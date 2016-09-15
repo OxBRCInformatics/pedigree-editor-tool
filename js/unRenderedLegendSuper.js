@@ -149,6 +149,23 @@ var unRenderedLegendSuper = Class.create(Legend, {
 
 		var countLabelContainer = new Element('span', {'class': 'abnormality-cases-container'});
 		item.insert(" ").insert(countLabelContainer);
+
+		new Draggable(item, {
+			revert: true,
+			reverteffect: function (segment) {
+				// Reset the in-line style.
+				segment.setStyle({
+					height: '',
+					left: '',
+					position: '',
+					top: '',
+					zIndex: '',
+					width: ''
+				});
+			},
+			ghosting: true
+		});
+
 		return item;
 	}
 
