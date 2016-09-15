@@ -478,6 +478,13 @@ var PedigreeEditor = Class.create({
 				'tab': 'Personal',
 				'function' : 'setParticipantId'
 			},
+			//{
+			//	'name' : 'family_id',
+			//	'label': 'Family ID',
+			//	'type' : 'text',
+			//	'tab': 'Personal',
+			//	'function' : 'setFamilyId'
+			//},
 			{
 				'name': 'gel_super_family_id',
 				'label': 'GEL Super Family ID',
