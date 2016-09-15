@@ -42,6 +42,13 @@ var Person = Class.create(AbstractPerson, {
 		Person.setMethods["CHINumber"] = "setCHINumber";
 		this._gelSuperFamilyId = "";// added for GEL
 		Person.setMethods["gelSuperFamilyId"] = "setGelSuperFamilyId";
+
+
+		this._familyId = "";// added for GEL
+		Person.setMethods["familyId"] = "setFamilyId";
+
+
+
 		this._consanguineousPopulation = "";// added for GEL
 		Person.setMethods["consanguineousPopulation"] = "setConsanguineousPopulation";
 		this._karyotypicSex = "";// added for GEL
@@ -85,6 +92,7 @@ var Person = Class.create(AbstractPerson, {
 		//we do not export it into the JSON
 		this._disorderType = "";
 		this._ageOfOnset = "";
+		this._familyId = "";
 
 		this._cancers = {};
 		Person.setMethods["cancers"] = "setCancers";
@@ -190,6 +198,12 @@ var Person = Class.create(AbstractPerson, {
 		return this._gelSuperFamilyId
 	},
 
+	// added for GEL
+	getFamilyId: function() {
+		return this._familyId
+	},
+
+
 	//added for GEL
 	getConsanguineousPopulation: function(){
 		return this._consanguineousPopulation;
@@ -237,6 +251,16 @@ var Person = Class.create(AbstractPerson, {
 		this._gelSuperFamilyId = gelSuperFamilyId;
 	},
 
+	// added for GEL
+	setFamilyId: function(familyId) {
+		this._familyId = familyId;
+		//if it is a proband, then fire "pedigree:update:topMenu" to update the text in top-menu
+		if(this.isProband()) {
+			var event = { "familyId": this._familyId, "participantId": this._participantId };
+			document.fire("pedigree:update:topMenu", event);
+		}
+	},
+
 	//added for GEL
 	setConsanguineousPopulation: function(consanguineousPopulation){
 		this._consanguineousPopulation = consanguineousPopulation;
@@ -261,6 +285,11 @@ var Person = Class.create(AbstractPerson, {
 
 	setParticipantId: function(participantId) {
 		this._participantId = participantId;
+		//if it is a proband, then fire "pedigree:update:topMenu" to update the text in top-menu
+		if(this.isProband()) {
+			var event = { "familyId": this._familyId, "participantId": this._participantId };
+			document.fire("pedigree:update:topMenu", event);
+		}
 	},
 
 
@@ -1226,6 +1255,7 @@ var Person = Class.create(AbstractPerson, {
 			nhs_number:    {value : this.getNHSNumber(), disabled: this.hasParticipantId()},
 			chi_number:    {value : this.getCHINumber(), disabled: this.hasParticipantId()},
 			gel_super_family_id: {value : this.getGelSuperFamilyId()},
+			family_id: {value : this.getFamilyId()},
 			consanguineous_population: {value : this.getConsanguineousPopulation()},
 			karyotypic_sex: {value : this.getKaryotypicSex()},
 			ancestries: {value : this.getAncestries()},
@@ -1288,6 +1318,10 @@ var Person = Class.create(AbstractPerson, {
 			info['NHSNumber'] = this.getNHSNumber();
 		if (this.getGelSuperFamilyId() != "")
 			info['gelSuperFamilyId'] = this.getGelSuperFamilyId();
+
+		if (this.getFamilyId() != "")
+			info['familyId'] = this.getFamilyId();
+
 		if (this.getKaryotypicSex() != "")
 			info['karyotypicSex'] = this.getKaryotypicSex();
 		if (this.getConsanguineousPopulation() != "")
@@ -1377,6 +1411,11 @@ var Person = Class.create(AbstractPerson, {
 			if(info.gelSuperFamilyId && this.getGelSuperFamilyId() != info.gelSuperFamilyId) {
 				this.setGelSuperFamilyId(info.gelSuperFamilyId);
 			}
+
+			if(info.familyId && this.getFamilyId() != info.familyId) {
+				this.setFamilyId(info.familyId);
+			}
+
 			if(info.karyotypicSex && this.getKaryotypicSex() != info.karyotypicSex) {
 				this.setKaryotypicSex(info.karyotypicSex);
 			}
