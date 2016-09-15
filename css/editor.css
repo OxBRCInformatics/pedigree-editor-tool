@@ -683,10 +683,16 @@
 	padding-left: 0;
 }
 .menu-box .field-hpo_positive {
-	width: 85%;
+	width: 75%;
 	float: left;
-	padding: 1em 0;
 }
+.menu-box .field-hpoPresent {
+	width: 25%;
+	float: right;
+	padding: 0.6em 0;
+}
+
+
 /* Disable the "browse ontology" button, as ontology browser events are not supported (yet) */
 .tooltip-phenotype-info .term-tools {
 	display: none;
