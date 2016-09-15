@@ -558,7 +558,7 @@ var PedigreeEditor = Class.create({
 			{
 				'name': 'ancestries',
 				'label': 'Ancestries',
-				'type': 'text',
+				'type': 'textarea',
 				'tab': 'Personal',
 				'function': 'setAncestries'
 			},
