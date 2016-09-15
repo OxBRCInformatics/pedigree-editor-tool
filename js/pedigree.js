@@ -452,7 +452,7 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'karyotypic_sex',
-				'label': 'Karyotypic Sex',
+				'label': 'Working Karyotypic Sex',
 				'values': [
 					{'actual': 'Unknown',displayed:'Unknown'},
 					{'actual': 'XY',displayed:'XY'},
@@ -813,7 +813,7 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'karyotypic_sex',
-				'label': 'Karyotypic Sex',
+				'label': 'Working Karyotypic Sex',
 				'values': [
 					{'actual': 'Unknown',displayed:'Unknown'},
 					{'actual': 'XY',displayed:'XY'},
