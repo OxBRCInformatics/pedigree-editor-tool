@@ -92,6 +92,7 @@ var Person = Class.create(AbstractPerson, {
 		//we do not export it into the JSON
 		this._disorderType = "";
 		this._ageOfOnset = ""; //This field is used internally for assigning ageOfOnset to disorder rows
+		this._hpoPresent = ""; //This field is used internally for assigning hpoPresent status to hpo rows
 		this._familyId = "";
 
 		this._cancers = {};
@@ -1292,6 +1293,7 @@ var Person = Class.create(AbstractPerson, {
 
 			//These two fields are used internally for creating rows in disorder and hpo, we do not export them
 			ageOfOnset: {value: "" , disabled: this.hasParticipantId()},
+			hpoPresent: {value: "" , disabled: this.hasParticipantId()}
 		};
 	},
 
