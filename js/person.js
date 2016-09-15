@@ -33,44 +33,78 @@ var Person = Class.create(AbstractPerson, {
 	_setDefault: function () {
 		this._phenotipsId = "";
 		this._firstName = "";
+		Person.setMethods["firstName"] = "setFirstName";
 		this._lastName = "";
+		Person.setMethods["lastName"] = "setLastName";
 		this._NHSNumber = ""; // added for GEL
+		Person.setMethods["NHSNumber"] = "setNHSNumber";
 		this._CHINumber = ""; // added for GEL
+		Person.setMethods["CHINumber"] = "setCHINumber";
 		this._gelSuperFamilyId = "";// added for GEL
+		Person.setMethods["gelSuperFamilyId"] = "setGelSuperFamilyId";
 		this._consanguineousPopulation = "";// added for GEL
+		Person.setMethods["consanguineousPopulation"] = "setConsanguineousPopulation";
 		this._karyotypicSex = "";// added for GEL
+		Person.setMethods["karyotypicSex"] = "setKaryotypicSex";
 		this._ancestries = "";//added for GEL
+		Person.setMethods["ancestries"] = "setAncestries";
 		this._participantId = "";
+		Person.setMethods["participantId"] = "setParticipantId";
 		this._lastNameAtBirth = "";
+		Person.setMethods["lastNameAtBirth"] = "setLastNameAtBirth";
 		this._birthDate = null;
+		Person.setMethods["birthDate"] = "setBirthDate";
 		this._deathDate = null;
+		Person.setMethods["deathDate"] = "setDeathDate";
+
 		this._conceptionDate = "";
+
 		this._gestationAge = "";
+		Person.setMethods["gestationAge"] = "setGestationAge";
 		this._adoptedStatus = "";
+		Person.setMethods["adoptedStatus"] = "setAdoptedStatus";
 		this._externalID = "";
+		Person.setMethods["externalID"] = "setExternalID";
 		this._lifeStatus = 'alive';
+		Person.setMethods["lifeStatus"] = "setLifeStatus";
 		this._childlessStatus = null;
+		Person.setMethods["childlessStatus"] = "setChildlessStatus";
 		this._childlessReason = "";
+		Person.setMethods["childlessReason"] = "setChildlessReason";
 		this._carrierStatus = "";
+		Person.setMethods["carrierStatus"] = "setCarrierStatus";
 		this._disorders = [];
+		Person.setMethods["disorders"] = "setDisorders";
 		//comment added by Soheil 04.08.2016 for GEL(GenomicsEngland)
 		//_disordersFullDetails: this field will hold all disorders with full details that returned from OCService
 		//it will help to find out disorderName,disorderType ie. OMIM, ICD10,....
 		this._disordersFullDetails = [];
+		Person.setMethods["disordersFullDetails"] = "setDisordersFullDetails";
 		//comment added by Soheil 04.08.2016 for GEL(GenomicsEngland)
 		//_disorderType: this field is used to monitor the value of the selected disorderType in the UI
 		//we do not export it into the JSON
 		this._disorderType = "";
+
 		this._cancers = {};
+		Person.setMethods["cancers"] = "setCancers";
 		this._hpo = [];
+		Person.setMethods["hpoTerms"] = "setHPO";
 		this._hpoFullDetails = [];
+		Person.setMethods["hpoTermsFullDetails"] = "setHPOFullDetails";
 		this._ethnicities = [];
+		Person.setMethods["ethnicities"] = "setEthnicities";
 		this._candidateGenes = [];
+		Person.setMethods["candidateGenes"] = "setGenes";
 		this._twinGroup = null;
+		Person.setMethods["twinGroup"] = "setTwinGroup";
 		this._monozygotic = false;
+		Person.setMethods["monozygotic"] = "setMonozygotic";
 		this._evaluated = false;
+		Person.setMethods["evaluated"] = "setEvaluated";
 		this._pedNumber = "";
+		Person.setMethods["nodeNumber"] = "setPedNumber";
 		this._lostContact = false;
+		Person.setMethods["lostContact"] = "setLostContact";
 	},
 
 	/**
@@ -1419,3 +1453,7 @@ var Person = Class.create(AbstractPerson, {
 
 //ATTACHES CHILDLESS BEHAVIOR METHODS TO THIS CLASS
 Person.addMethods(ChildlessBehavior);
+
+//Added for GEL(GenomicsEngland)
+//we hold name of set methods for each property in this map, this will be used in "Person.assignValues" for assigning values into each property dynamically
+Person.setMethods = {};
