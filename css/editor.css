@@ -692,6 +692,10 @@
 	padding: 0.6em 0;
 }
 
+.menu-box .field-hpoPresent label.field-name {
+	font-size: 12px !important;
+}
+
 
 /* Disable the "browse ontology" button, as ontology browser events are not supported (yet) */
 .tooltip-phenotype-info .term-tools {

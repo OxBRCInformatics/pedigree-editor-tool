@@ -618,7 +618,7 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name' : 'hpoPresent',
-				'label': 'Present',
+				'label': 'HPO Present',
 				'type': 'select',
 				'tab': 'Clinical',
 				'values' : [
