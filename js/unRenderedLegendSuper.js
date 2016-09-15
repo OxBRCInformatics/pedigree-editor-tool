@@ -126,6 +126,10 @@ var unRenderedLegendSuper = Class.create(Legend, {
 
 
 		//Hidden elements should has .unRenderedHidden CSS Class ......................................................
+		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("KaryotypicSex: "));
+		item.insert(new Element('span', {class:'unRenderedItemValue unRenderedHidden'}).update(node.karyotypicSex));
+		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+
 		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("Disorders:"));
 		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
 		for(var i = 0; i < node.disordersFullDetails.length;i++) {
@@ -140,11 +144,6 @@ var unRenderedLegendSuper = Class.create(Legend, {
 			item.insert(new Element('span', {class:'unRenderedHidden unRendered-disorder-item'}).update("&bull;&nbsp;" + node.hpoTermsFullDetails[i]._hpoID + "&nbsp;" + node.hpoTermsFullDetails[i]._name));
 			item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
 		}
-
-
-		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("KaryotypicSex: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue unRenderedHidden'}).update(node.karyotypicSex));
-		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
 		//.............................................................................................................
 
 
