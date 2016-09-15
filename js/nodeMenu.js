@@ -214,13 +214,14 @@ NodeMenu = Class.create({
 						}
 						return null;
 					},
-					enableInputTermSelection: function(){
-						var select = FORM.select("select[name='disorderType']")[0];
-						var disorderType = select.options[select.selectedIndex].value;
-						if(disorderType == "GEL"){
+					canSelectInputTerm: function(){
 							return false;
-						}
-						return true;
+						//var select = FORM.select("select[name='disorderType']")[0];
+						//var disorderType = select.options[select.selectedIndex].value;
+						//if(disorderType == "GEL"){
+						//	return false;
+						//}
+						//return true;
 					},
 					enableHierarchy: false,
 					fadeOnClear: false,
