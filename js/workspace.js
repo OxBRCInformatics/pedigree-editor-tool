@@ -14,7 +14,9 @@ var Workspace = Class.create({
 		this.workArea = new Element('div', {'id': 'work-area'}).update(this.canvas);
 		$('body').update(this.workArea);
 		var screenDimensions = document.viewport.getDimensions();
-		this.generateTopMenu();
+		//Added for GEL(GenomicsEngland) to have a reference to topMenu
+		//this.generateTopMenu()
+		this.topMenu = this.generateTopMenu();
 		this.width = screenDimensions.width;
 		this.height = screenDimensions.height - this.canvas.cumulativeOffset().top - 4;
 		this._paper = Raphael("canvas", this.width, this.height);
@@ -280,6 +282,12 @@ var Workspace = Class.create({
 						//{ key : 'print',     label : 'Print', icon : 'print'},
 						{ key: 'close', label: 'Close', icon: 'sign-out'}
 					]
+				},
+				{
+					name: 'details',
+					items: [
+						{ key: 'familyId', label: '', isTextOnly:true}
+					]
 				}
 			];
 		}
@@ -310,18 +318,74 @@ var Workspace = Class.create({
 			});
 		};
 		var _createMenuItem = function (data) {
-			var buttonIcon = new Element('span', {'class': 'fa fa-' + data.icon});
-			var mi = new Element('span', {'id': 'action-' + data.key, 'class': 'field-no-user-select menu-item ' + data.key}).insert(buttonIcon).insert(' ').insert(data.label);
-			if (data.callback && typeof(data.callback) == 'function') {
-				mi.observe('click', function () {
-					data.callback(mi, buttonIcon);
-				});
+			//Added for GEL(GenomicsEngland) ......................................................................
+			//if it is a textOnly subMenu, just display the text
+			if(data.isTextOnly){
+				var mi = new Element('span', {'id': 'text-' + data.key, 'class': 'menu-item-text-only'}).insert("");
+				return mi;
+			}else{
+				//if it is NOT a textOnly subMenu, work as before
+				var buttonIcon = new Element('span', {'class': 'fa fa-' + data.icon});
+				var mi = new Element('span', {'id': 'action-' + data.key, 'class': 'field-no-user-select menu-item ' + data.key}).insert(buttonIcon).insert(' ').insert(data.label);
+				if (data.callback && typeof(data.callback) == 'function') {
+					mi.observe('click', function () {
+						data.callback(mi, buttonIcon);
+					});
+				}
+				return mi;
 			}
-			return mi;
+			//commented for GEL(GenomicsEngland) ...................................................
+			//var buttonIcon = new Element('span', {'class': 'fa fa-' + data.icon});
+			//var mi = new Element('span', {'id': 'action-' + data.key, 'class': 'field-no-user-select menu-item ' + data.key}).insert(buttonIcon).insert(' ').insert(data.label);
+			//if (data.callback && typeof(data.callback) == 'function') {
+			//	mi.observe('click', function () {
+			//		data.callback(mi, buttonIcon);
+			//	});
+			//}
+			//return mi;
+			//.......................................................................................
 		};
 
 		menuItems.each(_createSubmenu.bind(menu));
 		secondaryMenuItems.each(_createSubmenu.bind(secondaryMenu));
+
+		return menu;
+	},
+
+	/**
+	 * Added for GEL(GenomicsEngland)
+	 * This method will set the text on topMenu in "span#text-familyId"
+	 * It is used for setting participantId and familyId
+	 * @param participantId
+	 * @param familyId
+	 */
+	setMenuText: function(participantId, familyId){
+		if(this.topMenu) {
+			var span = this.topMenu.select("span#text-familyId");
+			if (span && span.length > 0) {
+				var label = "";
+				if (participantId && participantId.length > 0) {
+					label = participantId;
+				}
+				if (familyId && familyId.length > 0) {
+					label = label + "&nbsp;&nbsp;FamilyId:&nbsp;" + familyId +"";
+				}
+				(span[0]).update(label);
+			}
+		}
+	},
+
+	/**
+	 * Added for GEL(GenomicsEngland)
+	 * This method clears the top-menu text in span#text-familyId
+	 */
+	clearMenuText : function(){
+		if(this.topMenu) {
+			var span = this.topMenu.select("span#text-familyId");
+			if (span && span.length > 0) {
+				span[0].update("");
+			}
+		}
 	},
 
 	/**
