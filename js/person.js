@@ -1405,6 +1405,9 @@ var Person = Class.create(AbstractPerson, {
 			if (info.lName && this.getLastName() != info.lName) {
 				this.setLastName(info.lName);
 			}
+			if (info.participantId && this.getParticipantId() != info.participantId) {
+				this.setParticipantId(info.participantId);
+			}
 			if(info.NHSNumber && this.getNHSNumber() != info.NHSNumber) {
 				this.setNHSNumber(info.NHSNumber);
 			}
