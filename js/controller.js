@@ -9,6 +9,7 @@
 
 var Controller = Class.create({
 	initialize: function () {
+		document.observe("pedigree:update:topMenu", this.handleTopMenuUpdate);
 		document.observe("pedigree:autolayout", this.handleAutoLayout);
 		document.observe("pedigree:graph:clear", this.handleClearGraph);
 		document.observe("pedigree:undo", this.handleUndo);
@@ -140,6 +141,19 @@ var Controller = Class.create({
 
 		if (!event.memo.noUndoRedo)
 			editor.getUndoRedoManager().addState(event);
+	},
+
+
+	/**
+	 * Added for GEL(GenomicsEngland)
+	 * This event handler will update the text in top menu and displays values like
+	 * particpnatId and familyId when they are changed
+	 * @param event
+	 */
+	handleTopMenuUpdate: function (event){
+		var familyId 	  = event.memo.familyId;
+		var participantId = event.memo.participantId;
+		editor.getWorkspace().setMenuText(participantId, familyId);
 	},
 
 	handleRemove: function (event) {
