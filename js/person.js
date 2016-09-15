@@ -780,6 +780,11 @@ var Person = Class.create(AbstractPerson, {
 	//.............................................................................................
 
 
+	//added for GEL................................................................................
+	setDisordersFullDetails: function(disordersFullDetails){
+		this._disordersFullDetails = disordersFullDetails;
+	},
+
 	/**
 	 * Returns a list of all HPO terms associated with the patient
 	 *
@@ -870,6 +875,11 @@ var Person = Class.create(AbstractPerson, {
 		for (var i = 0; i < hpos.length; i++) {
 			this.addHPO(hpos[i]);
 		}
+	},
+
+	//added for GEL................................................................................
+	setHPOFullDetails: function(hpoFullDetails) {
+		this._hpoFullDetails = hpoFullDetails;
 	},
 
 	/**
