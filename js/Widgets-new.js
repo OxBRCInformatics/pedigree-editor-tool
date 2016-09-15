@@ -2887,8 +2887,8 @@ var PhenoTips = (function (PhenoTips) {
 					//Added for GEL (GenomicsEngland) ..................................................................
 					// "your text, not a standard term" add this text just in the beginning of the results list
 					var pagination     = (this.options.resultUsePagination ? this.options.resultUsePagination() : false);
-					var searchTermCanBeSelected = (this.options.enableInputTermSelection ? this.options.enableInputTermSelection() : true);
-					if((!pagination && searchTermCanBeSelected) || (pagination && this.resultPage == 0 && searchTermCanBeSelected)){
+					var canSelectInputTerm = (this.options.canSelectInputTerm ? this.options.canSelectInputTerm() : true);
+					if((!pagination && canSelectInputTerm) || (pagination && this.resultPage == 0 && canSelectInputTerm)){
 						list.addItem(this.generateListItem({
 							id: this.fld.value,
 							value: this.fld.value,

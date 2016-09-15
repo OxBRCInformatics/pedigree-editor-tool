@@ -79,40 +79,72 @@ var unRenderedLegendSuper = Class.create(Legend, {
 		var color = this.getObjectColor(id);
 		var HTMLContent = node.participantId + "<br>";
 
-		var item = new Element('li', {'class': 'abnormality ' + 'drop-' + this._getPrefix(), 'id': this._getPrefix() + id}).update(HTMLContent);//new Element('span', {'class': 'disorder-name'}).update("ID"));
+		var item = new Element('li', {'class': 'UnRendered-legend-box-item abnormality ' + 'drop-' + this._getPrefix(), 'id': this._getPrefix() + id}).update(HTMLContent);//new Element('span', {'class': 'disorder-name'}).update("ID"));
+		//Add an internal id to the node to find out where in the list it's located
+		node.unRenderedIndex = id;
+		item.store("valueAll", node);
 
-		item.insert(new Element('span', {class:'unRenderedItemName'}).update("NHS#: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.nhsNumber));
+		item.insert(new Element('span', {class: 'unRenderedItemName'}).update("NHS#: "));
+		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.nhsNumber));
 		item.insert(new Element('span', {}).update("<br>"));
 
-		item.insert(new Element('span', {class:'unRenderedItemName'}).update("CHI#: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.chiNumber));
+
+		if(node.chiNumber && node.chiNumber.length > 0) {
+			item.insert(new Element('span', {class: 'unRenderedItemName'}).update("CHI#: "));
+			item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.chiNumber));
+			item.insert(new Element('span', {}).update("<br>"));
+		}
+
+
+		item.insert(new Element('span', {class: 'unRenderedItemName'}).update("Forenames: "));
+		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.firstName));
 		item.insert(new Element('span', {}).update("<br>"));
 
-		item.insert(new Element('span', {class:'unRenderedItemName'}).update("Forenames: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.firstName));
+
+		item.insert(new Element('span', {class: 'unRenderedItemName'}).update("Surname: "));
+		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.lastName));
 		item.insert(new Element('span', {}).update("<br>"));
 
-		item.insert(new Element('span', {class:'unRenderedItemName'}).update("Surname: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.lastName));
+
+		item.insert(new Element('span', {class: 'unRenderedItemName'}).update("Gender: "));
+		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.sex));
 		item.insert(new Element('span', {}).update("<br>"));
 
-		item.insert(new Element('span', {class:'unRenderedItemName'}).update("Relation: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(node.relationshipToProband));
+
+		item.insert(new Element('span', {class:'unRenderedItemName'}).update("BirthDate: "));
+		var dob = "";
+		if(node.birthDate) {
+			var dob = node.birthDate.day + "/" + node.birthDate.month + "/" + node.birthDate.year;
+		}
+		item.insert(new Element('span', {class:'unRenderedItemValue'}).update(dob));
 		item.insert(new Element('span', {}).update("<br>"));
 
+
+		item.insert(new Element('span', {class: 'unRenderedItemName'}).update("Relation: "));
+		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.relationshipToProband));
+		item.insert(new Element('span', {}).update("<br>"));
 
 
 		//Hidden elements should has .unRenderedHidden CSS Class ......................................................
-		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("Surname: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue unRenderedHidden'}).update(node.lastName));
+		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("Disorders:"));
 		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+		for(var i = 0; i < node.disordersFullDetails.length;i++) {
+			item.insert(new Element('span', {class:'unRenderedHidden unRendered-disorder-item'}).update("&bull;&nbsp;" + node.disordersFullDetails[i]._name));
+			item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+		}
 
 
-		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("Hidden2: "));
-		item.insert(new Element('span', {class:'unRenderedItemValue unRenderedHidden'}).update(node.lastName));
+		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("HPO:"));
 		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+		for(var i = 0; i < node.hpoTermsFullDetails.length;i++) {
+			item.insert(new Element('span', {class:'unRenderedHidden unRendered-disorder-item'}).update("&bull;&nbsp;" + node.hpoTermsFullDetails[i]._hpoID + "&nbsp;" + node.hpoTermsFullDetails[i]._name));
+			item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+		}
 
+
+		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("KaryotypicSex: "));
+		item.insert(new Element('span', {class:'unRenderedItemValue unRenderedHidden'}).update(node.karyotypicSex));
+		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
 		//.............................................................................................................
 
 
@@ -149,6 +181,23 @@ var unRenderedLegendSuper = Class.create(Legend, {
 
 		var countLabelContainer = new Element('span', {'class': 'abnormality-cases-container'});
 		item.insert(" ").insert(countLabelContainer);
+
+		new Draggable(item, {
+			revert: true,
+			reverteffect: function (segment) {
+				// Reset the in-line style.
+				segment.setStyle({
+					height: '',
+					left: '',
+					position: '',
+					top: '',
+					zIndex: '',
+					width: ''
+				});
+			},
+			ghosting: true
+		});
+
 		return item;
 	}
 

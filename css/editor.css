@@ -1092,7 +1092,21 @@
 
 
 #UnRendered-legend-box {
+	background-color: #FFF;
+}
+
+li.UnRendered-legend-box-item {
 	background-color: #F7F0F0;
+	padding: 3px;
+	border-radius: 4px;
+	margin-bottom: 3px;
+}
+
+li.UnRendered-legend-box-item-selected {
+	background-color: #F5F5F5;
+	padding: 3px;
+	border-radius: 4px;
+	margin-bottom: 3px;
 }
 
 span.unRenderedItemName{
@@ -1133,3 +1147,9 @@ div.suggestItems * {
 	line-height: normal !important;
 }
 
+
+.unRendered-disorder-item{
+	padding-left:5px;
+	font-size:10px;
+	text-indent: 0px !important;
+}

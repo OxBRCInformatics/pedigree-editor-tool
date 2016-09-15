@@ -33,44 +33,78 @@ var Person = Class.create(AbstractPerson, {
 	_setDefault: function () {
 		this._phenotipsId = "";
 		this._firstName = "";
+		Person.setMethods["firstName"] = "setFirstName";
 		this._lastName = "";
+		Person.setMethods["lastName"] = "setLastName";
 		this._NHSNumber = ""; // added for GEL
+		Person.setMethods["NHSNumber"] = "setNHSNumber";
 		this._CHINumber = ""; // added for GEL
+		Person.setMethods["CHINumber"] = "setCHINumber";
 		this._gelSuperFamilyId = "";// added for GEL
+		Person.setMethods["gelSuperFamilyId"] = "setGelSuperFamilyId";
 		this._consanguineousPopulation = "";// added for GEL
+		Person.setMethods["consanguineousPopulation"] = "setConsanguineousPopulation";
 		this._karyotypicSex = "";// added for GEL
+		Person.setMethods["karyotypicSex"] = "setKaryotypicSex";
 		this._ancestries = "";//added for GEL
+		Person.setMethods["ancestries"] = "setAncestries";
 		this._participantId = "";
+		Person.setMethods["participantId"] = "setParticipantId";
 		this._lastNameAtBirth = "";
+		Person.setMethods["lastNameAtBirth"] = "setLastNameAtBirth";
 		this._birthDate = null;
+		Person.setMethods["birthDate"] = "setBirthDate";
 		this._deathDate = null;
+		Person.setMethods["deathDate"] = "setDeathDate";
+
 		this._conceptionDate = "";
+
 		this._gestationAge = "";
+		Person.setMethods["gestationAge"] = "setGestationAge";
 		this._adoptedStatus = "";
+		Person.setMethods["adoptedStatus"] = "setAdoptedStatus";
 		this._externalID = "";
+		Person.setMethods["externalID"] = "setExternalID";
 		this._lifeStatus = 'alive';
+		Person.setMethods["lifeStatus"] = "setLifeStatus";
 		this._childlessStatus = null;
+		Person.setMethods["childlessStatus"] = "setChildlessStatus";
 		this._childlessReason = "";
+		Person.setMethods["childlessReason"] = "setChildlessReason";
 		this._carrierStatus = "";
+		Person.setMethods["carrierStatus"] = "setCarrierStatus";
 		this._disorders = [];
+		Person.setMethods["disorders"] = "setDisorders";
 		//comment added by Soheil 04.08.2016 for GEL(GenomicsEngland)
 		//_disordersFullDetails: this field will hold all disorders with full details that returned from OCService
 		//it will help to find out disorderName,disorderType ie. OMIM, ICD10,....
 		this._disordersFullDetails = [];
+		Person.setMethods["disordersFullDetails"] = "setDisordersFullDetails";
 		//comment added by Soheil 04.08.2016 for GEL(GenomicsEngland)
 		//_disorderType: this field is used to monitor the value of the selected disorderType in the UI
 		//we do not export it into the JSON
 		this._disorderType = "";
+
 		this._cancers = {};
+		Person.setMethods["cancers"] = "setCancers";
 		this._hpo = [];
+		Person.setMethods["hpoTerms"] = "setHPO";
 		this._hpoFullDetails = [];
+		Person.setMethods["hpoTermsFullDetails"] = "setHPOFullDetails";
 		this._ethnicities = [];
+		Person.setMethods["ethnicities"] = "setEthnicities";
 		this._candidateGenes = [];
+		Person.setMethods["candidateGenes"] = "setGenes";
 		this._twinGroup = null;
+		Person.setMethods["twinGroup"] = "setTwinGroup";
 		this._monozygotic = false;
+		Person.setMethods["monozygotic"] = "setMonozygotic";
 		this._evaluated = false;
+		Person.setMethods["evaluated"] = "setEvaluated";
 		this._pedNumber = "";
+		Person.setMethods["nodeNumber"] = "setPedNumber";
 		this._lostContact = false;
+		Person.setMethods["lostContact"] = "setLostContact";
 	},
 
 	/**
@@ -587,7 +621,17 @@ var Person = Class.create(AbstractPerson, {
 	 * @param status One of {'', 'carrier', 'affected', 'presymptomatic', 'uncertain'}
 	 */
 	setCarrierStatus: function (status) {
-		var numDisorders = this.getDisorders().length;
+
+		//Commented for GEL(GenomicsEngland)
+		//var numDisorders = this.getDisorders().length;
+		//Added for GEL(GenomicsEngland)
+		//We set the status as affected, only if there is any GEL disorder, so we count just GEL disorders
+		var numDisorders = 0;
+		for(var i = 0;i < this._disordersFullDetails.length; i++){
+			if(this._disordersFullDetails[i]._valueAll.disorderType && this._disordersFullDetails[i]._valueAll.disorderType == "GEL"){
+				numDisorders = numDisorders + 1;
+			}
+		}
 
 		if (status === undefined || status === null) {
 			if (numDisorders == 0) {
@@ -780,6 +824,11 @@ var Person = Class.create(AbstractPerson, {
 	//.............................................................................................
 
 
+	//added for GEL................................................................................
+	setDisordersFullDetails: function(disordersFullDetails){
+		this._disordersFullDetails = disordersFullDetails;
+	},
+
 	/**
 	 * Returns a list of all HPO terms associated with the patient
 	 *
@@ -870,6 +919,11 @@ var Person = Class.create(AbstractPerson, {
 		for (var i = 0; i < hpos.length; i++) {
 			this.addHPO(hpos[i]);
 		}
+	},
+
+	//added for GEL................................................................................
+	setHPOFullDetails: function(hpoFullDetails) {
+		this._hpoFullDetails = hpoFullDetails;
 	},
 
 	/**
@@ -1129,11 +1183,13 @@ var Person = Class.create(AbstractPerson, {
 		}
 
 		var inactiveCarriers = [];
-		if (disorders.length > 0) {
-			if (disorders.length != 1 || disorders[0].id != "affected") {
-				inactiveCarriers = [''];
-			}
-		}
+		//Commented for GEL(GenomicsEngland)
+		//We don't need to inactivate any 'Disease Affection' radio button items in th UI
+		//if (disorders.length > 0) {
+		//	if (disorders.length != 1 || disorders[0].id != "affected") {
+		//		inactiveCarriers = [''];
+		//	}
+		//}
 		if (this.getLifeStatus() == "aborted" || this.getLifeStatus() == "miscarriage") {
 			inactiveCarriers.push('presymptomatic');
 		}
@@ -1409,3 +1465,88 @@ var Person = Class.create(AbstractPerson, {
 
 //ATTACHES CHILDLESS BEHAVIOR METHODS TO THIS CLASS
 Person.addMethods(ChildlessBehavior);
+
+//Added for GEL(GenomicsEngland)
+//we hold name of set methods for each property in this map, this will be used in "Person.assignValues" for assigning values into each property dynamically
+Person.setMethods = {};
+
+//Added for GEL(GenomicsEngland)
+//This will be used to assign values into a node and dynamically update the UI. Mainly used for drag/drop and copying an unRendered node into a node in the UI
+Person.assignValues = function(person, unRenderedValueAll){
+	var disorderLoaded = false;
+	var hpoLoaded = false;
+	for (var property in unRenderedValueAll) {
+		if (Object.prototype.hasOwnProperty.call(unRenderedValueAll, property)) {
+			var value = unRenderedValueAll[property];
+			var setMethod = Person.setMethods[property];
+			if(!setMethod){
+				console.log("Set method '"+ setMethod + "' for property '" + property +"' not specified in Person.setMethods");
+				continue;
+			}
+
+			//We need to follow a certain order to fill disorder and disorderFullDetails
+			if((property == "disordersFullDetails" || property == "disorders")){
+
+				if(disorderLoaded){
+					continue;
+				}
+
+				if(!unRenderedValueAll.disordersFullDetails){
+					//disordersFullDetails must have been included, otherwise we can not load disorders from "disorders" in unRendered Nodes
+					console.log("disordersFullDetails must have been included, otherwise we can not load disorders from 'disorders' in unRendered Nodes");
+					continue;
+				}
+
+				if(unRenderedValueAll.disordersFullDetails){
+					var disorders = unRenderedValueAll.disordersFullDetails;
+					var newDisorderArray = [];
+					for(var i = 0; i < disorders.length; i++){
+						var disorder = new Disorder(disorders[i]._disorderID, disorders[i]._name,disorders[i]._valueAll);
+						newDisorderArray.push(disorder);
+					}
+					var properties = {};
+					properties["setDisorders"] = newDisorderArray;
+					var event = { "nodeID": person.getID(), "properties": properties };
+					document.fire("pedigree:node:setproperty", event);
+				}
+
+				disorderLoaded = true;
+				continue;
+			}
+
+			//We need to follow a certain order to fill hpoTerms and hpoTermsFullDetails
+			if((property == "hpoTerms" || property == "hpoTermsFullDetails")){
+
+				if(hpoLoaded){
+					continue;
+				}
+
+				if(!unRenderedValueAll.hpoTermsFullDetails){
+					//hpoTermsFullDetails must have been included, otherwise we can not load HPO from "hpoTerms" in unRendered Nodes
+					console.log("hpoTermsFullDetails must have been included, otherwise we can not load HPOs from 'hpoTerms' in unRendered Nodes");
+					continue;
+				}
+
+				if(unRenderedValueAll.hpoTermsFullDetails){
+					var HPOs = unRenderedValueAll.hpoTermsFullDetails;
+					var newHPOArray = [];
+					for(var i = 0; i < HPOs.length; i++){
+						var HPO = new HPOTerm(HPOs[i]._hpoID, HPOs[i]._name,HPOs[i]._valueAll);
+						newHPOArray.push(HPO);
+					}
+					var properties = {};
+					properties["setHPO"] = newHPOArray;
+					var event = { "nodeID": person.getID(), "properties": properties };
+					document.fire("pedigree:node:setproperty", event);
+				}
+				hpoLoaded = true;
+				continue;
+			}
+
+			var properties = {};
+			properties[setMethod] = value;
+			var event = { "nodeID": person.getID(), "properties": properties };
+			document.fire("pedigree:node:setproperty", event);
+		}
+	}
+};

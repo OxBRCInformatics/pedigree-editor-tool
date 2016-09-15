@@ -314,6 +314,8 @@ var Legend = Class.create({
 			return;
 		}
 		editor.getView().setCurrentDraggable(null);
+		//Added for GEL(GenomicsEngland), load valueAll from the label
+		var valueAll = label.retrieve("valueAll");
 		var id = label.select('input')[0].value;
 		this._highlightAllByItemID(id, false); // remove highlight
 		this._unhighlightAfterDrag();
@@ -326,7 +328,9 @@ var Legend = Class.create({
 				// TODO: fix this once family-studies are merged in
 				return;
 			}
-			this._onDropObject(node, id);
+			//Added for GEL(GenomicsEngland), pass valueAll into the drop event (mainly used in drag/drop unRendered nodes)
+			//this._onDropObject(node, id);
+			this._onDropObject(node, id, valueAll);
 		}
 	},
 

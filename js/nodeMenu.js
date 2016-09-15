@@ -214,13 +214,14 @@ NodeMenu = Class.create({
 						}
 						return null;
 					},
-					enableInputTermSelection: function(){
-						var select = FORM.select("select[name='disorderType']")[0];
-						var disorderType = select.options[select.selectedIndex].value;
-						if(disorderType == "GEL"){
-							return false;
-						}
-						return true;
+					canSelectInputTerm: function(){
+						return false;
+						//var select = FORM.select("select[name='disorderType']")[0];
+						//var disorderType = select.options[select.selectedIndex].value;
+						//if(disorderType == "GEL"){
+						//	return false;
+						//}
+						//return true;
 					},
 					enableHierarchy: false,
 					fadeOnClear: false,
@@ -375,6 +376,7 @@ NodeMenu = Class.create({
 					//tooltip: 'phenotype-info', //commented for GEL
 					fadeOnClear: false,
 					timeout: 30000,
+					minchars: 3, //Added for GEL(GenomicsEngland)
 					parentContainer: $('body')
 				});
 				if (item.hasClassName('multi') && typeof(PhenoTips.widgets.SuggestPicker) != "undefined") {
