@@ -621,7 +621,17 @@ var Person = Class.create(AbstractPerson, {
 	 * @param status One of {'', 'carrier', 'affected', 'presymptomatic', 'uncertain'}
 	 */
 	setCarrierStatus: function (status) {
-		var numDisorders = this.getDisorders().length;
+
+		//Commented for GEL(GenomicsEngland)
+		//var numDisorders = this.getDisorders().length;
+		//Added for GEL(GenomicsEngland)
+		//We set the status as affected, only if there is any GEL disorder, so we count just GEL disorders
+		var numDisorders = 0;
+		for(var i = 0;i < this._disordersFullDetails.length; i++){
+			if(this._disordersFullDetails[i]._valueAll.disorderType && this._disordersFullDetails[i]._valueAll.disorderType == "GEL"){
+				numDisorders = numDisorders + 1;
+			}
+		}
 
 		if (status === undefined || status === null) {
 			if (numDisorders == 0) {
@@ -1173,11 +1183,13 @@ var Person = Class.create(AbstractPerson, {
 		}
 
 		var inactiveCarriers = [];
-		if (disorders.length > 0) {
-			if (disorders.length != 1 || disorders[0].id != "affected") {
-				inactiveCarriers = [''];
-			}
-		}
+		//Commented for GEL(GenomicsEngland)
+		//We don't need to inactivate any 'Disease Affection' radio button items in th UI
+		//if (disorders.length > 0) {
+		//	if (disorders.length != 1 || disorders[0].id != "affected") {
+		//		inactiveCarriers = [''];
+		//	}
+		//}
 		if (this.getLifeStatus() == "aborted" || this.getLifeStatus() == "miscarriage") {
 			inactiveCarriers.push('presymptomatic');
 		}
