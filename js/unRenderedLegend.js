@@ -79,7 +79,8 @@ var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 		}
 
 		//if destination node has ParticipantId, we can NOT drop an unRendered node into it! so show a proper error message
-		if(node.getParticipantId()){
+		var participantId = node.getParticipantId();
+		if(participantId && participantId.trim().length > 0){
 			var closeFunction = function () {
 				this.dialog.show();
 			};
