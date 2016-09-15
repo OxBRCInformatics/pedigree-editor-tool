@@ -33,6 +33,14 @@ var SaveLoadEngine = Class.create({
 			// load the graph model of the pedigree & node data
 			var changeSet = editor.getGraph().fromJSONObject(jsonObject);
 
+			//The following is added for GEL(GenomicsEngland) by Soheil ................................................
+			//This will make remove all unRenderedNode from unRenderedNodeLegend and adds the new one if any exists
+			editor._unRenderedLegend.removeAllNodes();
+			var unRenderedNodes = changeSet.unRendered;
+			editor._unRenderedLegend.addAllNodes(unRenderedNodes);
+			editor.getWorkspace().clearMenuText();
+			//..........................................................................................................
+
 			// load/process metadata such as pedigree options and color choices
 			if (jsonObject.hasOwnProperty("settings")) {
 				editor.getView().loadSettings(jsonObject.settings);
@@ -81,6 +89,7 @@ var SaveLoadEngine = Class.create({
 			editor._unRenderedLegend.removeAllNodes();
 			var unRenderedNodes = changeSet.unRendered;
 			editor._unRenderedLegend.addAllNodes(unRenderedNodes);
+			editor.getWorkspace().clearMenuText();
 			//..........................................................................................................
 
 			if (changeSet == null) throw "unable to create a pedigree from imported data";
