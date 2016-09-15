@@ -513,13 +513,14 @@ var PedigreeEditor = Class.create({
 				'tab': 'Personal',
 				'function': 'setLastName'
 			},
-			{
-				'name': 'last_name_birth',
-				'label': 'Last name at birth',
-				'type': 'text',
-				'tab': 'Personal',
-				'function': 'setLastNameAtBirth'
-			},
+			//commented for GEL(GenomicsEngland)
+			//{
+			//	'name': 'last_name_birth',
+			//	'label': 'Last name at birth',
+			//	'type': 'text',
+			//	'tab': 'Personal',
+			//	'function': 'setLastNameAtBirth'
+			//},
 			{
 				'name': 'ethnicity',
 				'label': 'Ethnicity',
