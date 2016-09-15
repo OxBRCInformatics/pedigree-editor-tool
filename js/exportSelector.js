@@ -23,8 +23,10 @@ var ExportSelector = Class.create({
 		};
 		var typeListElement = new Element('table');
 		typeListElement.insert(_addTypeOption(true, "Simple JSON", "simpleJSON"));
-		typeListElement.insert(_addTypeOption(false, "PED", "ped"));
-		typeListElement.insert(_addTypeOption(false, "BOADICEA", "BOADICEA"));
+		//Commented for GEK(GenomicsEngland)
+		//typeListElement.insert(_addTypeOption(false, "PED", "ped"));
+		//Commented for GEK(GenomicsEngland)
+		//typeListElement.insert(_addTypeOption(false, "BOADICEA", "BOADICEA"));
 		//TODO: typeListElement.insert(_addTypeOption(false, "Phenotips Pedigree JSON", "phenotipsJSON"));
 
 		var fileDownload = new Element('a', {"id": 'downloadLink', "style": 'display:none'});

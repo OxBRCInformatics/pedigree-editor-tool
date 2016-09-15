@@ -49,10 +49,12 @@ var ImportSelector = Class.create({
 		};
 		var typeListElement = new Element('table');
 		//TODO: typeListElement.insert(_addTypeOption(true,  "Autodetect", "auto"));
-		typeListElement.insert(_addTypeOption(true, "PED or LINKAGE (pre- or post- makeped)", "ped"));
-		typeListElement.insert(_addTypeOption(false, "GEDCOM", "gedcom"));
-		typeListElement.insert(_addTypeOption(false, "BOADICEA", "BOADICEA"));
-		typeListElement.insert(_addTypeOption(false, "Simple JSON", "simpleJSON"));
+		//Commented for GEK(GenomicsEngland)......................................................................
+		//typeListElement.insert(_addTypeOption(true, "PED or LINKAGE (pre- or post- makeped)", "ped"));
+		//typeListElement.insert(_addTypeOption(false, "GEDCOM", "gedcom"));
+		//typeListElement.insert(_addTypeOption(false, "BOADICEA", "BOADICEA"));
+		//........................................................................................................
+		typeListElement.insert(_addTypeOption(true, "Simple JSON", "simpleJSON"));
 		//TODO: typeListElement.insert(_addTypeOption(false, "Phenotips Pedigree JSON", "phenotipsJSON"));
 
 		var promptType = new Element('div', {'class': 'import-section'}).update("Data format:");
@@ -81,10 +83,11 @@ var ImportSelector = Class.create({
 		markExternal.checked = true;
 		var markLabel2 = new Element('label', {'class': 'import-mark-label2'}).insert(markExternal).insert("Save individual IDs as given in the input data as 'external ID'").wrap('td').wrap('tr');
 		configListElement.insert(markLabel2);
-
-		var promptConfig = new Element('div', {'class': 'import-section'}).update("Options:");
+		//Commented for GEK(GenomicsEngland)
+		//var promptConfig = new Element('div', {'class': 'import-section'}).update("Options:");
 		var dataSection3 = new Element('div', {'class': 'import-block'});
-		dataSection3.insert(promptConfig).insert(configListElement);
+		//Commented for GEK(GenomicsEngland)
+		//dataSection3.insert(promptConfig).insert(configListElement);
 		mainDiv.insert(dataSection3);
 
 		//TODO: [x] auto-combine multiple unaffected children when the number of children is greater than [5]
