@@ -177,12 +177,17 @@ var ImportSelector = Class.create({
 		var importType = $$('input:checked[type=radio][name="select-type"]')[0].value;
 		console.log("Import type: " + importType);
 
-		var importMark = $$('input[type=checkbox][name="mark-evaluated"]')[0].checked;
+		//commented for GEL(GenomicsEngland), as options are removed form UI and we just support JSON import
+		var importMark = [];//$$('input[type=checkbox][name="mark-evaluated"]')[0].checked;
 
-		var externalIdMark = $$('input[type=checkbox][name="mark-external"]')[0].checked;
+		//commented for GEL(GenomicsEngland), as options are removed form UI and we just support JSON import
+		var externalIdMark = [];//$$('input[type=checkbox][name="mark-external"]')[0].checked;
 
-		var optionSelected = $$('input:checked[type=radio][name="select-options"]')[0].value;
-		var acceptUnknownPhenotypes = (optionSelected == "accept");
+		//commented for GEL(GenomicsEngland), as options are removed form UI and we just support JSON import
+		//var optionSelected = $$('input:checked[type=radio][name="select-options"]')[0].value;
+
+		//commented for GEL(GenomicsEngland), as options are removed form UI and we just support JSON import
+		var acceptUnknownPhenotypes =[];// (optionSelected == "accept");
 
 		var importOptions = { "markEvaluated": importMark, "externalIdMark": externalIdMark, "acceptUnknownPhenotypes": acceptUnknownPhenotypes };
 
