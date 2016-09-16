@@ -84,7 +84,7 @@ var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 			var closeFunction = function () {
 				this.dialog.show();
 			};
-			editor.getOkCancelDialogue().showCustomized('You can not assign an unRendered node into a node that has Participant Id.',
+			editor.getOkCancelDialogue().showCustomized('You can not assign to a node that has Participant Id.',
 				"Genomics England",
 				"Close", closeFunction,
 				null, null,
@@ -110,7 +110,7 @@ var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 			}
 		};
 		//get confirmation
-		editor.getOkCancelDialogue().showCustomized('Are you sure you want to use unRendered node values? It will replace all values in the destination node.',
+		editor.getOkCancelDialogue().showCustomized('Are you sure you want to assign the node? It will replace the values in the destination node.',
 			"Genomics England",
 			"Yes", yesFunction,
 			"No", closeFunction,
