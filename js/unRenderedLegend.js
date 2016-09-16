@@ -9,7 +9,7 @@
 var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 
 	initialize: function ($super) {
-		$super("UnRendered Nodes", true);
+		$super("Unassigned participants", true);
 		this._termCache = {};
 	},
 
