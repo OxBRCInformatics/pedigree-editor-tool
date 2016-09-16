@@ -130,19 +130,22 @@ var unRenderedLegendSuper = Class.create(Legend, {
 		item.insert(new Element('span', {class:'unRenderedItemValue unRenderedHidden'}).update(node.karyotypicSex));
 		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
 
-		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("Disorders:"));
-		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
-		for(var i = 0; i < node.disordersFullDetails.length;i++) {
-			item.insert(new Element('span', {class:'unRenderedHidden unRendered-disorder-item'}).update("&bull;&nbsp;" + node.disordersFullDetails[i]._name));
-			item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+		if(node.disordersFullDetails) {
+			item.insert(new Element('span', {class: 'unRenderedItemName unRenderedHidden'}).update("Disorders:"));
+			item.insert(new Element('span', {class: 'unRenderedHidden'}).update("<br>"));
+			for (var i = 0; i < node.disordersFullDetails.length; i++) {
+				item.insert(new Element('span', {class: 'unRenderedHidden unRendered-disorder-item'}).update("&bull;&nbsp;" + node.disordersFullDetails[i]._name));
+				item.insert(new Element('span', {class: 'unRenderedHidden'}).update("<br>"));
+			}
 		}
 
-
-		item.insert(new Element('span', {class:'unRenderedItemName unRenderedHidden'}).update("HPO:"));
-		item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
-		for(var i = 0; i < node.hpoTermsFullDetails.length;i++) {
-			item.insert(new Element('span', {class:'unRenderedHidden unRendered-disorder-item'}).update("&bull;&nbsp;" + node.hpoTermsFullDetails[i]._hpoID + "&nbsp;" + node.hpoTermsFullDetails[i]._name));
-			item.insert(new Element('span', {class:'unRenderedHidden'}).update("<br>"));
+		if(node.hpoTermsFullDetails) {
+			item.insert(new Element('span', {class: 'unRenderedItemName unRenderedHidden'}).update("HPO:"));
+			item.insert(new Element('span', {class: 'unRenderedHidden'}).update("<br>"));
+			for (var i = 0; i < node.hpoTermsFullDetails.length; i++) {
+				item.insert(new Element('span', {class: 'unRenderedHidden unRendered-disorder-item'}).update("&bull;&nbsp;" + node.hpoTermsFullDetails[i]._hpoID + "&nbsp;" + node.hpoTermsFullDetails[i]._name));
+				item.insert(new Element('span', {class: 'unRenderedHidden'}).update("<br>"));
+			}
 		}
 		//.............................................................................................................
 
