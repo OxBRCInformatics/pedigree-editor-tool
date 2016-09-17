@@ -95,7 +95,7 @@ var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 		//the YesFunction when the user confirms that the copy should be done
 		var yesFunction = function(){
 			//copy all unRendered node values (valueAll) into the destination node (node)
-			Person.assignValues(node, valueAll);
+			Person.copyUnassignedNode(node, valueAll);
 
 			//successfully assigned the value into the destination node, so now change the color of the un-Rendered node in the list
 			//now change its color to a gray
@@ -110,7 +110,7 @@ var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 			}
 		};
 		//get confirmation
-		editor.getOkCancelDialogue().showCustomized('Are you sure you want to assign the node? It will replace the values in the destination node.',
+		editor.getOkCancelDialogue().showCustomized('Are you sure you want to assign the participant to this node?',
 			"Genomics England",
 			"Yes", yesFunction,
 			"No", closeFunction,
