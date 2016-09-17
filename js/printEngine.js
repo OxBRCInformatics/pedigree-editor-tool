@@ -71,7 +71,11 @@ var PrintEngine = Class.create({
 			patientInfoHeight = 30;
 			var proband = editor.getNode(0);
 			if (options.anonimize || (!proband.getFirstName() && !proband.getLastName())) {
-				patientInfoHTML = "Patient " + XWiki.currentDocument.page;
+				patientInfoHTML = "Participant " + proband.getParticipantId();
+				var familyId = proband.getFamilyId();
+				if(familyId && familyId.length > 0 ){
+					patientInfoHTML = patientInfoHTML + " (FamilyId: " + familyId + ")" ;
+				}
 			} else {
 				// TODO: update to correct proband/family when fmaly studies are merged in
 				var space = (proband.getFirstName() && proband.getLastName()) ? " " : "";
