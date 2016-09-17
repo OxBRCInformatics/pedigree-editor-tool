@@ -1541,7 +1541,7 @@ Person.setMethods = {};
 
 //Added for GEL(GenomicsEngland)
 //This will be used to assign values into a node and dynamically update the UI. Mainly used for drag/drop and copying an unRendered node into a node in the UI
-Person.assignValues = function(person, unRenderedValueAll){
+Person.copyUnassignedNode = function(person, unRenderedValueAll){
 	var disorderLoaded = false;
 	var hpoLoaded = false;
 	for (var property in unRenderedValueAll) {
