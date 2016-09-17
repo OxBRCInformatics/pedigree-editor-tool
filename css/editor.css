@@ -421,6 +421,15 @@
 .menu-box .field-box {
 	padding: .5em 0;
 }
+
+div.field-label {
+	padding: 0px !important;
+	font-size: 12px !important;
+	font-weight: normal !important;
+	font-style: italic !important;
+}
+
+
 .menu-box .field-phenotipsid {
 	padding: .8em 0;
 }

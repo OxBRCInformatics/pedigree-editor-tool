@@ -446,6 +446,12 @@ NodeMenu = Class.create({
 	_generateEmptyField: function (data) {
 		var result = new Element('div', {'class': 'field-box field-' + data.name});
 		var fieldNameClass = 'field-name';
+		//Added for GEL(GenomicsEngland)................................................................................
+		//if type is label (a new type introduced for GEL), then user 'field-label' class
+		if(data.type == "label"){
+			fieldNameClass = "field-label";
+		}
+		///.............................................................................................................
 		if (data.type == "radio") {
 			fieldNameClass += ' field-no-user-select';
 		}
@@ -456,7 +462,13 @@ NodeMenu = Class.create({
 		}
 		var label = new Element('label', {'class': fieldNameClass}).update(data.label);
 		result.inputsContainer = new Element('div', {'class': 'field-inputs'});
-		result.insert(label).insert(result.inputsContainer);
+		//Added for GEL(GenomicsEngland)................................................................................
+		//if it is NOT a label type, then add inputsContainer, otherwise do not add it .................................
+		if(data.type != 'label') {
+			result.insert(label).insert(result.inputsContainer);
+		}else{
+			result.insert(label);
+		}
 		this.fieldMap[data.name] = {
 			'type': data.type,
 			'element': result,
@@ -612,6 +624,14 @@ NodeMenu = Class.create({
 				return [this.checked];
 			}.bind(checkbox);
 			this._attachFieldEventListeners(checkbox, ['click']);
+			return result;
+		},
+		//Added for GEL(GenomicsEngland).......................................................................................
+		//This will create a new type known as 'label' where it can be used as a simple text in the UI like age_of_death_guide
+		'label': function (data) {
+			var result = this._generateEmptyField(data);
+			result.addClassName("field-label");
+
 			return result;
 		},
 		'text': function (data) {
@@ -1196,6 +1216,12 @@ NodeMenu = Class.create({
 	_setCrtData: function (data) {
 		var _this = this;
 		Object.keys(this.fieldMap).each(function (name) {
+			//Added for GEL(GenomicsEngland)............................................................................
+			//if type is a label(newly added type for GEL), then do not process any event or value for that
+			if(_this.fieldMap[name].type == "label"){
+				return;
+			}
+			//..........................................................................................................
 			_this.fieldMap[name].crtValue = data && data[name] && typeof(data[name].value) != "undefined" ? data[name].value : _this.fieldMap[name].crtValue || _this.fieldMap[name]["default"];
 			_this.fieldMap[name].inactive = (data && data[name] && (typeof(data[name].inactive) == 'boolean' || typeof(data[name].inactive) == 'object')) ? data[name].inactive : _this.fieldMap[name].inactive;
 			_this.fieldMap[name].disabled = (data && data[name] && (typeof(data[name].disabled) == 'boolean' || typeof(data[name].disabled) == 'object')) ? data[name].disabled : _this.fieldMap[name].disabled;
@@ -1225,6 +1251,11 @@ NodeMenu = Class.create({
 				target.value = value;
 			}
 			this._restoreCursorPositionIfNecessary(target);
+		},
+		//Added for GEL(GenomicsEngland).......................................................................................
+		//This will create a new type known as 'label' where it can be used as a simple text in the UI like age_of_death_guide
+		'label': function (container, value) {
+
 		},
 		'textarea': function (container, value) {
 			var target = container.down('textarea');
@@ -1587,6 +1618,11 @@ NodeMenu = Class.create({
 			if (target) {
 				target.disabled = disabled;
 			}
+		},
+		//Added for GEL(GenomicsEngland).......................................................................................
+		//This will create a new type known as 'label' where it can be used as a simple text in the UI like age_of_death_guide
+		'label': function (container, disabled) {
+			
 		},
 		'textarea': function (container, inactive) {
 			// FIXME: Not implemented
