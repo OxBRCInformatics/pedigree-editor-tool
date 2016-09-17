@@ -172,6 +172,25 @@ var Controller = Class.create({
 			}
 		}
 
+		//Added for GEL(GenomicsEngland)
+		//Prevent deleting registered nodes and any hierarchy that has a registered node
+		for(var i = 0;i < disconnectedList.length; i++){
+			var nodeIndex = disconnectedList[i];
+			var node = editor.getView().getNode(nodeIndex);
+			if(node.isRegistered && node.isRegistered()){
+				var closeFunction = function () {
+					this.dialog.show();
+				};
+				editor.getOkCancelDialogue().showCustomized('You can not delete registered participants or any hierarchy that contains a registered participant(s) .',
+					"Genomics England",
+					"Close", closeFunction,
+					null, null,
+					null, null, true);
+				return;
+			}
+		}
+		//................................................................................
+
 		var removeSelected = function () {
 			try {
 				if (onlyChild) {
