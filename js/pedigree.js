@@ -637,6 +637,11 @@ var PedigreeEditor = Class.create({
 			//	'function': 'setGenes'
 			//},
 			{
+				'name': 'age_of_death_guide',
+				'label': "<i class='fa fa-info-circle' aria-hidden='true'></i> Please use either 'Age of death' or 'Date of birth/death'",
+				'type': 'label',
+				'tab': 'Personal'
+			},
 
 			{
 				'name': 'age_of_death',

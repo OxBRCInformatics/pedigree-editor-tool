@@ -721,6 +721,10 @@ div.field-label {
 	padding: 0.6em 0;
 }
 
+.menu-box .field-age_of_death_guide {
+	width: 90%;
+	float: left;
+}
 
 .menu-box .field-age_of_death {
 	width: 72%;
