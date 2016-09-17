@@ -637,6 +637,28 @@ var PedigreeEditor = Class.create({
 			//	'function': 'setGenes'
 			//},
 			{
+
+			{
+				'name': 'age_of_death',
+				'label': "Age of death",
+				'type': 'text',
+				'tab': 'Personal',
+				'function': 'setAgeOfDeath'
+			},
+			{
+				'name': 'age_of_death_format',
+				'label': "",
+				'type': 'select',
+				'tab': 'Personal',
+				'function': 'setAgeOfDeathFormat',
+				'values' : [
+					{'actual': 'y', displayed: 'Year'},
+					{'actual': 'mo', displayed: 'Month'},
+					{'actual': 'wk', displayed: 'Week'},
+					{'actual': 'd', displayed: 'Day'}
+				]
+			},
+			{
 				'name': 'date_of_birth',
 				'label': 'Date of birth',
 				'type': 'date-picker',

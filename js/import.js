@@ -1351,6 +1351,8 @@ PedigreeImport.JSONToInternalPropertyMapping = {
 	"evaluated": "evaluated",
 	"birthdate": "dob",
 	"deathdate": "dod",
+	"ageofdeath": "ageOfDeath",
+	"ageofdeathformat": "ageOfDeathFormat",
 	"gestationage": "gestationAge",
 	"lifestatus": "lifeStatus",
 	"disorders": "disorders",

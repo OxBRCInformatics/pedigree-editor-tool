@@ -435,6 +435,8 @@ PedigreeExport.internalToJSONPropertyMapping = {
 	"evaluated": "evaluated",
 	"dob": "birthDate",
 	"dod": "deathDate",
+	"ageOfDeath": "ageOfDeath",
+	"ageOfDeathFormat": "ageOfDeathFormat",
 	"gestationAge": "gestationAge",
 	"lifeStatus": "lifeStatus",
 	"disorders": "disorders",

@@ -629,7 +629,7 @@
 }
 
 .menu-box .field-state {
-	padding-top:60px ;
+	float: left;
 }
 
 
@@ -712,6 +712,21 @@
 	padding: 0.6em 0;
 }
 
+
+.menu-box .field-age_of_death {
+	width: 72%;
+	float: left;
+}
+
+.menu-box .field-age_of_death_format {
+	width: 28%;
+	float: right;
+	padding-top: 24px;
+}
+
+
+
+
 .menu-box .field-ageOfOnset label.field-name {
 	font-size: 12px !important;
 }
@@ -734,6 +749,7 @@
 }
 .menu-box .field-childlessSelect {
 	padding: 0.5em 0 0.5em;
+	float: left;
 }
 
 .menu-box .disabled-select {

@@ -64,6 +64,11 @@ var Person = Class.create(AbstractPerson, {
 		this._deathDate = null;
 		Person.setMethods["deathDate"] = "setDeathDate";
 
+		this._ageOfDeath = "";
+		Person.setMethods["ageOfDeath"] = "setAgeOfDeath";
+		this._ageOfDeathFormat = "y"; // added for GEL
+		Person.setMethods["ageOfDeathFormat"] = "setAgeOfDeathFormat";
+
 		this._conceptionDate = "";
 
 		this._gestationAge = "";
@@ -523,6 +528,13 @@ var Person = Class.create(AbstractPerson, {
 				this.setAdopted("");
 				this.setChildlessStatus(null);
 			}
+
+			//Added for GEL
+			//if status is set to alive, then make ageOfDeath and ageOfDeathFormat blank
+			if(newStatus == "alive"){
+				this.setAgeOfDeath("");
+				this.setAgeOfDeathFormat("y");
+			}
 			this.getGraphics().updateLifeStatusShapes(oldStatus);
 			this.getGraphics().getHoverBox().regenerateHandles();
 			this.getGraphics().getHoverBox().regenerateButtons();
@@ -618,6 +630,14 @@ var Person = Class.create(AbstractPerson, {
 		if (!newDate.isSet()) {
 			newDate = null;
 		}
+
+		//if birthDate has value, then set both ageOfDeath and ageOfDeathFormat to null,
+		//we either have ageOfDeath and ageOfDeathFormat OR date-of-birth and date-of-death
+		if(newDate != null){
+			this.setAgeOfDeath("");
+			this.setAgeOfDeathFormat("y");
+		}
+
 		if (!newDate || !this.getDeathDate() || this.getDeathDate().canBeAfterDate(newDate)) {
 			this._birthDate = newDate;
 			this.getGraphics().updateAgeLabel();
@@ -634,6 +654,16 @@ var Person = Class.create(AbstractPerson, {
 		return this._deathDate;
 	},
 
+
+	getAgeOfDeath: function () {
+		return this._ageOfDeath;
+	},
+
+
+	getAgeOfDeathFormat: function () {
+		return this._ageOfDeathFormat;
+	},
+
 	/**
 	 * Replaces the death date with deathDate
 	 *
@@ -646,6 +676,13 @@ var Person = Class.create(AbstractPerson, {
 		if (!deathDate.isSet()) {
 			deathDate = null;
 		}
+		//if deathDate has value, then set empty for ageOfDeath and ageOfDeathFormat
+		//we either have ageOfDeath and ageOfDeathFormat OR date-of-birth and date-of-death
+		if(deathDate != null){
+			this.setAgeOfDeath("");
+			this.setAgeOfDeathFormat("y");
+		}
+
 		// only set death date if it happens ot be after the birth date, or there is no birth or death date
 		if (!deathDate || !this.getBirthDate() || deathDate.canBeAfterDate(this.getBirthDate())) {
 			this._deathDate = deathDate;
@@ -654,6 +691,34 @@ var Person = Class.create(AbstractPerson, {
 		this.getGraphics().updateAgeLabel();
 		return this.getDeathDate();
 	},
+
+	setAgeOfDeath: function(ageOfDeath){
+		this._ageOfDeath = ageOfDeath + "";
+
+		//if ageOfDeath has value, then set deathDate and birthDate to null and make life status 'deceased'
+		//we either have ageOfDeath and ageOfDeathFormat OR date-of-birth and date-of-death
+		if(this._ageOfDeath && this._ageOfDeath.length > 0){
+			this.setLifeStatus('deceased');
+			this.setDeathDate(null);
+			this.setBirthDate(null);
+
+			//if ageOfDeath and ageOfDeathFormat both have value then create the text to display in the UI
+			var text = 	ageOfDeath + " " + this._ageOfDeathFormat;
+			this.getGraphics().updateAgeLabelForGELDirectly(text);
+		}
+	},
+
+
+	setAgeOfDeathFormat: function(ageOfDeathFormat){
+		this._ageOfDeathFormat = ageOfDeathFormat;
+
+		//if ageOfDeath and ageOfDeathFormat both have value then create the text to display in the UI
+		if(this._ageOfDeathFormat && this._ageOfDeathFormat.length > 0 && this._ageOfDeath && this._ageOfDeath.length > 0){
+			var text = 	this._ageOfDeath + " " + this._ageOfDeathFormat;
+			this.getGraphics().updateAgeLabelForGELDirectly(text);
+		}
+	},
+
 
 	_isValidCarrierStatus: function (status) {
 		return (status == '' || status == 'carrier' || status == 'uncertain'
@@ -1276,6 +1341,10 @@ var Person = Class.create(AbstractPerson, {
 			adopted: {value: this.getAdopted(), inactive: cantChangeAdopted, disabled: this.hasParticipantId()},
 			state: {value: this.getLifeStatus(), inactive: inactiveStates, disabled: disabledStates },
 			date_of_death: {value: this.getDeathDate(), inactive: this.isFetus(), disabled: this.hasParticipantId()},
+
+			age_of_death: {value: this.getAgeOfDeath(), inactive: this.isFetus(), disabled: this.hasParticipantId() || (this.getBirthDate() != null && this.getDeathDate()!=null)},
+			age_of_death_format: {value: this.getAgeOfDeathFormat(), inactive: this.isFetus(), disabled: this.hasParticipantId() || (this.getBirthDate() != null && this.getDeathDate()!=null) },
+
 			commentsClinical: {value: this.getComments(), inactive: false},
 			commentsPersonal: {value: this.getComments(), inactive: false},  // so far the same set of comments is displayed on all tabs
 			commentsCancers: {value: this.getComments(), inactive: false},
@@ -1347,6 +1416,15 @@ var Person = Class.create(AbstractPerson, {
 			info['lifeStatus'] = this.getLifeStatus();
 		if (this.getDeathDate() != null)
 			info['dod'] = this.getDeathDate().getSimpleObject();
+
+
+		if (this.getAgeOfDeath() != "")
+			info['ageOfDeath'] = this.getAgeOfDeath();
+
+		if (this.getAgeOfDeathFormat() != "")
+			info['ageOfDeathFormat'] = this.getAgeOfDeathFormat();
+
+
 		if (this.getGestationAge() != null)
 			info['gestationAge'] = this.getGestationAge();
 		if (this.getChildlessStatus() != null) {
@@ -1499,6 +1577,16 @@ var Person = Class.create(AbstractPerson, {
 			if (info.dod && this.getDeathDate() != info.dod) {
 				this.setDeathDate(info.dod);
 			}
+
+			if (info.ageOfDeath && this.getAgeOfDeath() != info.ageOfDeath) {
+				this.setAgeOfDeath(info.ageOfDeath);
+			}
+
+			if (info.ageOfDeathFormat && this.getAgeOfDeathFormat() != info.ageOfDeathFormat) {
+				this.setAgeOfDeathFormat(info.ageOfDeathFormat);
+			}
+
+
 			if (info.gestationAge && this.getGestationAge() != info.gestationAge) {
 				this.setGestationAge(info.gestationAge);
 			}
