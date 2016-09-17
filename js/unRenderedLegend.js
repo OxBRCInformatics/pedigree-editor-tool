@@ -110,7 +110,7 @@ var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 			}
 		};
 		//get confirmation
-		editor.getOkCancelDialogue().showCustomized('Are you sure you want to assign the participant to this node?',
+		editor.getOkCancelDialogue().showCustomized('Are you sure you want to assign the values to this node?',
 			"Genomics England",
 			"Yes", yesFunction,
 			"No", closeFunction,
