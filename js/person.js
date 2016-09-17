@@ -1549,7 +1549,21 @@ Person.copyUnassignedNode = function(person, unRenderedValueAll){
 			var value = unRenderedValueAll[property];
 			var setMethod = Person.setMethods[property];
 			if(!setMethod){
-				console.log("Set method '"+ setMethod + "' for property '" + property +"' not specified in Person.setMethods");
+				console.log("Set method '"+ setMethod + "' for property '" + property +"' not specified in 'Person.setMethods'");
+				continue;
+			}
+
+			//Do not copy the following values from unAssigned node into the destination node
+			var ignoreProperties = [
+				"gelsuperfamilyid",
+				"ancestries",
+				"consanguineouspopulation",
+				"comments",
+				"childlessstatus",
+				"childlessreason",
+				"karyotypicsex"
+			];
+			if(ignoreProperties.indexOf(property.toLocaleLowerCase().trim()) > -1){
 				continue;
 			}
 
