@@ -38,6 +38,24 @@ var PersonVisuals = Class.create(AbstractPersonVisuals, {
 		}
 	},
 
+
+	/**
+	 * Added for GEL(GenomicsEngland)
+	 * updateAgeLabelForGELDirectly will update the age label underneath the node directly form the text parameter
+	 * @method text
+	 */
+	updateAgeLabelForGELDirectly: function(text) {
+		this.getAgeLabel() && this.getAgeLabel().remove();
+		this._ageLabel = text ? editor.getPaper().text(this.getX(), this.getY(), text).attr(PedigreeEditorParameters.attributes.label) : null;
+		if (this._ageLabel) {
+			this._ageLabel.node.setAttribute("class", "field-no-user-select");
+			if (text && text.indexOf("\n") > 0) {
+				this._ageLabel.alignTop = true;
+			}
+		}
+		this.drawLabels();
+	},
+
 	/**
 	 * Draws the icon for this Person depending on the gender, life status and whether this Person is the proband.
 	 * Updates the disorder shapes.
