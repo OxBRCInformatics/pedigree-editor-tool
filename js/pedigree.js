@@ -583,7 +583,7 @@ var PedigreeEditor = Class.create({
 				'function': 'setCarrierStatus'
 			},
 			{
-				'label' : 'Please select coding system for disorder search:',
+				'label' : "<i class='fa fa-info-circle' aria-hidden='true'></i> Please select coding system for disorder search:",
 				'name' : 'disorderType',
 				'type' : 'select',
 				'tab': 'Clinical',
@@ -933,7 +933,7 @@ var PedigreeEditor = Class.create({
 				'isMultipleSelect': true
 			},
 			{
-				'label' : 'Please select coding system for disorder search:',
+				'label' : "<i class='fa fa-info-circle' aria-hidden='true'></i> Please select coding system for disorder search:",
 				'name' : 'disorderType',
 				'type' : 'select',
 				'tab': 'Clinical',
