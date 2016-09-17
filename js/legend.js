@@ -361,7 +361,10 @@ var Legend = Class.create({
 		var pos = editor.getWorkspace().divToCanvas(divPos.x, divPos.y);
 		var node = editor.getView().getPersonNodeNear(pos.x, pos.y);
 		if (node) {
-			if (node.isProband()) {
+			//Add "node.hasParticipantId())" into the condition for GEL(GenomicsEngland)
+			//This will prevent displaying the green margin around the destination node when hovering the dragged un-Assigned nodes over a destination node in the UI
+			//when participant has GEL participant Id
+			if (node.isProband() || node.hasParticipantId()) {
 				// TODO: fix this once family-studies are merged in
 				return;
 			}
