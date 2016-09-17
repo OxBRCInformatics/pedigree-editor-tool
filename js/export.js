@@ -65,6 +65,12 @@ PedigreeExport.exportAsSimpleJSON = function (pedigree, privacySetting) {
 				if (converted !== null) {
 					person[converted.propertyName] = converted.value;
 				}
+				//Added for GEL(GenomicsEngland)
+				//if 'ageOfDeath is not provided, then delete 'ageOfDeathFormat' and do not export it
+				//we will either have data-of-birth and data-of-death OR a
+				if(converted.propertyName == "ageOfDeathFormat" && (!person["ageOfDeath"] || (person["ageOfDeath"] && person["ageOfDeath"] == ""))){
+					delete person["ageOfDeathFormat"]
+				}
 			}
 		}
 		exportObj.push(person);
