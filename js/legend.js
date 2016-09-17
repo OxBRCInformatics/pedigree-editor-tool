@@ -324,9 +324,9 @@ var Legend = Class.create({
 		var node = editor.getView().getPersonNodeNear(pos.x, pos.y);
 		//console.log("Position x: " + pos.x + " position y: " + pos.y);
 		if (node) {
-			//Add "node.hasParticipantId())" into the condition for GEL(GenomicsEngland)
+			//Add "node.isRegistered())" into the condition for GEL(GenomicsEngland)
 			//This will prevent dropping un-Assigned nodes into a destination node in the UI when participant has GEL participant Id
-			if (node.isProband() || node.hasParticipantId()) {
+			if (node.isProband() || node.isRegistered()) {
 				// TODO: fix this once family-studies are merged in
 				return;
 			}
@@ -361,10 +361,10 @@ var Legend = Class.create({
 		var pos = editor.getWorkspace().divToCanvas(divPos.x, divPos.y);
 		var node = editor.getView().getPersonNodeNear(pos.x, pos.y);
 		if (node) {
-			//Add "node.hasParticipantId())" into the condition for GEL(GenomicsEngland)
+			//Add "node.isRegistered())" into the condition for GEL(GenomicsEngland)
 			//This will prevent displaying the green margin around the destination node when hovering the dragged un-Assigned nodes over a destination node in the UI
 			//when participant has GEL participant Id
-			if (node.isProband() || node.hasParticipantId()) {
+			if (node.isProband() || node.isRegistered()) {
 				// TODO: fix this once family-studies are merged in
 				return;
 			}

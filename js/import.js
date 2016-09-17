@@ -1343,6 +1343,7 @@ PedigreeImport.JSONToInternalPropertyMapping = {
 	"karyotypicsex":"karyotypicSex",
 	"ancestries": "ancestries",
 	"participantid":   "participantId",
+	"registered":   "registered",
 	"lastnameatbirth": "lNameAtB",
 	"comments": "comments",
 	"twingroup": "twinGroup",

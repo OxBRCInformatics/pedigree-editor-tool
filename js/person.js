@@ -57,6 +57,12 @@ var Person = Class.create(AbstractPerson, {
 		Person.setMethods["ancestries"] = "setAncestries";
 		this._participantId = "";
 		Person.setMethods["participantId"] = "setParticipantId";
+
+
+		this._registered = "";
+		Person.setMethods["registered"] = "setRegistered";
+
+
 		this._lastNameAtBirth = "";
 		Person.setMethods["lastNameAtBirth"] = "setLastNameAtBirth";
 		this._birthDate = null;
@@ -147,20 +153,6 @@ var Person = Class.create(AbstractPerson, {
 
 
 	/**
-	 * Returns True if this node has participant-id
-	 *
-	 * @method isProband
-	 * @return {Boolean}
-	 */
-	hasParticipantId : function () {
-		if(this._participantId && this._participantId.length > 0){
-			return true;
-		}else{
-			return false;
-		}
-	},
-
-	/**
 	 * Returns the id of the PhenoTips patient represented by this node.
 	 * Returns an empty string for nodes not assosiated with any PhenoTips patients.
 	 *
@@ -197,6 +189,18 @@ var Person = Class.create(AbstractPerson, {
 	// added for GEL
 	getNHSNumber: function() {
 		return this._NHSNumber;
+	},
+
+	// added for GEL
+	getRegistered: function() {
+		return this._registered;
+	},
+
+	isRegistered: function () {
+		if(this._registered && this._registered == true){
+			return true;
+		}
+		return false;
 	},
 
 	// added for GEL
@@ -251,6 +255,12 @@ var Person = Class.create(AbstractPerson, {
 		this._NHSNumber = NHSNumber;
 		this.getGraphics().updateNHSNumberLabel();
 	},
+
+	// added for GEL
+	setRegistered: function(registered) {
+		this._registered = registered;
+	},
+
 
 	// added for GEL
 	setGelSuperFamilyId: function(gelSuperFamilyId) {
@@ -1231,12 +1241,12 @@ var Person = Class.create(AbstractPerson, {
 		var inactiveStates = onceAlive ? ['unborn', 'aborted', 'miscarriage', 'stillborn'] : false;
 		var disabledStates = false;
 
-		if (this.isProband() || this.hasParticipantId()) {
+		if (this.isProband() || this.isRegistered()) {
 			disabledStates = ['alive', 'deceased', 'unborn', 'aborted', 'miscarriage', 'stillborn']; // all possible
 			Helpers.removeFirstOccurrenceByValue(disabledStates, this.getLifeStatus())
 		}
 
-		var disabledGenders = (this.isProband() || this.hasParticipantId()) ? [] : false;
+		var disabledGenders = (this.isProband() || this.isRegistered()) ? [] : false;
 		var inactiveGenders = false;
 		var genderSet = editor.getGraph().getPossibleGenders(this.getID());
 		for (gender in genderSet) {
@@ -1306,64 +1316,66 @@ var Person = Class.create(AbstractPerson, {
 			inactiveCarriers.push('presymptomatic');
 		}
 		//If it has participantId, then disable all options
-		if(this.hasParticipantId()){
+		if(this.isRegistered()){
 			inactiveCarriers = ['','carrier','uncertain','affected','presymptomatic'];
 		}
 
 
-		var inactiveLostContact = this.isProband() || !editor.getGraph().isRelatedToProband(this.getID()) || this.hasParticipantId();
+		var inactiveLostContact = this.isProband() || !editor.getGraph().isRelatedToProband(this.getID()) || this.isRegistered();
 
 		// TODO: only suggest posible birth dates which are after the latest
 		//       birth date of any ancestors; only suggest death dates which are after birth date
 
 		return {
 			identifier: {value: this.getID()},
-			nhs_number:    {value : this.getNHSNumber(), disabled: this.hasParticipantId()},
-			chi_number:    {value : this.getCHINumber(), disabled: this.hasParticipantId()},
+			nhs_number:    {value : this.getNHSNumber(), disabled: this.isRegistered()},
+			chi_number:    {value : this.getCHINumber(), disabled: this.isRegistered()},
 			gel_super_family_id: {value : this.getGelSuperFamilyId()},
 			family_id: {value : this.getFamilyId()},
 			consanguineous_population: {value : this.getConsanguineousPopulation()},
 			karyotypic_sex: {value : this.getKaryotypicSex()},
 			ancestries: {value : this.getAncestries()},
-			participant_id:{value : this.getParticipantId()},
-			first_name: {value: this.getFirstName(), disabled: this.hasParticipantId()},
-			last_name: {value: this.getLastName(), disabled: this.hasParticipantId()},
-			last_name_birth: {value: this.getLastNameAtBirth(), disabled: this.hasParticipantId()}, //, inactive: (this.getGender() != 'F')},
-			external_id: {value: this.getExternalID(), disabled: this.hasParticipantId()},
-			gender: {value: this.getGender(), inactive: inactiveGenders, disabled: this.hasParticipantId()},
-			date_of_birth: {value: this.getBirthDate(), inactive: this.isFetus(), disabled: this.hasParticipantId()},
-			carrier: {value: this.getCarrierStatus(), disabled: inactiveCarriers},
-			disorders: {value: disorders, disabled: this.hasParticipantId()},
-			disordersFullDetails:     {value : this._disordersFullDetails},
-			disorderType:  {value : this.getDisorderType(), disabled: this.hasParticipantId()},
-			ethnicity: {value: this.getEthnicities(), disabled: this.hasParticipantId() },
-			candidate_genes: {value: this.getGenes(), disabled: this.hasParticipantId()},
-			adopted: {value: this.getAdopted(), inactive: cantChangeAdopted, disabled: this.hasParticipantId()},
-			state: {value: this.getLifeStatus(), inactive: inactiveStates, disabled: disabledStates },
-			date_of_death: {value: this.getDeathDate(), inactive: this.isFetus(), disabled: this.hasParticipantId()},
+			participant_id:{value : this.getParticipantId(), disabled: this.isRegistered()},
+			registered:{value : this.getRegistered()},
 
-			age_of_death: {value: this.getAgeOfDeath(), inactive: this.isFetus(), disabled: this.hasParticipantId() || (this.getBirthDate() != null && this.getDeathDate()!=null)},
-			age_of_death_format: {value: this.getAgeOfDeathFormat(), inactive: this.isFetus(), disabled: this.hasParticipantId() || (this.getBirthDate() != null && this.getDeathDate()!=null) },
+			first_name: {value: this.getFirstName(), disabled: this.isRegistered()},
+			last_name: {value: this.getLastName(), disabled: this.isRegistered()},
+			last_name_birth: {value: this.getLastNameAtBirth(), disabled: this.isRegistered()}, //, inactive: (this.getGender() != 'F')},
+			external_id: {value: this.getExternalID(), disabled: this.isRegistered()},
+			gender: {value: this.getGender(), inactive: inactiveGenders, disabled: this.isRegistered()},
+			date_of_birth: {value: this.getBirthDate(), inactive: this.isFetus(), disabled: this.isRegistered()},
+			carrier: {value: this.getCarrierStatus(), disabled: inactiveCarriers},
+			disorders: {value: disorders, disabled: this.isRegistered()},
+			disordersFullDetails:     {value : this._disordersFullDetails},
+			disorderType:  {value : this.getDisorderType(), disabled: this.isRegistered()},
+			ethnicity: {value: this.getEthnicities(), disabled: this.isRegistered() },
+			candidate_genes: {value: this.getGenes(), disabled: this.isRegistered()},
+			adopted: {value: this.getAdopted(), inactive: cantChangeAdopted, disabled: this.isRegistered()},
+			state: {value: this.getLifeStatus(), inactive: inactiveStates, disabled: disabledStates },
+			date_of_death: {value: this.getDeathDate(), inactive: this.isFetus(), disabled: this.isRegistered()},
+
+			age_of_death: {value: this.getAgeOfDeath(), inactive: this.isFetus(), disabled: this.isRegistered() || (this.getBirthDate() != null && this.getDeathDate()!=null)},
+			age_of_death_format: {value: this.getAgeOfDeathFormat(), inactive: this.isFetus(), disabled: this.isRegistered() || (this.getBirthDate() != null && this.getDeathDate()!=null) },
 
 			commentsClinical: {value: this.getComments(), inactive: false},
 			commentsPersonal: {value: this.getComments(), inactive: false},  // so far the same set of comments is displayed on all tabs
 			commentsCancers: {value: this.getComments(), inactive: false},
-			gestation_age: {value: this.getGestationAge(), inactive: !this.isFetus(), disabled: this.hasParticipantId()},
-			childlessSelect: {value: this.getChildlessStatus() ? this.getChildlessStatus() : 'none', inactive: childlessInactive, disabled: this.hasParticipantId()},
-			childlessText: {value: this.getChildlessReason() ? this.getChildlessReason() : undefined, inactive: childlessInactive, disabled: !this.getChildlessStatus() || this.hasParticipantId()},
+			gestation_age: {value: this.getGestationAge(), inactive: !this.isFetus(), disabled: this.isRegistered()},
+			childlessSelect: {value: this.getChildlessStatus() ? this.getChildlessStatus() : 'none', inactive: childlessInactive, disabled: this.isRegistered()},
+			childlessText: {value: this.getChildlessReason() ? this.getChildlessReason() : undefined, inactive: childlessInactive, disabled: !this.getChildlessStatus() || this.isRegistered()},
 			placeholder: {value: false, inactive: true },
-			monozygotic: {value: this.getMonozygotic(), inactive: inactiveMonozygothic, disabled: disableMonozygothic || this.hasParticipantId()},
-			evaluated: {value: this.getEvaluated(), disabled: this.hasParticipantId() },
-			hpo_positive: {value: hpoTerms , disabled: this.hasParticipantId()},
+			monozygotic: {value: this.getMonozygotic(), inactive: inactiveMonozygothic, disabled: disableMonozygothic || this.isRegistered()},
+			evaluated: {value: this.getEvaluated(), disabled: this.isRegistered() },
+			hpo_positive: {value: hpoTerms , disabled: this.isRegistered()},
 			hpo_positiveFullDetails:     {value : this._hpoFullDetails}, //Added for GEL(GenomicsEngland)..........
 			nocontact: {value: this.getLostContact(), inactive: inactiveLostContact },
-			cancers: {value: this.getCancers() , disabled: this.hasParticipantId()},
-			phenotipsid: {value: this.getPhenotipsPatientId() , disabled: this.hasParticipantId()},
+			cancers: {value: this.getCancers() , disabled: this.isRegistered()},
+			phenotipsid: {value: this.getPhenotipsPatientId() , disabled: this.isRegistered()},
 
 			//These two fields are used internally for creating rows in disorder and hpo, we do not export them
-			ageOfOnset: {value: "" , disabled: this.hasParticipantId()},
-			hpoPresent: {value: "" , disabled: this.hasParticipantId()}
-		};
+			ageOfOnset: {value: "" , disabled: this.isRegistered()},
+			hpoPresent: {value: "" , disabled: this.isRegistered()}
+		}
 	},
 
 	/**
@@ -1404,6 +1416,12 @@ var Person = Class.create(AbstractPerson, {
 			info['CHINumber'] = this.getCHINumber();
 		if (this.getParticipantId() != "")
 			info['participantId'] = this.getParticipantId();
+
+
+		if (this.getRegistered() != "")
+			info['registered'] = this.getRegistered();
+
+
 		if (this.getLastNameAtBirth() != "")
 			info['lNameAtB'] = this.getLastNameAtBirth();
 		if (this.getExternalID() != "")
@@ -1489,6 +1507,13 @@ var Person = Class.create(AbstractPerson, {
 			if (info.participantId && this.getParticipantId() != info.participantId) {
 				this.setParticipantId(info.participantId);
 			}
+
+
+			if (info.registered && this.getRegistered() != info.registered) {
+				this.setRegistered(info.registered);
+			}
+
+
 			if(info.NHSNumber && this.getNHSNumber() != info.NHSNumber) {
 				this.setNHSNumber(info.NHSNumber);
 			}
@@ -1649,7 +1674,8 @@ Person.copyUnassignedNode = function(person, unRenderedValueAll){
 				"comments",
 				"childlessstatus",
 				"childlessreason",
-				"karyotypicsex"
+				"karyotypicsex",
+				"registered"
 			];
 			if(ignoreProperties.indexOf(property.toLocaleLowerCase().trim()) > -1){
 				continue;

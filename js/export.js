@@ -433,6 +433,7 @@ PedigreeExport.internalToJSONPropertyMapping = {
 	"consanguineousPopulation": "consanguineousPopulation",
 	"ancestries": "ancestries",
 	"participantId": "participantId",
+	"registered": "registered",
 	"lNameAtB": "lastNameAtBirth",
 	"comments": "comments",
 	"twinGroup": "twinGroup",
