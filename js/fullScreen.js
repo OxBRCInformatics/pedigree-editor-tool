@@ -260,7 +260,7 @@ var XWiki = (function (XWiki) {
 				'class': 'fullScreenCloseButton',
 				title: this.exitFullScreenLabel,
 				alt: this.exitFullScreenLabel,
-				src: "icons/silk/arrow_in.png" //@@@"GEL_$jsontool.serialize($xwiki.getSkinFile('icons/silk/arrow_in.png'))_GEL"
+				src: "../icons/silk/arrow_in.png" //@@@"GEL_$jsontool.serialize($xwiki.getSkinFile('icons/silk/arrow_in.png'))_GEL"
 			});
 			// Add functionality
 			this.closeButton.observe('click', this.closeFullScreen.bind(this));
