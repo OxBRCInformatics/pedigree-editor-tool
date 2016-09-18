@@ -136,7 +136,6 @@ var SaveLoadEngine = Class.create({
 		//the following line will export the diagram as JSON and pass the param as all
 		var privacySetting = "all";
 		var exportString = PedigreeExport.exportAsSimpleJSON(editor.getGraph().DG, privacySetting);
-		debugger
 
 
 
