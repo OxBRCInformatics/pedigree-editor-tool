@@ -72,6 +72,17 @@ WebService = Class.create({
 		}
 	},
 
+	getUrlParameter: function getUrlParameter(sParam, doNotDecode) {
+
+		var sPageURL = decodeURIComponent(window.location.search.substring(1));
+		if(doNotDecode && doNotDecode == true){
+			sPageURL = window.location.search.substring(1);
+		}
+
+		var	sURLVariables = sPageURL.split('&')
+		var	sParameterName;
+		var	i;
+
 		for (i = 0; i < sURLVariables.length; i++) {
 			sParameterName = sURLVariables[i].split('=');
 
