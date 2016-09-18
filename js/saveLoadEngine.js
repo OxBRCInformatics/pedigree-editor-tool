@@ -189,6 +189,30 @@ var SaveLoadEngine = Class.create({
 				// remove IE9/IE10 specific handlers
 				Helpers.enableMouseclicks(closeButton);
 				Helpers.enableMouseclicks(saveButton);
+
+				//Added by Soheil for GEL(GenomicsEngland)
+				//If the backend is OpenClinica and it is in adminEdit mode
+				//Show the following message after each save ................................................
+				var settings = new Settings();
+				var config = settings.getSetting('diagramEndpoint');
+				if(config.service == "openclinica"){
+					var webService = new WebService();
+					var isAdminEdit = webService.getUrlParameter("adminEdit");
+					if(isAdminEdit != null && isAdminEdit != undefined && isAdminEdit == "true"){
+						var closeFunction = function () {
+							this.dialog.show();
+						};
+						editor.getOkCancelDialogue().showCustomized('Your data will be saved for later but not resubmitted to Genomics England. <br>When you are ready, please resubmit the Pedigree CRF.',
+							"Genomics England",
+							"Close", closeFunction,
+							null, null,
+							null, null, true);
+					}
+				}
+				//............................................................................................
+
+
+
 			},
 			onSuccess: function () {
 				editor.getUndoRedoManager().addSaveEvent();
