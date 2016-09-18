@@ -131,7 +131,21 @@ var PedigreeEditor = Class.create({
 				window.onbeforeunload = onLeavePageFunc;
 			};
 			var quitFunc = function () {
-				window.location = XWiki.currentDocument.getURL(XWiki.contextaction);
+
+				//Added by Soheil for GEL(GenomicsEngland)
+				//If the backend is OpenClinica, by click on Close button, got to "returnURL" which is provided in the URL
+				var settings = new Settings();
+				var config = settings.getSetting('diagramEndpoint');
+				if(config.service == "openclinica"){
+					var webService = new WebService();
+					var returnURL = webService.getUrlParameter("returnURL", true);
+					if(returnURL){
+						window.location = decodeURIComponent(returnURL);
+					}else{
+						//do nothing for now
+					}
+				}
+				//........................................................................................
 			};
 			var saveAndQuitFunc = function () {
 				editor._afterSaveFunc = quitFunc;
