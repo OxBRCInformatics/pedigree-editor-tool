@@ -139,6 +139,15 @@ var PedigreeEditor = Class.create({
 				if(config.service == "openclinica"){
 					var webService = new WebService();
 					var returnURL = webService.getUrlParameter("returnURL", true);
+					var status = webService.getUrlParameter("status", true);
+
+					//if it is in new mode, the pedigree CRF might not have been saved yet,
+					//and as the main CRF page is still open, so just close this
+					if(status == "new"){
+						window.close();
+						return;
+					}
+
 					if(returnURL){
 						window.location = decodeURIComponent(returnURL);
 					}else{
