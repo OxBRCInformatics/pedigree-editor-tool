@@ -146,8 +146,17 @@ var SaveLoadEngine = Class.create({
 
 		console.log("[SAVE] data: " + Helpers.stringifyObject(jsonData));
 
-		var svg = editor.getWorkspace().getSVGCopy();
+		var svg = editor.getWorkspace().getSVGCopy(false);
 		var svgText = svg.getSVGText();
+
+
+
+//		var image = $('canvas');
+//		var background = image.getElementsByClassName('panning-background')[0];
+//		var backgroundPosition = background.nextSibling;
+//		var backgroundParent =  background.parentNode;
+//		backgroundParent.removeChild(background);
+//		var bbox = image.down().getBBox();
 
 		var savingNotification = new XWiki.widgets.Notification("Saving", "inprogress");
 		//The line is commented by Soheil for GEL(GenomicEngland)
@@ -218,9 +227,10 @@ var SaveLoadEngine = Class.create({
 				editor.getUndoRedoManager().addSaveEvent();
 				savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
 			},
-			parameters: {"property#data": jsonData, "property#image": svgText,
-					     "property#export": exportString //The line is added by Soheil for GEL(GenomicEngland), to return the JSON value
-				}
+			parameters: {
+				"property#export":exportString,
+				"property#image": svgText//image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
+			}
 
 		});
 	},
