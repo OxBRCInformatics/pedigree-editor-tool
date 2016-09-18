@@ -55,11 +55,22 @@ WebService = Class.create({
 		}
 	},
 
-	getUrlParameter: function getUrlParameter(sParam) {
-		var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-			sURLVariables = sPageURL.split('&'),
-			sParameterName,
-			i;
+	saveDiagramEndpointPath: function(){
+		var config = this._settings.getSetting('diagramEndpoint');
+		switch(config.service){
+			case "mercury":
+				return "???";
+				break;
+			case "openclinica":
+				var _this = this;
+				var eventCRFId = _this.getUrlParameter("eventCRFId");
+				var status = _this.getUrlParameter("status");
+				var participantId = _this.getUrlParameter("participantId");
+				return "/openclinica/pedigree/update?eventCRFId=" + eventCRFId + "&status=" + status + "&participantId=" + participantId;
+			case "local":
+				return null;
+		}
+	},
 
 		for (i = 0; i < sURLVariables.length; i++) {
 			sParameterName = sURLVariables[i].split('=');

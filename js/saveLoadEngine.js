@@ -164,7 +164,7 @@ var SaveLoadEngine = Class.create({
 		//we pass it the backend Webservice URL
 		//new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml', 'method=PUT').substring(1), {
 		var webservice = new WebService();
-		var href = webservice.saveDiagramToOpenClinicaPath();
+		var href = webservice.saveDiagramEndpointPath();
 		new Ajax.Request(href, {
 			method: 'POST',
 			onCreate: function () {
