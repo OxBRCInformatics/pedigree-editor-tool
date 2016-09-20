@@ -647,7 +647,7 @@ var PedigreeEditor = Class.create({
 				'values' : [
 					{'actual': 'yes', displayed: 'Yes'},
 					{'actual': 'no', displayed: 'No'},
-					{'actual': 'unknown', displayed: 'UnKnow'}
+					{'actual': 'unknown', displayed: 'Unknown'}
 				],
 				'function' : 'setHPOPresent'
 			},
