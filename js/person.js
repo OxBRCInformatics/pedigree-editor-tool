@@ -749,7 +749,7 @@ var Person = Class.create(AbstractPerson, {
 		//We set the status as affected, only if there is any GEL disorder, so we count just GEL disorders
 		var numDisorders = 0;
 		for(var i = 0;i < this._disordersFullDetails.length; i++){
-			if(this._disordersFullDetails[i]._valueAll.disorderType && this._disordersFullDetails[i]._valueAll.disorderType == "GEL"){
+			if(this._disordersFullDetails[i].valueAll.disorderType && this._disordersFullDetails[i].valueAll.disorderType == "GEL"){
 				numDisorders = numDisorders + 1;
 			}
 		}
@@ -811,8 +811,8 @@ var Person = Class.create(AbstractPerson, {
 			//and added the following lines
 			//We need to show color for just GEL disorders,
 			//for other disorders types such as OMIM, IDC10 and SnomedCT we just use WHITE color .......................
-			if(this._disordersFullDetails != undefined && this._disordersFullDetails[i]._valueAll != undefined){
-				if(this._disordersFullDetails[i]._valueAll.disorderType == "GEL") {
+			if(this._disordersFullDetails != undefined && this._disordersFullDetails[i].valueAll != undefined){
+				if(this._disordersFullDetails[i].valueAll.disorderType == "GEL") {
 					result.push(editor.getDisorderLegend().getObjectColor(this.getDisorders()[i]));
 				}
 			}
@@ -869,13 +869,13 @@ var Person = Class.create(AbstractPerson, {
 			disorder = editor.getDisorderLegend().getDisorder(disorder);
 		}
 		if (!this.hasDisorder(disorder.getDisorderID())) {
-			//disorder._valueAll passed for GEL
-			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), disorder._valueAll, this.getID());
+			//disorder.valueAll passed for GEL
+			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), disorder.getValueAll(), this.getID());
 			this.getDisorders().push(disorder.getDisorderID());
 			//this is added for GEL ...........................................................................
 			var alreadyExists = false;
 			for(var i = 0; i < this._disordersFullDetails.length;i++){
-				if(this._disordersFullDetails[i]._disorderID == disorder){
+				if(this._disordersFullDetails[i].disorderID == disorder.getDisorderID()){
 					alreadyExists = true;
 				}
 			}
@@ -907,7 +907,7 @@ var Person = Class.create(AbstractPerson, {
 			this._disorders = this.getDisorders().without(disorderID);
 			//added for GEL ................................................
 			for(var i = 0;i < this._disordersFullDetails.length; i++){
-				if(this._disordersFullDetails[i]._disorderID == disorderID){
+				if(this._disordersFullDetails[i].disorderID == disorderID){
 					this._disordersFullDetails.splice(i, 1);
 					break;
 				}
@@ -982,13 +982,13 @@ var Person = Class.create(AbstractPerson, {
 			hpo = editor.getHPOLegend().getTerm(hpo);
 		}
 		if (!this.hasHPO(hpo.getID())) {
-			//hpo._valueAll passed for GEL
-			editor.getHPOLegend().addCase(hpo.getID(), hpo.getName(), hpo._valueAll, this.getID());
+			//hpo.valueAll passed for GEL
+			editor.getHPOLegend().addCase(hpo.getID(), hpo.getName(), hpo.getValueAll(), this.getID());
 			this.getHPO().push(hpo.getID());
 			//this is added for GEL .......................................................................
 			var alreadyExists = false;
 			for(var i = 0; i < this._hpoFullDetails.length;i++){
-				if(this._hpoFullDetails[i]._hpoID == hpo){
+				if(this._hpoFullDetails[i].hpoID == hpo){
 					alreadyExists = true;
 				}
 			}
@@ -1015,7 +1015,7 @@ var Person = Class.create(AbstractPerson, {
 
 			//added for GEL ................................................
 			for(var i = 0;i < this._hpoFullDetails.length; i++){
-				if(this._hpoFullDetails[i]._hpoID == hpoID){
+				if(this._hpoFullDetails[i].hpoID == hpoID){
 					this._hpoFullDetails.splice(i, 1);
 					break;
 				}
@@ -1266,9 +1266,9 @@ var Person = Class.create(AbstractPerson, {
 		var disorders = [];
 		this.getDisorders().forEach(function (disorder) {
 			var disorderName = editor.getDisorderLegend().getDisorder(disorder).getName();
-			//added for GEL, get disorderObject and push _valueAll into the array ........................
+			//added for GEL, get disorderObject and push valueAll into the array ........................
 			var disorderObj  = editor.getDisorderLegend().getDisorder(disorder);
-			disorders.push({id: disorder, value: disorderName, valueAll:disorderObj._valueAll});
+			disorders.push({id: disorder, value: disorderName, valueAll:disorderObj.valueAll});
 			//............................................................................................
 		});
 		var hpoTerms = [];
@@ -1276,7 +1276,7 @@ var Person = Class.create(AbstractPerson, {
 			var termName = editor.getHPOLegend().getTerm(hpo).getName();
 			//Added for GEL(GenomicsEngland) ................................................................
 			var hpoObj  = editor.getHPOLegend().getTerm(hpo);
-			hpoTerms.push({id: hpo, value: termName, valueAll:hpoObj._valueAll});
+			hpoTerms.push({id: hpo, value: termName, valueAll:hpoObj.valueAll});
 			//...............................................................................................
 		});
 
@@ -1549,6 +1549,12 @@ var Person = Class.create(AbstractPerson, {
 
 			if(info.disordersFullDetails) {
 				this._disordersFullDetails = info.disordersFullDetails.slice();
+
+				for(var i = 0;i<this._disordersFullDetails.length;i++){
+					if(!this._disordersFullDetails[i].valueAll){
+						this._disordersFullDetails[i].valueAll = {};
+					}
+				}
 			}
 
 			//then load disorders
@@ -1557,7 +1563,7 @@ var Person = Class.create(AbstractPerson, {
 				//if we have disordersFullDetails, then complete the disorders objects based on that
 				if (this._disordersFullDetails != undefined && this._disordersFullDetails.length > 0) {
 					for (var i = 0; i < this._disordersFullDetails.length; i++) {
-						var disorder = new Disorder(this._disordersFullDetails[i]._disorderID,this._disordersFullDetails[i]._name,this._disordersFullDetails[i]._valueAll);
+						var disorder = new Disorder(this._disordersFullDetails[i].disorderID,this._disordersFullDetails[i].name,this._disordersFullDetails[i].ageOfOnset,this._disordersFullDetails[i].disorderType,this._disordersFullDetails[i].valueAll);
 						disorders.push(disorder);
 					}
 					this.setDisorders(disorders);
@@ -1572,6 +1578,12 @@ var Person = Class.create(AbstractPerson, {
 
 			if(info.hpoTermsFullDetails) {
 				this._hpoTermsFullDetails = info.hpoTermsFullDetails.slice();
+
+				for(var i = 0;i<this._hpoTermsFullDetails.length;i++){
+					if(!this._hpoTermsFullDetails[i].valueAll){
+						this._hpoTermsFullDetails[i].valueAll = {};
+					}
+				}
 			}
 
 			if (info.hpoTerms) {
@@ -1579,7 +1591,7 @@ var Person = Class.create(AbstractPerson, {
 				//if we have hpoTermsFullDetails, then complete the hpoTerms objects based on that
 				if (this._hpoTermsFullDetails != undefined && this._hpoTermsFullDetails.length > 0) {
 					for (var i = 0; i < this._hpoTermsFullDetails.length; i++) {
-						var term = new HPOTerm(this._hpoTermsFullDetails[i]._hpoID,this._hpoTermsFullDetails[i]._name,this._hpoTermsFullDetails[i]._valueAll);
+						var term = new HPOTerm(this._hpoTermsFullDetails[i].hpoID,this._hpoTermsFullDetails[i].name,this._hpoTermsFullDetails[i].hpoPresent,this._hpoTermsFullDetails[i].valueAll);
 						terms.push(term);
 					}
 					this.setHPO(terms);
@@ -1698,7 +1710,7 @@ Person.copyUnassignedNode = function(person, unRenderedValueAll){
 					var disorders = unRenderedValueAll.disordersFullDetails;
 					var newDisorderArray = [];
 					for(var i = 0; i < disorders.length; i++){
-						var disorder = new Disorder(disorders[i]._disorderID, disorders[i]._name,disorders[i]._valueAll);
+						var disorder = new Disorder(disorders[i].disorderID, disorders[i].name,disorders[i].ageOfOnset,disorders[i].disorderType,disorders[i].valueAll);
 						newDisorderArray.push(disorder);
 					}
 					var properties = {};
@@ -1728,7 +1740,7 @@ Person.copyUnassignedNode = function(person, unRenderedValueAll){
 					var HPOs = unRenderedValueAll.hpoTermsFullDetails;
 					var newHPOArray = [];
 					for(var i = 0; i < HPOs.length; i++){
-						var HPO = new HPOTerm(HPOs[i]._hpoID, HPOs[i]._name,HPOs[i]._valueAll);
+						var HPO = new HPOTerm(HPOs[i].hpoID, HPOs[i].name,HPOs[i].hpoPresent, HPOs[i].valueAll);
 						newHPOArray.push(HPO);
 					}
 					var properties = {};

@@ -693,7 +693,7 @@ NodeMenu = Class.create({
 						if(li != undefined){
 							valueAll = li.retrieve("valueAll");
 						}
-						results.push(new Disorder(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value, valueAll));
+						results.push(new Disorder(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value, valueAll.ageOfOnset, valueAll.disorderType,valueAll));
 					});
 				}
 				return [results];
@@ -760,7 +760,7 @@ NodeMenu = Class.create({
 						if(li != undefined){
 							valueAll = li.retrieve("valueAll");
 						}
-						results.push(new HPOTerm(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value, valueAll));
+						results.push(new HPOTerm(item.value, item.next('.value') && item.next('.value').firstChild.nodeValue || item.value, valueAll.hpoPresent, valueAll));
 					});
 				}
 				return [results];

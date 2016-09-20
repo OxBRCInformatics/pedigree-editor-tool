@@ -30,7 +30,7 @@ var DisorderLegend = Class.create(Legend, {
 			var whenNameIsLoaded = function () {
 				this._updateDisorderName(disorderID);
 			}
-			this._disorderCache[disorderID] = new Disorder(disorderID, null, null, whenNameIsLoaded.bind(this));
+			this._disorderCache[disorderID] = new Disorder(disorderID, null, null, null, null, whenNameIsLoaded.bind(this));
 		}
 		return this._disorderCache[disorderID];
 	},
@@ -62,7 +62,7 @@ var DisorderLegend = Class.create(Legend, {
 	addCase: function($super, disorderID, disorderName, valueAll, nodeID) {
 		if (!this._disorderCache.hasOwnProperty(disorderID))
 		//valueAll is passed for GEL(GenomicsEngland)
-			this._disorderCache[disorderID] = new Disorder(disorderID, disorderName, valueAll);
+			this._disorderCache[disorderID] = new Disorder(disorderID, disorderName, valueAll.ageOfOnset, valueAll.disorderType, valueAll);
 		//valueAll is passed for GEL(GenomicsEngland)
 		$super(disorderID, disorderName, valueAll, nodeID);
 	},

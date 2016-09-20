@@ -7,16 +7,27 @@
  */
 var HPOTerm = Class.create({
 
-	initialize: function (hpoID, name, valueAll, callWhenReady) {
+	initialize: function (hpoID, name, hpoPresent, valueAll, callWhenReady) {
 		// user-defined terms
 		if (name == null && !HPOTerm.isValidID(hpoID)) {
 			name = hpoID;
 		}
 
+
 		//Added by Soheil for GEL(GenomicsEngland)
-		this._valueAll = valueAll;
-		this._hpoID = hpoID;
-		this._name = name ? name : "loading...";
+		if(valueAll == null || valueAll == undefined){
+			valueAll = {};
+		}
+		this.valueAll = valueAll;
+		this.hpoID = hpoID;
+		this.name = name ? name : "loading...";
+
+		if(this.valueAll && this.valueAll.hpoPresent == undefined){
+			this.valueAll.hpoPresent = hpoPresent;
+		}
+		this.hpoPresent = hpoPresent;
+
+
 
 		if (!name && callWhenReady)
 			this.load(callWhenReady);
@@ -26,23 +37,26 @@ var HPOTerm = Class.create({
 	 * Returns the hpoID of the phenotype
 	 */
 	getID: function () {
-		return this._hpoID;
+		return this.hpoID;
 	},
 
+	getValueAll: function () {
+		return this.valueAll;
+	},
 	/*
 	 * Returns the name of the term
 	 */
 	getName: function () {
-		return this._name;
+		return this.name;
 	},
 
 	load: function (callWhenReady) {
 		//Comment added by Soheil for GEL(GenomicsEngland)
-		//if we are here, it means that, the HPO details ie _valueAll is not available
+		//if we are here, it means that, the HPO details ie valueAll is not available
 		//so we will load the details from HPO service
 		var webService = new WebService();
 		var baseOMIMServiceURL = webService.getHPOLookupPath();
-		var queryURL           = baseOMIMServiceURL + "id=" + this._hpoID;
+		var queryURL           = baseOMIMServiceURL + "id=" + this.hpoID;
 
 		//console.log("QueryURL: " + queryURL);
 		new Ajax.Request(queryURL, {
@@ -57,10 +71,10 @@ var HPOTerm = Class.create({
 		try {
 			var parsed = JSON.parse(response.responseText);
 			//console.log(Helpers.stringifyObject(parsed));
-			console.log("LOADED HPO TERM: id = " + this._hpoID + ", name = " + parsed.rows[0].name);
-			this._name = parsed.rows[0].name;
+			console.log("LOADED HPO TERM: id = " + this.hpoID + ", name = " + parsed.rows[0].name);
+			this.name = parsed.rows[0].name;
 			//Added by Soheil for GEL(GenomicsEngland)
-			this._valueAll = parsed.rows[0];
+			this.valueAll = parsed.rows[0];
 		} catch (err) {
 			console.log("[LOAD HPO TERM] Error: " + err);
 		}

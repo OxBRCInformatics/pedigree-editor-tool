@@ -32,7 +32,7 @@ var HPOLegend = Class.create(Legend, {
 			};
 			//commented for GEL(GenomicsEngland) ......................................................
 			//this._termCache[hpoID] = new HPOTerm(hpoID, null, whenNameIsLoaded.bind(this));
-			this._termCache[hpoID] = new HPOTerm(hpoID, null, null, whenNameIsLoaded.bind(this));
+			this._termCache[hpoID] = new HPOTerm(hpoID, null, null, null, whenNameIsLoaded.bind(this));
 			//..........................................................................................
 		}
 		return this._termCache[hpoID];
@@ -60,7 +60,7 @@ var HPOLegend = Class.create(Legend, {
 	 */
 	addCase: function ($super, id, name, valueAll, nodeID) {
 		if (!this._termCache.hasOwnProperty(id))
-			this._termCache[id] = new HPOTerm(id, name, valueAll); //commented for GEL(GenomicsEngland) this._termCache[id] = new HPOTerm(id, name);
+			this._termCache[id] = new HPOTerm(id, name, valueAll.hpoPresent, valueAll); //commented for GEL(GenomicsEngland) this._termCache[id] = new HPOTerm(id, name);
 
 		$super(id, name, valueAll, nodeID); //commented for GEL(GenomicsEngland) $super(id, name, nodeID);
 	},
