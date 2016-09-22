@@ -1248,6 +1248,13 @@ NodeMenu = Class.create({
 			//Added for GEL(GenomicsEngland)............................................................................
 			//if type is a label(newly added type for GEL), then do not process any event or value for that
 			if(_this.fieldMap[name].type == "label"){
+				if(data[name]){
+					//find if the label should be hidden/shown, use inactive field for that
+					//as we use 'inactive' field, then in Person.getSummary, we fill it with true/false
+					//in case of 'age_of_death_guide', we need to hide it if person status is one of these ['unborn', 'aborted', 'miscarriage', 'stillborn'] or actually this.isFetus() == true
+					_this.fieldMap[name].inactive = (data && data[name] && (typeof(data[name].inactive) == 'boolean' || typeof(data[name].inactive) == 'object')) ? data[name].inactive : _this.fieldMap[name].inactive;
+					_this._setFieldInactive[_this.fieldMap[name].type].call(_this, _this.fieldMap[name].element, _this.fieldMap[name].inactive);
+				}
 				return;
 			}
 			//..........................................................................................................
@@ -1538,6 +1545,11 @@ NodeMenu = Class.create({
 	},
 
 	_setFieldInactive: {
+		//Added for GEL(GenomicsEngland) to support hide/show for 'label' type ..............
+		'label': function (container, inactive) {
+			this._toggleFieldVisibility(container, inactive);
+		},
+		//....................................................................................
 		'radio': function (container, inactive) {
 			if (inactive === true) {
 				container.addClassName('hidden');

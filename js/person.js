@@ -1384,7 +1384,11 @@ var Person = Class.create(AbstractPerson, {
 
 			//These two fields are used internally for creating rows in disorder and hpo, we do not export them
 			ageOfOnset: {value: this.getAgeOfOnset() , disabled: this.isRegistered()},
-			hpoPresent: {value: "" , disabled: this.isRegistered()}
+			hpoPresent: {value: "" , disabled: this.isRegistered()},
+			//"age_of_death_guide" this is a label field (added in pedigree.js as a label in Personal tab)
+			//which is a guidance for ageOfDeath and should be hidden when node is not Alive or not Death
+			//This is just for display purpose
+			age_of_death_guide:{value:"", inactive: this.isFetus()}
 		}
 	},
 
