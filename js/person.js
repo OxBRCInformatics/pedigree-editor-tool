@@ -868,14 +868,14 @@ var Person = Class.create(AbstractPerson, {
 		if (typeof disorder != 'object') {
 			disorder = editor.getDisorderLegend().getDisorder(disorder);
 		}
-		//if (!this.hasDisorder(disorder.getDisorderID())) {
+		//if (!this.hasDisorder(disorder.getDisorderId())) {
 			//disorder.valueAll passed for GEL
-			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), disorder.getValueAll(), this.getID());
-			this.getDisorders().push(disorder.getDisorderID());
+			editor.getDisorderLegend().addCase(disorder.getDisorderId(), disorder.getName(), disorder.getValueAll(), this.getID());
+			this.getDisorders().push(disorder.getDisorderId());
 			//this is added for GEL ...........................................................................
 			//var alreadyExists = false;
 			//for(var i = 0; i < this._disordersFullDetails.length;i++){
-			//	if(this._disordersFullDetails[i].disorderID == disorder.getDisorderID()){
+			//	if(this._disordersFullDetails[i].disorderId == disorder.getDisorderId()){
 			//		alreadyExists = true;
 			//	}
 			//}
@@ -899,26 +899,26 @@ var Person = Class.create(AbstractPerson, {
 	 * Removes disorder from the list of this node's disorders and updates the Legend.
 	 *
 	 * @method removeDisorder
-	 * @param {Number} disorderID id of the disorder to be removed
+	 * @param {Number} disorderId id of the disorder to be removed
 	 */
-	removeDisorder: function (disorderID) {
-		if (this.hasDisorder(disorderID)) {
-			editor.getDisorderLegend().removeCase(disorderID, this.getID());
-			this._disorders = this.getDisorders().without(disorderID);
+	removeDisorder: function (disorderId) {
+		if (this.hasDisorder(disorderId)) {
+			editor.getDisorderLegend().removeCase(disorderId, this.getID());
+			this._disorders = this.getDisorders().without(disorderId);
 			//added for GEL ................................................
 
 			//...............................................................
 		}
 
 		for(var i = this._disordersFullDetails.length -1 ;i>=0; i--){
-			if(this._disordersFullDetails[i].disorderID == disorderID){
+			if(this._disordersFullDetails[i].disorderId == disorderId){
 				this._disordersFullDetails.splice(i, 1);
 
 				//break;
 			}
 		}
 		//else {
-		//	if (disorderID != "affected") {
+		//	if (disorderId != "affected") {
 		//		alert("This person doesn't have the specified disorder");
 		//	}
 		//}
@@ -991,7 +991,7 @@ var Person = Class.create(AbstractPerson, {
 			//this is added for GEL .......................................................................
 			var alreadyExists = false;
 			for(var i = 0; i < this._hpoFullDetails.length;i++){
-				if(this._hpoFullDetails[i].hpoID == hpo){
+				if(this._hpoFullDetails[i].hpoId == hpo){
 					alreadyExists = true;
 				}
 			}
@@ -1009,16 +1009,16 @@ var Person = Class.create(AbstractPerson, {
 	 * Removes HPO term from the list of this node's terms and updates the Legend.
 	 *
 	 * @method removeHPO
-	 * @param {Number} hpoID id of the term to be removed
+	 * @param {Number} hpoId id of the term to be removed
 	 */
-	removeHPO: function (hpoID) {
-		if (this.hasHPO(hpoID)) {
-			editor.getHPOLegend().removeCase(hpoID, this.getID());
-			this._hpo = this.getHPO().without(hpoID);
+	removeHPO: function (hpoId) {
+		if (this.hasHPO(hpoId)) {
+			editor.getHPOLegend().removeCase(hpoId, this.getID());
+			this._hpo = this.getHPO().without(hpoId);
 
 			//added for GEL ................................................
 			for(var i = 0;i < this._hpoFullDetails.length; i++){
-				if(this._hpoFullDetails[i].hpoID == hpoID){
+				if(this._hpoFullDetails[i].hpoId == hpoId){
 					this._hpoFullDetails.splice(i, 1);
 					break;
 				}
@@ -1271,7 +1271,7 @@ var Person = Class.create(AbstractPerson, {
 			//var disorderName = editor.getDisorderLegend().getDisorder(disorder).getName();
 			//added for GEL, get disorderObject and push valueAll into the array ........................
 			//var disorderObj  = editor.getDisorderLegend().getDisorder(disorder);
-			disorders.push({id: disorder.disorderID, value: disorder.name, valueAll:disorder.valueAll});
+			disorders.push({id: disorder.disorderId, value: disorder.name, valueAll:disorder.valueAll});
 			//............................................................................................
 		});
 		var hpoTerms = [];
@@ -1556,7 +1556,7 @@ var Person = Class.create(AbstractPerson, {
 				//if we have disordersFullDetails, then complete the disorders objects based on that
 				if (info.disordersFullDetails != undefined && info.disordersFullDetails.length > 0) {
 					for (var i = 0; i < info.disordersFullDetails.length; i++) {
-						var disorder = new Disorder(info.disordersFullDetails[i].disorderID,info.disordersFullDetails[i].name,info.disordersFullDetails[i].ageOfOnset,info.disordersFullDetails[i].disorderType,info.disordersFullDetails[i].valueAll);
+						var disorder = new Disorder(info.disordersFullDetails[i].disorderId,info.disordersFullDetails[i].name,info.disordersFullDetails[i].ageOfOnset,info.disordersFullDetails[i].disorderType,info.disordersFullDetails[i].valueAll);
 						disorders.push(disorder);
 					}
 					this.setDisorders(disorders);
@@ -1584,7 +1584,7 @@ var Person = Class.create(AbstractPerson, {
 				//if we have hpoTermsFullDetails, then complete the hpoTerms objects based on that
 				if (this._hpoTermsFullDetails != undefined && this._hpoTermsFullDetails.length > 0) {
 					for (var i = 0; i < this._hpoTermsFullDetails.length; i++) {
-						var term = new HPOTerm(this._hpoTermsFullDetails[i].hpoID,this._hpoTermsFullDetails[i].name,this._hpoTermsFullDetails[i].hpoPresent,this._hpoTermsFullDetails[i].valueAll);
+						var term = new HPOTerm(this._hpoTermsFullDetails[i].hpoId,this._hpoTermsFullDetails[i].name,this._hpoTermsFullDetails[i].hpoPresent,this._hpoTermsFullDetails[i].valueAll);
 						terms.push(term);
 					}
 					this.setHPO(terms);
@@ -1703,7 +1703,7 @@ Person.copyUnassignedNode = function(person, unRenderedValueAll){
 					var disorders = unRenderedValueAll.disordersFullDetails;
 					var newDisorderArray = [];
 					for(var i = 0; i < disorders.length; i++){
-						var disorder = new Disorder(disorders[i].disorderID, disorders[i].name,disorders[i].ageOfOnset,disorders[i].disorderType,disorders[i].valueAll);
+						var disorder = new Disorder(disorders[i].disorderId, disorders[i].name,disorders[i].ageOfOnset,disorders[i].disorderType,disorders[i].valueAll);
 						newDisorderArray.push(disorder);
 					}
 					var properties = {};
@@ -1733,7 +1733,7 @@ Person.copyUnassignedNode = function(person, unRenderedValueAll){
 					var HPOs = unRenderedValueAll.hpoTermsFullDetails;
 					var newHPOArray = [];
 					for(var i = 0; i < HPOs.length; i++){
-						var HPO = new HPOTerm(HPOs[i].hpoID, HPOs[i].name,HPOs[i].hpoPresent, HPOs[i].valueAll);
+						var HPO = new HPOTerm(HPOs[i].hpoId, HPOs[i].name,HPOs[i].hpoPresent, HPOs[i].valueAll);
 						newHPOArray.push(HPO);
 					}
 					var properties = {};

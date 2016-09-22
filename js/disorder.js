@@ -9,10 +9,10 @@ var Disorder = Class.create({
 
 	//pass valueAll
 	//this parameter is added by Soheil for GEL(GenomicsEngland)
-	initialize: function(disorderID, name, ageOfOnset, disorderType, valueAll, callWhenReady) {
+	initialize: function(disorderId, name, ageOfOnset, disorderType, valueAll, callWhenReady) {
 		// user-defined disorders
-		if (name == null && !Helpers.isInt(disorderID)) {
-			name = disorderID;
+		if (name == null && !Helpers.isInt(disorderId)) {
+			name = disorderId;
 		}
 
 		//Added by Soheil for GEL(GenomicsEngland)
@@ -20,7 +20,7 @@ var Disorder = Class.create({
 			valueAll = {};
 		}
 		this.valueAll = valueAll;
-		this.disorderID = disorderID;
+		this.disorderId = disorderId;
 		this.name = name ? name : "loading...";
 
 		if(this.valueAll && this.valueAll.ageOfOnset == undefined){
@@ -40,10 +40,10 @@ var Disorder = Class.create({
 	},
 
 	/*
-	 * Returns the disorderID of the disorder
+	 * Returns the disorderId of the disorder
 	 */
-	getDisorderID: function () {
-		return this.disorderID;
+	getDisorderId: function () {
+		return this.disorderId;
 	},
 
 	/*
@@ -63,7 +63,7 @@ var Disorder = Class.create({
 		//if we are here, it means that, the disorder details ie valueAll is not available
 		//and the disorder list just has OMIM codes, so we will load the details from OMIM service
 		var baseOMIMServiceURL = Disorder.getServiceURL("OMIM");
-		var queryURL           = baseOMIMServiceURL + "&id=" + this.disorderID;
+		var queryURL           = baseOMIMServiceURL + "&id=" + this.disorderId;
 
 		//console.log("queryURL: " + queryURL);
 		new Ajax.Request(queryURL, {
@@ -78,7 +78,7 @@ var Disorder = Class.create({
 		try {
 			var parsed = JSON.parse(response.responseText);
 			//console.log(Helpers.stringifyObject(parsed));
-			console.log("LOADED DISORDER: disorder id = " + this.disorderID + ", name = " + parsed.rows[0].name);
+			console.log("LOADED DISORDER: disorder id = " + this.disorderId + ", name = " + parsed.rows[0].name);
 			this.name = parsed.rows[0].name;
 			//Added by Soheil for GEL(GenomicsEngland)
 			this.valueAll = parsed.rows[0];

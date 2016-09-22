@@ -2,15 +2,15 @@
  * HPOTerm is a class for storing phenotype information and loading it from the
  * the HPO database. These phenotypes can be attributed to an individual in the Pedigree.
  *
- * @param hpoID the id number for the HPO term, taken from the HPO database
+ * @param hpoId the id number for the HPO term, taken from the HPO database
  * @param name a string representing the name of the term e.g. "Abnormality of the eye"
  */
 var HPOTerm = Class.create({
 
-	initialize: function (hpoID, name, hpoPresent, valueAll, callWhenReady) {
+	initialize: function (hpoId, name, hpoPresent, valueAll, callWhenReady) {
 		// user-defined terms
-		if (name == null && !HPOTerm.isValidID(hpoID)) {
-			name = hpoID;
+		if (name == null && !HPOTerm.isValidID(hpoId)) {
+			name = hpoId;
 		}
 
 
@@ -19,7 +19,7 @@ var HPOTerm = Class.create({
 			valueAll = {};
 		}
 		this.valueAll = valueAll;
-		this.hpoID = hpoID;
+		this.hpoId = hpoId;
 		this.name = name ? name : "loading...";
 
 		if(this.valueAll && this.valueAll.hpoPresent == undefined){
@@ -34,10 +34,10 @@ var HPOTerm = Class.create({
 	},
 
 	/*
-	 * Returns the hpoID of the phenotype
+	 * Returns the hpoId of the phenotype
 	 */
 	getID: function () {
-		return this.hpoID;
+		return this.hpoId;
 	},
 
 	getValueAll: function () {
@@ -56,7 +56,7 @@ var HPOTerm = Class.create({
 		//so we will load the details from HPO service
 		var webService = new WebService();
 		var baseOMIMServiceURL = webService.getHPOLookupPath();
-		var queryURL           = baseOMIMServiceURL + "id=" + this.hpoID;
+		var queryURL           = baseOMIMServiceURL + "id=" + this.hpoId;
 
 		//console.log("QueryURL: " + queryURL);
 		new Ajax.Request(queryURL, {
@@ -71,7 +71,7 @@ var HPOTerm = Class.create({
 		try {
 			var parsed = JSON.parse(response.responseText);
 			//console.log(Helpers.stringifyObject(parsed));
-			console.log("LOADED HPO TERM: id = " + this.hpoID + ", name = " + parsed.rows[0].name);
+			console.log("LOADED HPO TERM: id = " + this.hpoId + ", name = " + parsed.rows[0].name);
 			this.name = parsed.rows[0].name;
 			//Added by Soheil for GEL(GenomicsEngland)
 			this.valueAll = parsed.rows[0];
