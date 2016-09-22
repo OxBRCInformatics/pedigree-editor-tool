@@ -43,7 +43,9 @@ WebService = Class.create({
 		var config = this._settings.getSetting('diagramEndpoint');
 		switch(config.service){
 			case "mercury":
-				return "???";
+				var _this = this;
+				var accessPath =  _this.getUrlParameter("accessPath", true);
+				return accessPath;
 				break;
 			case "openclinica":
 				var eventCRFId = this.getUrlParameter("eventCRFId");
@@ -59,6 +61,9 @@ WebService = Class.create({
 		var config = this._settings.getSetting('diagramEndpoint');
 		switch(config.service){
 			case "mercury":
+				var _this = this;
+				var accessPath    = _this.getUrlParameter("accessPath");
+				var participantId = _this.getParticipantIdFromURL();
 				return "???";
 				break;
 			case "openclinica":
@@ -90,6 +95,14 @@ WebService = Class.create({
 				return sParameterName[1] === undefined ? true : sParameterName[1];
 			}
 		}
+	},
+
+	getParticipantIdFromURL: function(){
+		var index =  window.location.pathname.length;
+		if(index > 1) {
+			return window.location.pathname[index - 1];
+		}
+		return "";
 	}
 
 });

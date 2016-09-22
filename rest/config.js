@@ -2,7 +2,8 @@ var config = {
 	"codingDefinitionServiceEndpoint": "/OCService",
 	"diagramEndpoint": {
 		//"service": "mercury",
-		//"service": "openclinica",
-		"service": "local"
+		//http://m-host:m-port/gel/rare_diseases/pedigrees/<participant-id>?accessPath=<servletPath of pedigree-editor>
+		"service": "openclinica"
+		//"service": "local"
 	}
 };
