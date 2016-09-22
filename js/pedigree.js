@@ -619,19 +619,20 @@ var PedigreeEditor = Class.create({
 				'function' : 'setDisorderType'
 			},
 			{
+				'label': 'Age Onset(y)',
+				'name' : 'ageOfOnset',
+				'type': 'text',
+				'tab': 'Clinical',
+				'function' : 'setAgeOfOnset'
+			},
+			{
 				'name': 'disorders',
 				'label': 'Disorder',
 				'type': 'disease-picker',
 				'tab': 'Clinical',
 				'function': 'setDisorders'
 			},
-			{
-				'label': 'Age onset (y)',
-				'name' : 'ageOfOnset',
-				'type': 'text',
-				'tab': 'Clinical',
-				'function' : 'setAgeOfOnset'
-			},
+
 			{
 				'name': 'hpo_positive',
 				'label': 'Phenotype',

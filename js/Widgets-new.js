@@ -3650,6 +3650,19 @@ var PhenoTips = (function (PhenoTips) {
 		acceptAddItem: function (key, negative) {
 			var searchFor = 'input[id="' + this.getInputId(key, negative).replace(/[^a-zA-Z0-9_-]/g, '\\$&') + '"]';
 			var input = this.predefinedEntries ? this.predefinedEntries.down(searchFor) : this.list ? this.list.down(searchFor) : $(this.getInputId(key, negative));
+
+			//Added for GEL(GenomicsEngland)
+			//In some cases like ICD10 and SnomedCT we can let user select an item several times
+			//by default suggestion just accept unique item and uses the id to find the selected item, among current items
+			//If 'acceptsDuplicate' is true, by making the 'input' as undefined, we can allow a selected item to be selected again
+			if(this.options.acceptsDuplicate != undefined && typeof this.options.acceptsDuplicate === "function"){
+			 	var acceptsDuplicate = this.options.acceptsDuplicate();
+				if(acceptsDuplicate){
+					input = undefined;
+				}
+			}
+			//..................................................................................................................
+
 			if (input) {
 				input.checked = true;
 				Event.fire(input, 'suggest:change');
@@ -3700,6 +3713,20 @@ var PhenoTips = (function (PhenoTips) {
 				return;
 			}
 			var id = this.getInputId(key);
+
+			//Added for GEL(GenomicsEngland)
+			//In some cases like ICD10 and SnomedCT we can let user select an item several times
+			//by default suggestion just accept unique item and uses the id to find the selected item, among current items
+			//If 'acceptsDuplicate' is true, we add a random text to make a unique id for each 'li' HTML element
+			if(this.options.acceptsDuplicate != undefined && typeof this.options.acceptsDuplicate === "function"){
+				var acceptsDuplicate = this.options.acceptsDuplicate();
+				if(acceptsDuplicate){
+					id = id + "_" + Helpers.createRandomID();
+				}
+			}
+			//..................................................................................................................
+
+
 			var listItem = new Element("li");
 			listItem.store("valueAll", valueAll);
 			var displayedValue = new Element("label", {"class": "accepted-suggestion", "for": id});

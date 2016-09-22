@@ -712,12 +712,12 @@ div.field-label {
 }
 .menu-box .field-disorders {
 	width: 75%;
-	float: left;
+	float: right;
 }
 
 .menu-box .field-ageOfOnset {
 	width: 25%;
-	float: right;
+	float: left;
 	padding: 0.6em 0;
 }
 
