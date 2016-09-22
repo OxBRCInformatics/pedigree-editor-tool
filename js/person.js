@@ -868,25 +868,25 @@ var Person = Class.create(AbstractPerson, {
 		if (typeof disorder != 'object') {
 			disorder = editor.getDisorderLegend().getDisorder(disorder);
 		}
-		if (!this.hasDisorder(disorder.getDisorderID())) {
+		//if (!this.hasDisorder(disorder.getDisorderID())) {
 			//disorder.valueAll passed for GEL
 			editor.getDisorderLegend().addCase(disorder.getDisorderID(), disorder.getName(), disorder.getValueAll(), this.getID());
 			this.getDisorders().push(disorder.getDisorderID());
 			//this is added for GEL ...........................................................................
-			var alreadyExists = false;
-			for(var i = 0; i < this._disordersFullDetails.length;i++){
-				if(this._disordersFullDetails[i].disorderID == disorder.getDisorderID()){
-					alreadyExists = true;
-				}
-			}
-			if(!alreadyExists) {
+			//var alreadyExists = false;
+			//for(var i = 0; i < this._disordersFullDetails.length;i++){
+			//	if(this._disordersFullDetails[i].disorderID == disorder.getDisorderID()){
+			//		alreadyExists = true;
+			//	}
+			//}
+			//if(!alreadyExists) {
 				this._disordersFullDetails.push(disorder);
-			}
+			//}
 			//.................................................................................................
-		}
-		else {
-			alert("This person already has the specified disorder");
-		}
+		//}
+		//else {
+			//alert("This person already has the specified disorder");
+		//}
 
 		// if any "real" disorder has been added
 		// the virtual "affected" disorder should be automatically removed
@@ -906,19 +906,22 @@ var Person = Class.create(AbstractPerson, {
 			editor.getDisorderLegend().removeCase(disorderID, this.getID());
 			this._disorders = this.getDisorders().without(disorderID);
 			//added for GEL ................................................
-			for(var i = 0;i < this._disordersFullDetails.length; i++){
-				if(this._disordersFullDetails[i].disorderID == disorderID){
-					this._disordersFullDetails.splice(i, 1);
-					break;
-				}
-			}
+
 			//...............................................................
 		}
-		else {
-			if (disorderID != "affected") {
-				alert("This person doesn't have the specified disorder");
+
+		for(var i = this._disordersFullDetails.length -1 ;i>=0; i--){
+			if(this._disordersFullDetails[i].disorderID == disorderID){
+				this._disordersFullDetails.splice(i, 1);
+
+				//break;
 			}
 		}
+		//else {
+		//	if (disorderID != "affected") {
+		//		alert("This person doesn't have the specified disorder");
+		//	}
+		//}
 	},
 
 	/**
@@ -1264,11 +1267,11 @@ var Person = Class.create(AbstractPerson, {
 		var childlessInactive = this.isFetus();  // TODO: can a person which already has children become childless?
 		// maybe: use editor.getGraph().hasNonPlaceholderNonAdoptedChildren() ?
 		var disorders = [];
-		this.getDisorders().forEach(function (disorder) {
-			var disorderName = editor.getDisorderLegend().getDisorder(disorder).getName();
+		this._disordersFullDetails.forEach(function (disorder) {
+			//var disorderName = editor.getDisorderLegend().getDisorder(disorder).getName();
 			//added for GEL, get disorderObject and push valueAll into the array ........................
-			var disorderObj  = editor.getDisorderLegend().getDisorder(disorder);
-			disorders.push({id: disorder, value: disorderName, valueAll:disorderObj.valueAll});
+			//var disorderObj  = editor.getDisorderLegend().getDisorder(disorder);
+			disorders.push({id: disorder.disorderID, value: disorder.name, valueAll:disorder.valueAll});
 			//............................................................................................
 		});
 		var hpoTerms = [];
@@ -1547,23 +1550,13 @@ var Person = Class.create(AbstractPerson, {
 				this.setBirthDate(info.dob);
 			}
 
-			if(info.disordersFullDetails) {
-				this._disordersFullDetails = info.disordersFullDetails.slice();
-
-				for(var i = 0;i<this._disordersFullDetails.length;i++){
-					if(!this._disordersFullDetails[i].valueAll){
-						this._disordersFullDetails[i].valueAll = {};
-					}
-				}
-			}
-
 			//then load disorders
 			if (info.disorders) {
 				var disorders = [];
 				//if we have disordersFullDetails, then complete the disorders objects based on that
-				if (this._disordersFullDetails != undefined && this._disordersFullDetails.length > 0) {
-					for (var i = 0; i < this._disordersFullDetails.length; i++) {
-						var disorder = new Disorder(this._disordersFullDetails[i].disorderID,this._disordersFullDetails[i].name,this._disordersFullDetails[i].ageOfOnset,this._disordersFullDetails[i].disorderType,this._disordersFullDetails[i].valueAll);
+				if (info.disordersFullDetails != undefined && info.disordersFullDetails.length > 0) {
+					for (var i = 0; i < info.disordersFullDetails.length; i++) {
+						var disorder = new Disorder(info.disordersFullDetails[i].disorderID,info.disordersFullDetails[i].name,info.disordersFullDetails[i].ageOfOnset,info.disordersFullDetails[i].disorderType,info.disordersFullDetails[i].valueAll);
 						disorders.push(disorder);
 					}
 					this.setDisorders(disorders);

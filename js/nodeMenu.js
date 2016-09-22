@@ -263,6 +263,14 @@ NodeMenu = Class.create({
 									}
 								}
 							}
+						},
+						acceptsDuplicate: function(){
+							var select = FORM.select("select[name='disorderType']")[0];
+							var disorderType = select.options[select.selectedIndex].value;
+							if(disorderType == "ICD10" || disorderType == "SnomedCT"){
+								return true;
+							}
+							return false;
 						}
 					});
 				}
@@ -377,7 +385,10 @@ NodeMenu = Class.create({
 					fadeOnClear: false,
 					timeout: 30000,
 					minchars: 3, //Added for GEL(GenomicsEngland)
-					parentContainer: $('body')
+					parentContainer: $('body'),
+					canSelectInputTerm: function(){
+						return false;
+					}
 				});
 				if (item.hasClassName('multi') && typeof(PhenoTips.widgets.SuggestPicker) != "undefined") {
 					item._suggestPicker = new PhenoTips.widgets.SuggestPicker(item, item._suggest, {
@@ -403,6 +414,9 @@ NodeMenu = Class.create({
 								var hpoPresentContainer = new Element('span', {'class': 'hpo-present'}).insert("(").insert(hpoPresent).insert(")");
 								displayedValue.insert("").insert(hpoPresentContainer);
 							}
+						},
+						acceptsDuplicate: function(){
+							return false;
 						}
 					});
 				}
