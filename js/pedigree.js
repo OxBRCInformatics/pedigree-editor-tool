@@ -971,6 +971,7 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'disorders',
+				'class': 'disordersNodeGroup',
 				'label': 'Known disorders<br>(common to all individuals in the group)',
 				'type': 'disease-picker',
 				'tab': 'Clinical',
@@ -1007,6 +1008,7 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'adopted',
+				'class': 'adoptedNodeGroup',
 				'label': 'Adopted status',
 				'type': 'radio',
 				'tab': 'Personal',

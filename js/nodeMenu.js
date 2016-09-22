@@ -463,7 +463,17 @@ NodeMenu = Class.create({
 	},
 
 	_generateEmptyField: function (data) {
-		var result = new Element('div', {'class': 'field-box field-' + data.name});
+
+		//Added for GEL(GenomicsEngland)
+		//we can add extra class to the field if it has 'class' field ..................................................
+		//var result = new Element('div', {'class': 'field-box field-' + data.name});
+		var cssClass = 'field-box field-' + data.name;
+		if(data.class){
+			cssClass = 'field-box field-' + data.name + " " + data.class;
+		}
+		//..............................................................................................................
+
+		var result = new Element('div', {'class': cssClass});
 		var fieldNameClass = 'field-name';
 		//Added for GEL(GenomicsEngland)................................................................................
 		//if type is label (a new type introduced for GEL), then user 'field-label' class
