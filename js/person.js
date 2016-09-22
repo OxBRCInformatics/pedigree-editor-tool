@@ -452,6 +452,13 @@ var Person = Class.create(AbstractPerson, {
 		return this._lostContact;
 	},
 
+
+	setAgeOfOnset: function(ageOfOnset){
+		this._ageOfOnset = ageOfOnset;
+	},
+	getAgeOfOnset: function(ageOfOnset){
+		return this._ageOfOnset;
+	},
 	/**
 	 * Sets the "in contact" status of this node
 	 *
@@ -1376,7 +1383,7 @@ var Person = Class.create(AbstractPerson, {
 			phenotipsid: {value: this.getPhenotipsPatientId() , disabled: this.isRegistered()},
 
 			//These two fields are used internally for creating rows in disorder and hpo, we do not export them
-			ageOfOnset: {value: "" , disabled: this.isRegistered()},
+			ageOfOnset: {value: this.getAgeOfOnset() , disabled: this.isRegistered()},
 			hpoPresent: {value: "" , disabled: this.isRegistered()}
 		}
 	},
