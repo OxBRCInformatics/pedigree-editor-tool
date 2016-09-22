@@ -186,6 +186,11 @@ NodeMenu = Class.create({
 						return "rows"
 					},
 					resultId: function(){
+						var select = FORM.select("select[name='disorderType']")[0];
+						var disorderType = select.options[select.selectedIndex].value;
+						if(disorderType == "GEL"){
+							return "disorderIdWithTag"
+						}
 						return "id"
 					},
 					resultValue : function(){
