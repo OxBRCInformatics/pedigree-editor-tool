@@ -214,46 +214,50 @@ DynamicPositionedGraph.prototype = {
 			delete this.DG.GG.properties[0].externalID;
 		}
 
-		var hpoTerms = [];
-		if (patientObject.hasOwnProperty("features")) {
-			// e.g.: "features":[{"id":"HP:0000359","label":"Abnormality of the inner ear","type":"phenotype","observed":"yes"},{"id":"HP:0000639","label":"Nystagmus","type":"phenotype","observed":"yes"}]
-			for (var i = 0; i < patientObject.features.length; i++) {
-				if ((patientObject.features[i].observed === true || patientObject.features[i].observed === "yes")
-					&& patientObject.features[i].type == "phenotype") {
-					hpoTerms.push(patientObject.features[i].id);
-				}
-			}
-		}
-		if (patientObject.hasOwnProperty("nonstandard_features")) {
-			//e.g.: "nonstandard_features":[{"label":"freetext","type":"phenotype","observed":"yes","categories":[{"id":"HP:0001507","label":"Growth abnormality"},{"id":"HP:0000240","label":"Abnormality of skull size"}]}]
-			for (var i = 0; i < patientObject.nonstandard_features.length; i++) {
-				if ((patientObject.nonstandard_features[i].observed === true || patientObject.nonstandard_features[i].observed === "yes")
-					&& patientObject.nonstandard_features[i].type == "phenotype") {
-					hpoTerms.push(patientObject.nonstandard_features[i].label);
-				}
-			}
-		}
-		if (hpoTerms.length > 0) {
-			this.DG.GG.properties[0].hpoTerms = hpoTerms;
-		} else {
-			delete this.DG.GG.properties[0].hpoTerms;
-		}
+		//commented for GEL(GenomicsEngland) .............................................................................................................
+		//We need to load the proband detail externally from import file or backend service
+		//the following lines, will keep disorder and hpo for the proband and don't import new item into it
+		//var hpoTerms = [];
+		//if (patientObject.hasOwnProperty("features")) {
+		//	// e.g.: "features":[{"id":"HP:0000359","label":"Abnormality of the inner ear","type":"phenotype","observed":"yes"},{"id":"HP:0000639","label":"Nystagmus","type":"phenotype","observed":"yes"}]
+		//	for (var i = 0; i < patientObject.features.length; i++) {
+		//		if ((patientObject.features[i].observed === true || patientObject.features[i].observed === "yes")
+		//			&& patientObject.features[i].type == "phenotype") {
+		//			hpoTerms.push(patientObject.features[i].id);
+		//		}
+		//	}
+		//}
+		//if (patientObject.hasOwnProperty("nonstandard_features")) {
+		//	//e.g.: "nonstandard_features":[{"label":"freetext","type":"phenotype","observed":"yes","categories":[{"id":"HP:0001507","label":"Growth abnormality"},{"id":"HP:0000240","label":"Abnormality of skull size"}]}]
+		//	for (var i = 0; i < patientObject.nonstandard_features.length; i++) {
+		//		if ((patientObject.nonstandard_features[i].observed === true || patientObject.nonstandard_features[i].observed === "yes")
+		//			&& patientObject.nonstandard_features[i].type == "phenotype") {
+		//			hpoTerms.push(patientObject.nonstandard_features[i].label);
+		//		}
+		//	}
+		//}
+		//if (hpoTerms.length > 0) {
+		//	this.DG.GG.properties[0].hpoTerms = hpoTerms;
+		//} else {
+		//	delete this.DG.GG.properties[0].hpoTerms;
+		//}
 
-		var disorders = [];
-		if (patientObject.hasOwnProperty("disorders")) {
-			// e.g.: "disorders":[{"id":"MIM:120970","label":"#120970 CONE-ROD DYSTROPHY 2; CORD2 ;;CONE-ROD DYSTROPHY; CORD;; CONE-ROD RETINAL DYSTROPHY; CRD; CRD2;; RETINAL CONE-ROD DYSTROPHY; RCRD2"},{"id":"MIM:190685","label":"#190685 DOWN SYNDROME TRISOMY 21, INCLUDED;; DOWN SYNDROME CHROMOSOME REGION, INCLUDED; DCR, INCLUDED;; DOWN SYNDROME CRITICAL REGION, INCLUDED; DSCR, INCLUDED;; TRANSIENT MYELOPROLIFERATIVE DISORDER OF DOWN SYNDROME, INCLUDED;; LEUKEMIA, MEGAKARYOBLASTIC, OF DOWN SYNDROME, INCLUDED"}]
-			for (var i = 0; i < patientObject.disorders.length; i++) {
-				var disorderID = patientObject.disorders[i].id;
-				var match = disorderID.match(/^MIM:(\d+)$/);
-				match && (disorderID = match[1]);
-				disorders.push(disorderID);
-			}
-		}
-		if (disorders.length > 0) {
-			this.DG.GG.properties[0].disorders = disorders;
-		} else {
-			delete this.DG.GG.properties[0].disorders;
-		}
+		//var disorders = [];
+		//if (patientObject.hasOwnProperty("disorders")) {
+		//	// e.g.: "disorders":[{"id":"MIM:120970","label":"#120970 CONE-ROD DYSTROPHY 2; CORD2 ;;CONE-ROD DYSTROPHY; CORD;; CONE-ROD RETINAL DYSTROPHY; CRD; CRD2;; RETINAL CONE-ROD DYSTROPHY; RCRD2"},{"id":"MIM:190685","label":"#190685 DOWN SYNDROME TRISOMY 21, INCLUDED;; DOWN SYNDROME CHROMOSOME REGION, INCLUDED; DCR, INCLUDED;; DOWN SYNDROME CRITICAL REGION, INCLUDED; DSCR, INCLUDED;; TRANSIENT MYELOPROLIFERATIVE DISORDER OF DOWN SYNDROME, INCLUDED;; LEUKEMIA, MEGAKARYOBLASTIC, OF DOWN SYNDROME, INCLUDED"}]
+		//	for (var i = 0; i < patientObject.disorders.length; i++) {
+		//		var disorderID = patientObject.disorders[i].id;
+		//		var match = disorderID.match(/^MIM:(\d+)$/);
+		//		match && (disorderID = match[1]);
+		//		disorders.push(disorderID);
+		//	}
+		//}
+		//if (disorders.length > 0) {
+		//	this.DG.GG.properties[0].disorders = disorders;
+		//} else {
+		//	delete this.DG.GG.properties[0].disorders;
+		//}
+		//.............................................................................................................................................
 
 		var genes = [];
 		if (patientObject.hasOwnProperty("genes")) {

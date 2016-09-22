@@ -271,9 +271,10 @@ var SaveLoadEngine = Class.create({
 				for(var i = 0; i < response.responseJSON.pedigreeJSON.length;i++){
 					var node = response.responseJSON.pedigreeJSON[i];
 					if(node.proband != undefined && node.proband == true){
-						probandDataObj.probandData.firstName = node.firstName;
-						probandDataObj.probandData.lastName  = node.lastName;
-						probandDataObj.probandData.gender    = node.sex;
+						probandDataObj.probandData = node.slice();
+						//probandDataObj.probandData.firstName = node.firstName;
+						//probandDataObj.probandData.lastName  = node.lastName;
+						//probandDataObj.probandData.gender    = node.sex;
 						break;
 					}
 				}
