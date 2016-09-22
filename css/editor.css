@@ -397,6 +397,7 @@
 }
 .menu-box form:not(.content){
 	padding: 0 0 0 0;
+	overflow: auto; /*Added for GEL(GenomicsEngland), this will stop hpo/disorder selected items get out of the main tab div*/
 }
 .menu-box form.content {
 	padding: .3em 1.3em 0.8em !important;
@@ -642,6 +643,18 @@ div.field-label {
 }
 
 
+
+
+.menu-box .field-ancestries {
+	width: 90%;
+	float: left;
+}
+
+
+.stateNodeGroup{
+	float: none !important;
+}
+
 .menu-box .field-participant_id {
 	width: 48%;
 	float: left;
@@ -664,11 +677,6 @@ div.field-label {
 	padding: 0.6em 0;
 }
 
-
-.menu-box .adoptedNodeGroup {
-	float: left !important;
-}
-
 .menu-box .field-monozygotic {
 	padding: 0.5em 0 0.26em 0;
 }
@@ -680,6 +688,7 @@ div.field-label {
 }
 .menu-box .field-gestation_age {
 	padding: 0.45em 0;
+	float: left;
 }
 .menu-box .field-evaluated {
 	padding-top: 0.26em;
@@ -764,7 +773,7 @@ div.field-label {
 }
 
 .menu-box .field-commentsClinical{
-	width: 85%;
+	width: 90%;
 	float: left;
 	padding: 0.6em 0;
 }

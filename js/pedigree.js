@@ -579,20 +579,6 @@ var PedigreeEditor = Class.create({
 				'isMultipleSelect': false
 			},
 			{
-				'name': 'consanguineous_population',
-				'label': 'Consanguineous Population',
-				'type': 'text',
-				'tab': 'Personal',
-				'function': 'setConsanguineousPopulation'
-			},
-			{
-				'name': 'ancestries',
-				'label': 'Ancestries',
-				'type': 'textarea',
-				'tab': 'Personal',
-				'function': 'setAncestries'
-			},
-			{
 				'name': 'carrier',
 				'label': 'Disease status',
 				'type': 'radio',
@@ -632,19 +618,34 @@ var PedigreeEditor = Class.create({
 				'tab': 'Clinical',
 				'function': 'setDisorders'
 			},
+			{
+				'name': 'consanguineous_population',
+				'label': 'Consanguineous Population',
+				'type': 'text',
+				'tab': 'Clinical',
+				'function': 'setConsanguineousPopulation'
+			},
+			{
+				'name': 'ancestries',
+				'label': 'Ancestries',
+				'type': 'textarea',
+				 'columns':4,
+				'tab': 'Clinical',
+				'function': 'setAncestries'
+			},
 
 			{
 				'name': 'hpo_positive',
 				'label': 'Phenotype',
 				'type': 'hpo-picker',
-				'tab': 'Clinical',
+				'tab': 'Phenotype',
 				'function': 'setHPO'
 			},
 			{
 				'name' : 'hpoPresent',
 				'label': 'HPO Present',
 				'type': 'select',
-				'tab': 'Clinical',
+				'tab': 'Phenotype',
 				'values' : [
 					{'actual': 'yes', displayed: 'Yes'},
 					{'actual': 'no', displayed: 'No'},
@@ -701,15 +702,7 @@ var PedigreeEditor = Class.create({
 				'tab': 'Personal',
 				'function': 'setDeathDate'
 			},
-			{
-				'name': 'gestation_age',
-				'label': 'Gestation age',
-				'type': 'select',
-				'tab': 'Personal',
-				'range': {'start': 0, 'end': 50, 'item': ['week', 'weeks']},
-				'nullValue': true,
-				'function': 'setGestationAge'
-			},
+
 			{
 				'name': 'state',
 				'label': 'Individual is',
@@ -735,6 +728,15 @@ var PedigreeEditor = Class.create({
 				],
 				'default': 'alive',
 				'function': 'setLifeStatus'
+			},
+			{
+				'name': 'gestation_age',
+				'label': 'Gestation age',
+				'type': 'select',
+				'tab': 'Personal',
+				'range': {'start': 0, 'end': 50, 'item': ['week', 'weeks']},
+				'nullValue': true,
+				'function': 'setGestationAge'
 			},
 			{
 				'label': 'Heredity options',
@@ -797,15 +799,6 @@ var PedigreeEditor = Class.create({
 				'label': 'Comments',
 				'type': 'textarea',
 				'tab': 'Clinical',
-				'rows': 4,
-				'function': 'setComments'
-			},
-			{
-				'name': 'commentsPersonal',
-				'label': 'Comments',
-				'type': 'textarea',
-				'tab': 'Personal',
-				'rows': 2,
 				'function': 'setComments'
 			},
 			{
@@ -841,7 +834,7 @@ var PedigreeEditor = Class.create({
 
 		//'Cancers' tab removed for GEL(GenomicsEngland)
 		//return new NodeMenu(fieldList.filter(isDisabled), ["Personal", "Clinical", "Cancers"]);
-		return new NodeMenu(fieldList.filter(isDisabled), ["Personal", "Clinical"]);
+		return new NodeMenu(fieldList.filter(isDisabled), ["Personal", "Clinical","Phenotype"]);
 	},
 
 	/**
@@ -986,7 +979,23 @@ var PedigreeEditor = Class.create({
 				'function': 'setComments'
 			},
 			{
+				'name': 'adopted',
+				'label': 'Adopted status',
+				'type': 'radio',
+				'tab': 'Personal',
+				'columns': 3,
+				'values': [
+					{ 'actual': '', 'displayed': 'Not adopted' },
+					{ 'actual': 'adoptedIn', 'displayed': 'Adopted in' },
+					{ 'actual': 'adoptedOut', 'displayed': 'Adopted out' }
+				],
+				'default': '',
+				'tab': 'Personal',
+				'function': 'setAdopted'
+			},
+			{
 				'name': 'state',
+				'class': 'stateNodeGroup',
 				'label': 'All individuals in the group are',
 				'type': 'radio',
 				'values': [
@@ -1005,23 +1014,8 @@ var PedigreeEditor = Class.create({
 				'type': 'checkbox',
 				'tab': 'Clinical',
 				'function': 'setEvaluated'
-			},
-			{
-				'name': 'adopted',
-				'class': 'adoptedNodeGroup',
-				'label': 'Adopted status',
-				'type': 'radio',
-				'tab': 'Personal',
-				'columns': 3,
-				'values': [
-					{ 'actual': '', 'displayed': 'Not adopted' },
-					{ 'actual': 'adoptedIn', 'displayed': 'Adopted in' },
-					{ 'actual': 'adoptedOut', 'displayed': 'Adopted out' }
-				],
-				'default': '',
-				'tab': 'Personal',
-				'function': 'setAdopted'
 			}
+
 		], ["Personal", "Clinical"]);
 	},
 
