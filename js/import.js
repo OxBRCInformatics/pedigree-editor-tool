@@ -738,7 +738,7 @@ PedigreeImport.initFromSimpleJSON = function (inputText) {
 
 		//Added for GEL ...........................................................................................
 		//IF it has 'unrendered', which means it's an ambiguous node and we should just show it in unRenderedLegend
-		if (inputArray[i].hasOwnProperty("unrendered")) {
+		if (inputArray[i].hasOwnProperty("unrendered") || inputArray[i].hasOwnProperty("unRendered")) {
 			if(!unRenderedNodes){
 				unRenderedNodes = [];
 			}
