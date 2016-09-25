@@ -20,7 +20,7 @@ var Partnership = Class.create(AbstractNode, {
 		this._type = 'Partnership';
 
 		this._broken = false;
-		this._consangrMode = "A";    //  Can be either "A" (autodetect), "Y" (always consider consangr.) or "N" (never)
+		this._consangrMode = "N";    //  Can be either "A" (autodetect), "Y" (always consider consangr.) or "N" (never)
 		// "Autodetect": derived from the current pedigree
 
 		// assign some properties before drawing so that relationship lines are drawn properly
@@ -74,7 +74,7 @@ var Partnership = Class.create(AbstractNode, {
 	 * @method setConsanguinity
 	 */
 	setConsanguinity: function (value) {
-		if (value != "A" && value != "N" && value != "Y")
+		if (value != "A" && value != "N" && value != "Y" && value != "P" && value != "U")
 			value = "A";
 		if (this._consangrMode != value) {
 			this._consangrMode = value;

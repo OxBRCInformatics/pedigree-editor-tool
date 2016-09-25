@@ -509,7 +509,7 @@ PedigreeExport.convertRelationshipProperty = function (internalPropertyName, val
 	var externalPropertyName = PedigreeExport.internalToJSONRelationshipPropertyMapping[internalPropertyName];
 
 	if (externalPropertyName == "consanguinity") {
-		if (value != "Y" && value != "N") {
+		if (value != "Y" && value != "N" && value != "P" && value != "U") {
 			return null;
 		}
 	}
