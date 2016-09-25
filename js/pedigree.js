@@ -1044,6 +1044,8 @@ var PedigreeEditor = Class.create({
 				'values': [
 					{ 'actual': 'A', 'displayed': 'Automatic' },
 					{ 'actual': 'Y', 'displayed': 'Yes' },
+					{ 'actual': 'P', 'displayed': 'Possible' },
+					{ 'actual': 'U', 'displayed': 'Unknown' },
 					{ 'actual': 'N', 'displayed': 'No' }
 				],
 				'default': 'A',
