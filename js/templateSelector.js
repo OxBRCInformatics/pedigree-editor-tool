@@ -17,13 +17,9 @@ var TemplateSelector = Class.create({
 		//Commented by Soheil for GEL(GenomicsEngland)
 		//ge the right path instead of using xWiki path
 		//new Ajax.Request(new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1), {
-		var settings = new Settings();
-
-		//Commented by Soheil for GEL(GenomicsEngland)
-		//ge the right path instead of using xWiki path
-		//new Ajax.Request(new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1), {
-		var settings = new Settings();
-		var newURL = new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1);
+		var webService = new WebService();
+		var editorPath = webService.getPathToEditorFiles();
+		var newURL = editorPath + new XWiki.Document('WebHome').getRestURL('objects/PhenoTips.PedigreeClass/index.xml').substring(1);
 		new Ajax.Request(newURL , {
 			method: 'GET',
 			onSuccess: this._onTemplateListAvailable.bind(this)
@@ -57,8 +53,13 @@ var TemplateSelector = Class.create({
 			// Use only the path, since the REST module returns the wrong host behind a reverse proxy
 			var path = href.substring(href.indexOf("/", href.indexOf("//") + 2));
 			var newURL = "rest" + path;
+
+			var webService = new WebService();
+			var editorPath = webService.getPathToEditorFiles();
+			var templatePath = editorPath + newURL;
+
 			//new Ajax.Request(href, {
-			new Ajax.Request(newURL, {
+			new Ajax.Request(templatePath, {
 				method: 'GET',
 				onSuccess: this._onTemplateAvailable.bind(this, pictureBox)
 			});
