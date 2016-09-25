@@ -123,6 +123,7 @@ WebService = Class.create({
 
 	getParticipantId: function(){
 		var _this = this;
+		var config = this._settings.getSetting('diagramEndpoint');
 		switch(config.service){
 			case "mercury":
 				var participantId = _this.getParticipantIdFromURL();
