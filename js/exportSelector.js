@@ -120,7 +120,11 @@ var ExportSelector = Class.create({
 	_onExportStarted: function () {
 		this.hide();
 
-		var patientDocument = XWiki.currentDocument.page + "_pedigree";
+		var webService = new WebService();
+		var patientDocument = webService.getParticipantId();//XWiki.currentDocument.page + "_pedigree";
+		if(patientDocument == null || patientDocument == undefined){
+			patientDocument = "participant";
+		}
 
 		var exportType = $$('input:checked[type=radio][name="export-type"]')[0].value;
 		//console.log("Import type: " + exportType);
@@ -128,7 +132,7 @@ var ExportSelector = Class.create({
 		if (exportType == "simpleJSON") {
 			var privacySetting = $$('input:checked[type=radio][name="export-options"]')[0].value;
 			var exportString = PedigreeExport.exportAsSimpleJSON(editor.getGraph().DG, privacySetting);
-			var fileName = patientDocument + ".json";
+			var fileName = patientDocument + "_pedigree.json";
 			var mimeType = "application/json";
 		} else {
 			var idGenerationSetting = $$('input:checked[type=radio][name="ped-options"]')[0].value;

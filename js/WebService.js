@@ -119,6 +119,19 @@ WebService = Class.create({
 			return window.location.pathname[index - 1];
 		}
 		return "";
-	}
+	},
 
+	getParticipantId: function(){
+		var _this = this;
+		switch(config.service){
+			case "mercury":
+				var participantId = _this.getParticipantIdFromURL();
+				break;
+			case "openclinica":
+				var participantId = _this.getUrlParameter("participantId");
+				return participantId;
+			case "local":
+				return null;
+		}
+	}
 });
