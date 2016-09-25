@@ -51,7 +51,7 @@ var Person = Class.create(AbstractPerson, {
 
 		this._consanguineousPopulation = "";// added for GEL
 		Person.setMethods["consanguineousPopulation"] = "setConsanguineousPopulation";
-		this._karyotypicSex = "";// added for GEL
+		this._karyotypicSex = "Unknown";// added for GEL
 		Person.setMethods["karyotypicSex"] = "setKaryotypicSex";
 		this._ancestries = "";//added for GEL
 		Person.setMethods["ancestries"] = "setAncestries";
