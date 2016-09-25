@@ -107,7 +107,9 @@ var unRenderedLegendSuper = Class.create(Legend, {
 
 
 		item.insert(new Element('span', {class: 'unRenderedItemName'}).update("Gender: "));
-		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.sex));
+		var genderDisplayText = Helpers.getGenderDisplayText(node.sex);
+		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(genderDisplayText));
+
 		item.insert(new Element('span', {}).update("<br>"));
 
 

@@ -393,9 +393,24 @@ Helpers.createRandomID = function()
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 
 	return text;
-}}
+}
 
 Helpers.getSiteURL = function(){
 	//returns site address like : "https://gmc.genomicsengland.nhs.uk/rarediseases/demo" OR "http://localhost:8083/openclinica"
 	return window.location.origin + window.location.pathname.substr(0, window.location.pathname.lastIndexOf('/'));
 }
+
+Helpers.getGenderDisplayText = function(gender){
+
+	var genderMap = {
+		m:"Male",
+		f:"Female",
+		o:"Other",
+		u:"Unknown"
+	};
+	if(genderMap.hasOwnProperty(gender.toLowerCase())){
+		return genderMap[gender.toLowerCase()];
+	}else{
+		"Unknown"
+	}
+};
