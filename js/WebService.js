@@ -57,6 +57,22 @@ WebService = Class.create({
 		}
 	},
 
+	getPathToEditorFiles: function(){
+		var config = this._settings.getSetting('diagramEndpoint');
+		switch(config.service){
+			case "mercury":
+				return "";
+				break;
+			case "openclinica":
+				//get path to pedigree directory like :
+				//"http://localhost:8083/openclinica/includes/pedigreeEditor/" or
+				//"https://gmc.genomicsengland.nhs.uk/rarediseases/demo/includes/pedigreeEditor/"
+				return Helpers.getSiteURL() + "/includes/pedigreeEditor/";
+			case "local":
+				return Helpers.getSiteURL() + "/";
+		}
+	},
+
 	saveDiagramEndpointPath: function(){
 		var config = this._settings.getSetting('diagramEndpoint');
 		switch(config.service){
