@@ -113,24 +113,15 @@ WebService = Class.create({
 		}
 	},
 
-	getParticipantIdFromURL: function(){
-		var index =  window.location.pathname.length;
-		if(index > 1) {
-			return window.location.pathname[index - 1];
-		}
-		return "";
-	},
-
 	getParticipantId: function(){
 		var _this = this;
 		var config = this._settings.getSetting('diagramEndpoint');
 		switch(config.service){
 			case "mercury":
-				var participantId = _this.getParticipantIdFromURL();
-				break;
 			case "openclinica":
 				var participantId = _this.getUrlParameter("participantId");
 				return participantId;
+				break;
 			case "local":
 				return null;
 		}
