@@ -107,7 +107,7 @@ WebService = Class.create({
 		for (i = 0; i < sURLVariables.length; i++) {
 			sParameterName = sURLVariables[i].split('=');
 
-			if (sParameterName[0] === sParam) {
+			if (sParameterName[0].toLowerCase() === sParam.toLowerCase()) {
 				return sParameterName[1] === undefined ? true : sParameterName[1];
 			}
 		}
