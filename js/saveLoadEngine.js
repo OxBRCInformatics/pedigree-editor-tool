@@ -4,212 +4,383 @@
  * @class SaveLoadEngine
  * @constructor
  */
+var SaveLoadEngine = Class.create({
 
-function unescapeRestData (data) {
-    // http://stackoverflow.com/questions/4480757/how-do-i-unescape-html-entities-in-js-change-lt-to
-    var tempNode = document.createElement('div');
-    tempNode.innerHTML = data.replace(/&amp;/, '&');
-    return tempNode.innerText || tempNode.text || tempNode.textContent;
-}
+	initialize: function () {
+		this._saveInProgress = false;
+	},
 
-function getSelectorFromXML(responseXML, selectorName, attributeName, attributeValue) {
-    if (responseXML.querySelector) {
-        // modern browsers
-        return responseXML.querySelector(selectorName + "[" + attributeName + "='" + attributeValue + "']");
-    } else {
-        // IE7 && IE8 && some other older browsers
-        // http://www.w3schools.com/XPath/xpath_syntax.asp
-        // http://msdn.microsoft.com/en-us/library/ms757846%28v=vs.85%29.aspx
-        var query = "//" + selectorName + "[@" + attributeName + "='" + attributeValue + "']";
-        try {
-            return responseXML.selectSingleNode(query);
-        } catch (e) {
-            // Firefox v3.0-
-            alert("your browser is unsupported");
-            window.stop && window.stop();
-            throw "Unsupported browser";
-        }
-    }
-}
+	/**
+	 * Saves the state of the pedigree (including any user preferences and current color scheme)
+	 *
+	 * @return Serialization data for the entire graph
+	 */
+	serialize: function () {
+		var jsonObject = editor.getGraph().toJSONObject();
 
-function getSubSelectorTextFromXML(responseXML, selectorName, attributeName, attributeValue, subselectorName) {
-    var selector = getSelectorFromXML(responseXML, selectorName, attributeName, attributeValue);
+		jsonObject["settings"] = editor.getView().getSettings();
 
-    var value = selector.innerText || selector.text || selector.textContent;
+		return JSON.stringify(jsonObject);
+	},
 
-    if (!value)     // fix IE behavior where (undefined || "" || undefined) == undefined
-        value = "";
+	createGraphFromSerializedData: function (JSONString, noUndo, centerAround0) {
+		console.log("---- load: parsing data ----");
+		document.fire("pedigree:load:start");
 
-    return value;
-}
+		try {
+			var jsonObject = JSON.parse(JSONString);
 
-var ProbandDataLoader = Class.create( {
-    initialize: function() {
-        this.probandData = undefined;
-    },
-    load: function(callWhenReady) {
-        new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PatientClass/0.xml').substring(1), {
-            method: "GET",
-            onSuccess: this.onProbandDataReady.bind(this),
-            onComplete: callWhenReady ? callWhenReady : {}
-        });
-    },
+			// load the graph model of the pedigree & node data
+			var changeSet = editor.getGraph().fromJSONObject(jsonObject);
 
-    onProbandDataReady : function(response) {
-        var responseXML = response.responseXML;  //documentElement.
-        this.probandData = {};
-        this.probandData.firstName = unescapeRestData(getSubSelectorTextFromXML(responseXML, "property", "name", "first_name", "value"));
-        this.probandData.lastName  = unescapeRestData(getSubSelectorTextFromXML(responseXML, "property", "name", "last_name", "value"));
-        this.probandData.gender    = unescapeRestData(getSubSelectorTextFromXML(responseXML, "property", "name", "gender", "value"));
-        if (this.probandData.gender === undefined || this.probandData.gender == '')
-            this.probandData.gender = 'U';
-        console.log("Proband data: " + stringifyObject(this.probandData));
-    },
-});
+			//The following is added for GEL(GenomicsEngland) by Soheil ................................................
+			//This will make remove all unRenderedNode from unRenderedNodeLegend and adds the new one if any exists
+			editor._unRenderedLegend.removeAllNodes();
+			var unRenderedNodes = changeSet.unRendered;
+			editor._unRenderedLegend.addAllNodes(unRenderedNodes);
+			editor.getWorkspace().clearMenuText();
+			//..........................................................................................................
+
+			// load/process metadata such as pedigree options and color choices
+			if (jsonObject.hasOwnProperty("settings")) {
+				editor.getView().loadSettings(jsonObject.settings);
+			}
+		}
+		catch (err) {
+			console.log("ERROR loading the graph: " + err);
+			alert("Error loading the graph");
+			document.fire("pedigree:graph:clear");
+			document.fire("pedigree:load:finish");
+			return;
+		}
+
+		if (!noUndo) {
+			var probandJSONObject = editor.getProbandDataFromPhenotips();
+			var genderOk = editor.getGraph().setProbandData(probandJSONObject);
+			if (!genderOk)
+				alert("Proband gender defined in Phenotips is incompatible with this pedigree. Setting proband gender to 'Unknown'");
+			JSONString = this.serialize();
+		}
+
+		if (editor.getView().applyChanges(changeSet, false)) {
+			editor.getWorkspace().adjustSizeToScreen();
+		}
+
+		if (centerAround0) {
+			editor.getWorkspace().centerAroundNode(0);
+		}
+
+		if (!noUndo && !editor.isReadOnlyMode()) {
+			editor.getUndoRedoManager().addState(null, null, JSONString);
+		}
+
+		document.fire("pedigree:load:finish");
+	},
+
+	createGraphFromImportData: function (importString, importType, importOptions, noUndo, centerAround0) {
+		console.log("---- import: parsing data ----");
+		document.fire("pedigree:load:start");
+
+		try {
+			var changeSet = editor.getGraph().fromImport(importString, importType, importOptions);
+
+			//The following is added for GEL(GenomicsEngland) by Soheil ................................................
+			//This will make remove all unRenderedNode from unRenderedNodeLegend and adds the new one if any exists
+			editor._unRenderedLegend.removeAllNodes();
+			var unRenderedNodes = changeSet.unRendered;
+			editor._unRenderedLegend.addAllNodes(unRenderedNodes);
+			editor.getWorkspace().clearMenuText();
+			//..........................................................................................................
+
+			if (changeSet == null) throw "unable to create a pedigree from imported data";
+		}
+		catch (err) {
+			alert("Error importing pedigree: " + err);
+			document.fire("pedigree:load:finish");
+			return;
+		}
+
+		if (!noUndo) {
+			var probandJSONObject = editor.getProbandDataFromPhenotips();
+			var genderOk = editor.getGraph().setProbandData(probandJSONObject);
+			if (!genderOk)
+				alert("Proband gender defined in Phenotips is incompatible with the imported pedigree. Setting proband gender to 'Unknown'");
+			JSONString = this.serialize();
+		}
+
+		if (editor.getView().applyChanges(changeSet, false)) {
+			editor.getWorkspace().adjustSizeToScreen();
+		}
+
+		if (centerAround0) {
+			editor.getWorkspace().centerAroundNode(0);
+		}
+
+		if (!noUndo && !editor.isReadOnlyMode()) {
+			editor.getUndoRedoManager().addState(null, null, JSONString);
+		}
+
+		document.fire("pedigree:load:finish");
+	},
+
+	save: function (callback) {
+		if (this._saveInProgress) {
+			return;   // Don't send parallel save requests
+		}
+
+		editor.getView().unmarkAll();
 
 
-var SaveLoadEngine = Class.create( {
 
-    initialize: function() {
-        this._saveInProgress = false;
-    },
+		//Added by Soheil for GEL(GenomicsEngland)
+		//the following line will export the diagram as JSON and pass the param as all
+		var privacySetting = "all";
+		var exportString = PedigreeExport.exportAsSimpleJSON(editor.getGraph().DG, privacySetting);
 
-    /**
-     * Saves the state of the graph
-     *
-     * @return Serialization data for the entire graph
-     */
-    serialize: function() {
-        return editor.getGraph().toJSON();
-    },
 
-    createGraphFromSerializedData: function(JSONString, noUndo, centerAround0) {
-        console.log("---- load: parsing data ----");
-        document.fire("pedigree:load:start");
 
-        try {
-            var changeSet = editor.getGraph().fromJSON(JSONString);
-        }
-        catch(err)
-        {
-            console.log("ERROR loading the graph: " + err);
-            alert("Error loading the graph");
-            document.fire("pedigree:graph:clear");
-            document.fire("pedigree:load:finish");
-            return;
-        }
+		var me = this;
 
-        if (!noUndo) {
-            var probandData = editor.getProbandDataFromPhenotips();
-            var genderOk = editor.getGraph().setProbandData( probandData.firstName, probandData.lastName, probandData.gender );
-            if (!genderOk)
-                alert("Proband gender defined in Phenotips is incompatible with this pedigree. Setting proband gender to 'Unknown'");
-            JSONString = editor.getGraph().toJSON();
-        }
+		var jsonData = this.serialize();
 
-        if (editor.getView().applyChanges(changeSet, false)) {
-            editor.getWorkspace().adjustSizeToScreen();
-        }
+		console.log("[SAVE] data: " + Helpers.stringifyObject(jsonData));
 
-        if (centerAround0)
-            editor.getWorkspace().centerAroundNode(0);
+		var svg = editor.getWorkspace().getSVGCopy(false);
+		var svgText = svg.getSVGText();
 
-        if (!noUndo)
-            editor.getActionStack().addState(null, null, JSONString);
 
-        document.fire("pedigree:load:finish");
-    },
 
-    createGraphFromImportData: function(importString, importType, importOptions, noUndo, centerAround0) {
-        console.log("---- import: parsing data ----");
-        document.fire("pedigree:load:start");
+//		var image = $('canvas');
+//		var background = image.getElementsByClassName('panning-background')[0];
+//		var backgroundPosition = background.nextSibling;
+//		var backgroundParent =  background.parentNode;
+//		backgroundParent.removeChild(background);
+//		var bbox = image.down().getBBox();
 
-        try {
-            var changeSet = editor.getGraph().fromImport(importString, importType, importOptions);
-            if (changeSet == null) throw "unable to create a pedigree from imported data";
-        }
-        catch(err)
-        {
-            alert("Error importing pedigree: " + err);
-            document.fire("pedigree:load:finish");
-            return;
-        }
+		var savingNotification = new XWiki.widgets.Notification("Saving", "inprogress");
+		//The line is commented by Soheil for GEL(GenomicEngland)
+		//instead of using XWiki rest end point for saving the value into XML
+		//we pass it the backend Webservice URL
+		//new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml', 'method=PUT').substring(1), {
+		var webservice = new WebService();
+		var href = webservice.saveDiagramEndpointPath();
+		new Ajax.Request(href, {
+			method: 'POST',
+			onCreate: function () {
+				me._saveInProgress = true;
+				// Disable save and close buttons during a save
+				var closeButton = $('action-close');
+				var saveButton = $('action-save');
+				var saveAndExitButton = $('action-saveAndExit');
 
-        if (!noUndo) {
-            var probandData = editor.getProbandDataFromPhenotips();
-            var genderOk = editor.getGraph().setProbandData( probandData.firstName, probandData.lastName, probandData.gender );
-            if (!genderOk)
-                alert("Proband gender defined in Phenotips is incompatible with the imported pedigree. Setting proband gender to 'Unknown'");
-            JSONString = editor.getGraph().toJSON();
-        }
+				Element.addClassName(saveButton, "disabled-menu-item");
+				Element.removeClassName(saveButton, "menu-item");
+				Element.addClassName(saveButton, "no-mouse-interaction");
+				Element.addClassName(closeButton, "disabled-menu-item");
+				Element.removeClassName(closeButton, "menu-item");
+				Element.addClassName(closeButton, "no-mouse-interaction");
 
-        if (editor.getView().applyChanges(changeSet, false)) {
-            editor.getWorkspace().adjustSizeToScreen();
-        }
 
-        if (centerAround0)
-            editor.getWorkspace().centerAroundNode(0);
+				Element.addClassName(saveAndExitButton, "disabled-menu-item");
+				Element.removeClassName(saveAndExitButton, "menu-item");
+				Element.addClassName(saveAndExitButton, "no-mouse-interaction");
 
-        if (!noUndo)
-            editor.getActionStack().addState(null, null, JSONString);
 
-        document.fire("pedigree:load:finish");
-    },
+				// IE9 & IE10 do not support "no-mouse-interaction", so add JS to handle this
+				if(closeButton != null && closeButton != undefined) {
+					Helpers.disableMouseclicks(closeButton);
+				}
+				if(saveButton != null && saveButton != undefined) {
+					Helpers.disableMouseclicks(saveButton);
+				}
+				if(saveAndExitButton != null && saveAndExitButton != undefined) {
+					Helpers.disableMouseclicks(saveAndExitButton);
+				}
 
-    save: function() {
-        if (this._saveInProgress)
-            return;   // Don't send parallel save requests
+			},
+			onComplete: function (response) {
+				me._saveInProgress = false;
+				var actionAfterSave = editor.getAfterSaveAction();
+				actionAfterSave && actionAfterSave();
+				// Enable save and close buttons after a save
+				var closeButton = $('action-close');
+				var saveButton = $('action-save');
+				var saveAndExitButton = $('action-saveAndExit');
 
-        var me = this;
+				Element.addClassName(saveButton, "menu-item");
+				Element.removeClassName(saveButton, "disabled-menu-item");
+				Element.removeClassName(saveButton, "no-mouse-interaction");
 
-        var jsonData = this.serialize();
+				Element.addClassName(closeButton, "menu-item");
+				Element.removeClassName(closeButton, "disabled-menu-item");
+				Element.removeClassName(closeButton, "no-mouse-interaction");
 
-        console.log("[SAVE] data: " + stringifyObject(jsonData));
+				Element.addClassName(saveAndExitButton, "menu-item");
+				Element.removeClassName(saveAndExitButton, "disabled-menu-item");
+				Element.removeClassName(saveAndExitButton, "no-mouse-interaction");
 
-        var image = $('canvas');
-        var background = image.getElementsByClassName('panning-background')[0];
-        var backgroundPosition = background.nextSibling;
-        var backgroundParent =  background.parentNode;
-        backgroundParent.removeChild(background);
-        var bbox = image.down().getBBox();
-        var savingNotification = new XWiki.widgets.Notification("Saving", "inprogress");
-        new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml', 'method=PUT').substring(1), {
-            method: 'POST',
-            onCreate: function() {
-                me._saveInProgress = true;
-            },
-            onComplete: function() {
-                me._saveInProgress = false;
-            },
-            onSuccess: function() {savingNotification.replace(new XWiki.widgets.Notification("Successfuly saved"));},
-            parameters: {"property#data": jsonData, "property#image": image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")}
-        });
-        backgroundParent.insertBefore(background, backgroundPosition);
-    },
 
-    load: function() {
-        console.log("initiating load process");
+				// remove IE9/IE10 specific handlers
+				if(closeButton != null && closeButton != undefined) {
+					Helpers.enableMouseclicks(closeButton);
+				}
+				if(saveButton != null && saveButton != undefined) {
+					Helpers.enableMouseclicks(saveButton);
+				}
+				if(saveAndExitButton != null && saveAndExitButton != undefined) {
+					Helpers.enableMouseclicks(saveAndExitButton);
+				}
 
-        new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml').substring(1), {
-            method: 'GET',
-            onCreate: function() {
-                document.fire("pedigree:load:start");
-            },
-            onSuccess: function (response) {
-                //console.log("Data from LOAD: " + stringifyObject(response));
-                //console.log("[Data from LOAD]");
-                var rawdata  = getSubSelectorTextFromXML(response.responseXML, "property", "name", "data", "value");
-                var jsonData = unescapeRestData(rawdata);
-                if (jsonData.trim()) {
-                    console.log("[LOAD] recived JSON: " + stringifyObject(jsonData));
+				//Added for GEL(GenomicsEngland) ...............................................................
+				//if it has successfully saved the result
+				if(response.status == 200 || response.status == 201) {
+					//Added by Soheil for GEL(GenomicsEngland)
+					//If the backend is OpenClinica and it is in adminEdit mode
+					//Show the following message after each save ................................................
+					var settings = new Settings();
+					var config = settings.getSetting('diagramEndpoint');
+					if (config.service == "openclinica") {
+						var webService = new WebService();
+						var isAdminEdit = webService.getUrlParameter("adminEdit", true);
+						if (isAdminEdit != null && isAdminEdit != undefined && isAdminEdit == "true") {
+							var closeFunction = function () {
+								this.dialog.show();
+								if (callback) {
+									callback();
+								}
+							};
+							editor.getOkCancelDialogue().showCustomized('Your data will be saved for later but not resubmitted to Genomics England. <br>When you are ready, please resubmit the Pedigree CRF.',
+								"Genomics England",
+								"Close", closeFunction,
+								null, null,
+								null, null, true);
+						} else {
+							if (callback) {
+								callback();
+							}
+						}
+					} else {
+						if (callback) {
+							callback();
+						}
+					}
+				}
+				//............................................................................................
 
-                    jsonData = editor.getVersionUpdater().updateToCurrentVersion(jsonData);
+			},
+			onFailure: function (response) {
+				//Added for GEL(GenomicsEngland), if an error occurs while saving, then show error message
+				me._saveInProgress = false;
+				editor.getUndoRedoManager().addSaveEvent();
 
-                    this.createGraphFromSerializedData(jsonData);
-                } else {
-                    new TemplateSelector(true);
-                }
-            }.bind(this)
-        })
-    }
+
+				switch(response.status){
+					case 404:
+						savingNotification.replace(new XWiki.widgets.Notification("Participant not found"));
+						break;
+					case 403:
+						savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!"));
+						break;
+					default:
+						savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later."));
+						break;
+				}
+
+			},
+			onSuccess: function (response) {
+
+				if(response.status != 200 && response.status != 201){
+					me._saveInProgress = false;
+					editor.getUndoRedoManager().addSaveEvent();
+					savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later."));
+					return;
+				}
+
+				me._saveInProgress = false;
+				editor.getUndoRedoManager().addSaveEvent();
+				savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
+			},
+			parameters: {
+				"jsonDiagram":exportString,
+				"svgDiagram": svgText//image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
+			}
+
+		});
+	},
+
+	//probandDataObj passed to set  the probandData from the result content returned by the webservice
+	load: function(probandDataObj) {
+		console.log("initiating load process");
+
+		//CALL OpenClinica service to load it ******************************************
+		//******************************************************************************
+		//******************************************************************************
+
+
+
+		//This line is commented by Soheil for GEL(GenomicsEngland)
+		//we load the pedigree diagram JSON from backend webservice instead of xWiki XML
+		//new Ajax.Request(XWiki.currentDocument.getRestURL('objects/PhenoTips.PedigreeClass/0.xml').substring(1), {
+		var webservice = new WebService();
+		var path = webservice.getDiagramEndpointPath();
+		new Ajax.Request(path, {
+			method: 'GET',
+			onCreate: function () {
+				document.fire("pedigree:load:start");
+			},
+			onFailure: function(){
+				probandDataObj.probandData = {};
+				probandDataObj.probandData.firstName = "";
+				probandDataObj.probandData.lastName  = "";
+				probandDataObj.probandData.gender    = "male";
+				new TemplateSelector(true);
+				return;
+			},
+			onSuccess: function (response) {
+
+
+				//These lines are added by Soheil for GEL(GenomicsEngland)
+				//These will set the proband details into probandDataObj
+				probandDataObj.probandData = {};
+				for(var i = 0; i < response.responseJSON.pedigreeJSON.length;i++){
+					var node = response.responseJSON.pedigreeJSON[i];
+					if(node.proband != undefined && node.proband == true){
+						probandDataObj.probandData = node;
+						//probandDataObj.probandData.firstName = node.firstName;
+						//probandDataObj.probandData.lastName  = node.lastName;
+						//probandDataObj.probandData.gender    = node.sex;
+						break;
+					}
+				}
+
+				var jsonContentString = JSON.stringify(response.responseJSON.pedigreeJSON);
+
+				var importType = "simpleJSON";
+				var importOptions = {
+					"acceptUnknownPhenotypes":true,
+					"externalIdMark":true,
+					"markEvaluated":false
+				};
+				var noUndo = false;
+				var centerAround0 = true;
+				this.createGraphFromImportData(jsonContentString,importType,importOptions,noUndo,centerAround0);
+				return;
+
+
+				//console.log("Data from LOAD: >>" + response.responseText + "<<");
+				if (response.responseJSON) {
+					console.log("[LOAD] recived JSON: " + Helpers.stringifyObject(response.responseJSON));
+
+					var updatedJSONData = editor.getVersionUpdater().updateToCurrentVersion(response.responseText);
+
+					this.createGraphFromSerializedData(updatedJSONData);
+
+					// since we just loaded data from disk data in memory is equivalent to data on disk
+					editor.getUndoRedoManager().addSaveEvent();
+				} else {
+					new TemplateSelector(true);
+				}
+			}.bind(this)
+		})
+	}
 });
