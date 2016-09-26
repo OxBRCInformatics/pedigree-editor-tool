@@ -688,7 +688,7 @@ var PedigreeEditor = Class.create({
 
 			{
 				'name': 'age_of_death',
-				'label': "Age of death",
+				'label': "Age at death",
 				'type': 'text',
 				'tab': 'Personal',
 				'function': 'setAgeOfDeath'
