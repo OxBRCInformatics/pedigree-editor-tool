@@ -288,7 +288,7 @@ var SaveLoadEngine = Class.create({
 				savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
 			},
 			parameters: {
-				"jsonsvgDiagram":exportString,
+				"jsonDiagram":exportString,
 				"svgDiagram": svgText//image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
 			}
 
