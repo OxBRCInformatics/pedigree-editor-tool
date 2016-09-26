@@ -123,7 +123,7 @@ var SaveLoadEngine = Class.create({
 		document.fire("pedigree:load:finish");
 	},
 
-	save: function () {
+	save: function (callback) {
 		if (this._saveInProgress) {
 			return;   // Don't send parallel save requests
 		}
@@ -171,64 +171,125 @@ var SaveLoadEngine = Class.create({
 				// Disable save and close buttons during a save
 				var closeButton = $('action-close');
 				var saveButton = $('action-save');
+				var saveAndExitButton = $('action-saveAndExit');
+
 				Element.addClassName(saveButton, "disabled-menu-item");
 				Element.removeClassName(saveButton, "menu-item");
 				Element.addClassName(saveButton, "no-mouse-interaction");
 				Element.addClassName(closeButton, "disabled-menu-item");
 				Element.removeClassName(closeButton, "menu-item");
 				Element.addClassName(closeButton, "no-mouse-interaction");
+
+
+				Element.addClassName(saveAndExitButton, "disabled-menu-item");
+				Element.removeClassName(saveAndExitButton, "menu-item");
+				Element.addClassName(saveAndExitButton, "no-mouse-interaction");
+
+
 				// IE9 & IE10 do not support "no-mouse-interaction", so add JS to handle this
-				Helpers.disableMouseclicks(closeButton);
-				Helpers.disableMouseclicks(saveButton);
+				if(closeButton != null && closeButton != undefined) {
+					Helpers.disableMouseclicks(closeButton);
+				}
+				if(saveButton != null && saveButton != undefined) {
+					Helpers.disableMouseclicks(saveButton);
+				}
+				if(saveAndExitButton != null && saveAndExitButton != undefined) {
+					Helpers.disableMouseclicks(saveAndExitButton);
+				}
+
 			},
-			onComplete: function () {
+			onComplete: function (response) {
 				me._saveInProgress = false;
 				var actionAfterSave = editor.getAfterSaveAction();
 				actionAfterSave && actionAfterSave();
 				// Enable save and close buttons after a save
 				var closeButton = $('action-close');
 				var saveButton = $('action-save');
+				var saveAndExitButton = $('action-saveAndExit');
+
 				Element.addClassName(saveButton, "menu-item");
 				Element.removeClassName(saveButton, "disabled-menu-item");
 				Element.removeClassName(saveButton, "no-mouse-interaction");
+
 				Element.addClassName(closeButton, "menu-item");
 				Element.removeClassName(closeButton, "disabled-menu-item");
 				Element.removeClassName(closeButton, "no-mouse-interaction");
-				// remove IE9/IE10 specific handlers
-				Helpers.enableMouseclicks(closeButton);
-				Helpers.enableMouseclicks(saveButton);
 
-				//Added by Soheil for GEL(GenomicsEngland)
-				//If the backend is OpenClinica and it is in adminEdit mode
-				//Show the following message after each save ................................................
-				var settings = new Settings();
-				var config = settings.getSetting('diagramEndpoint');
-				if(config.service == "openclinica"){
-					var webService = new WebService();
-					var isAdminEdit = webService.getUrlParameter("adminEdit");
-					if(isAdminEdit != null && isAdminEdit != undefined && isAdminEdit == "true"){
-						var closeFunction = function () {
-							this.dialog.show();
-						};
-						editor.getOkCancelDialogue().showCustomized('Your data will be saved for later but not resubmitted to Genomics England. <br>When you are ready, please resubmit the Pedigree CRF.',
-							"Genomics England",
-							"Close", closeFunction,
-							null, null,
-							null, null, true);
+				Element.addClassName(saveAndExitButton, "menu-item");
+				Element.removeClassName(saveAndExitButton, "disabled-menu-item");
+				Element.removeClassName(saveAndExitButton, "no-mouse-interaction");
+
+
+				// remove IE9/IE10 specific handlers
+				if(closeButton != null && closeButton != undefined) {
+					Helpers.enableMouseclicks(closeButton);
+				}
+				if(saveButton != null && saveButton != undefined) {
+					Helpers.enableMouseclicks(saveButton);
+				}
+				if(saveAndExitButton != null && saveAndExitButton != undefined) {
+					Helpers.enableMouseclicks(saveAndExitButton);
+				}
+
+				//Added for GEL(GenomicsEngland) ...............................................................
+				//if it has successfully saved the result
+				if(response.responseJSON) {
+					//Added by Soheil for GEL(GenomicsEngland)
+					//If the backend is OpenClinica and it is in adminEdit mode
+					//Show the following message after each save ................................................
+					var settings = new Settings();
+					var config = settings.getSetting('diagramEndpoint');
+					if (config.service == "openclinica") {
+						var webService = new WebService();
+						var isAdminEdit = webService.getUrlParameter("adminEdit");
+						if (isAdminEdit != null && isAdminEdit != undefined && isAdminEdit == "true") {
+							var closeFunction = function () {
+								this.dialog.show();
+								if (callback) {
+									callback();
+								}
+							};
+							editor.getOkCancelDialogue().showCustomized('Your data will be saved for later but not resubmitted to Genomics England. <br>When you are ready, please resubmit the Pedigree CRF.',
+								"Genomics England",
+								"Close", closeFunction,
+								null, null,
+								null, null, true);
+						} else {
+							if (callback) {
+								callback();
+							}
+						}
+					} else {
+						if (callback) {
+							callback();
+						}
 					}
 				}
 				//............................................................................................
 
-
-
 			},
-			onSuccess: function () {
+			onFailure: function (response) {
+				//Added for GEL(GenomicsEngland), if an error occurs while saving, then show error message
+				me._saveInProgress = false;
+				editor.getUndoRedoManager().addSaveEvent();
+				savingNotification.replace(new XWiki.widgets.Notification("An error occurred while saving Pedigree diagram! Please try again later."));
+			},
+			onSuccess: function (response) {
+
+				if(response.responseJSON == null || response.responseJSON == undefined){
+					me._saveInProgress = false;
+					editor.getUndoRedoManager().addSaveEvent();
+					savingNotification.replace(new XWiki.widgets.Notification("An error occurred while saving Pedigree diagram! Please try again later."));
+					return;
+				}
+
+				me._saveInProgress = false;
 				editor.getUndoRedoManager().addSaveEvent();
 				savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
 			},
 			parameters: {
-				"property#export":exportString,
-				"property#image": svgText//image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
+				"jsonsvgDiagram":exportString,
+				"svgDiagram": svgText//image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
 			}
 
 		});

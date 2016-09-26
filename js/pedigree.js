@@ -102,6 +102,17 @@ var PedigreeEditor = Class.create({
 			editor.getSaveLoadEngine().save();
 		});
 
+
+		//Added for GEL(GenomicsEngland) ........................................................................
+		//Add eventHandler for saveAndExit button, it should actually call save and also pass a callBack
+		//which is a close function. Once the save is done, it will check if callback exists and then calls that
+		var saveAndExitButton = $('action-saveAndExit');
+		saveAndExitButton && saveAndExitButton.on("click", function (event) {
+			editor.getSaveLoadEngine().save(onCloseButtonClickFunc);
+		});
+		//........................................................................................................
+
+
 		var templatesButton = $('action-templates');
 		templatesButton && templatesButton.on("click", function (event) {
 			editor.getTemplateSelector().show();
@@ -136,18 +147,17 @@ var PedigreeEditor = Class.create({
 				//If the backend is OpenClinica, by click on Close button, got to "returnURL" which is provided in the URL
 				var settings = new Settings();
 				var config = settings.getSetting('diagramEndpoint');
-				if(config.service == "openclinica"){
+				if(config.service == "openclinica" || config.service == "mercury"){
 					var webService = new WebService();
 					var returnURL = webService.getUrlParameter("returnURL", true);
 					var status = webService.getUrlParameter("status", true);
-
-					//if it is in new mode, the pedigree CRF might not have been saved yet,
+					//In case of OpenClinica, if it is in new mode, the pedigree CRF might not have been saved yet,
 					//and as the main CRF page is still open, so just close this
 					if(status == "new"){
 						window.close();
 						return;
 					}
-
+					//for Mercury and OpenClinica(status=edit), go to the returnURL
 					if(returnURL){
 						window.location = decodeURIComponent(returnURL);
 					}else{
@@ -161,7 +171,15 @@ var PedigreeEditor = Class.create({
 				editor.getSaveLoadEngine().save();
 			}
 
-			if (editor.isReadOnlyMode()) {
+
+			var settings = new Settings();
+			var settings = new Settings();
+			var saveAndExit = settings.getSetting('saveAndExit');
+			//Added for GEL(GenomicsEngland)
+			//condition "saveAndExit === true" is added for GEL
+			//if saveAndExit is True, it means that the save is already called successfully and we are here!
+			//so we can then call quitFunc to quit the app
+			if (editor.isReadOnlyMode() || saveAndExit === true) {
 				quitFunc();
 			} else {
 				window.onbeforeunload = undefined;

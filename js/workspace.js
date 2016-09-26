@@ -278,6 +278,7 @@ var Workspace = Class.create({
 					name: 'output',
 					items: [
 						{ key: 'save', label: 'Save', icon: 'check'},
+						{ key: 'saveAndExit', label: 'Save & Exit', icon: 'check'}, //Added for GEL(GenomicsEngland)
 						{ key: 'export', label: 'Export', icon: 'download'},
 						//{ key : 'print',     label : 'Print', icon : 'print'},
 						{ key: 'close', label: 'Close', icon: 'sign-out'}
@@ -318,12 +319,30 @@ var Workspace = Class.create({
 			});
 		};
 		var _createMenuItem = function (data) {
+
+			//Added for GEL(GenomicsEngland).......
+			var settings = new Settings();
+			//.....................................
+
 			//Added for GEL(GenomicsEngland) ......................................................................
 			//if it is a textOnly subMenu, just display the text
 			if(data.isTextOnly){
 				var mi = new Element('span', {'id': 'text-' + data.key, 'class': 'menu-item-text-only'}).insert("");
 				return mi;
 			}else{
+				//Added for GEL(GenomicsEngland)............................................
+				//If saveAndExit is set to 'true' in config file, then show 'save and exit' button and hide 'save' and 'close'
+				var saveAndExit = settings.getSetting("saveAndExit");
+				if(saveAndExit === true){
+					if(data.key == "save" || data.key == "close"){
+						return;
+					}
+				}else {
+					if (data.key == "saveAndExit"){
+						return;
+					}
+				}
+				//..........................................................................
 				//if it is NOT a textOnly subMenu, work as before
 				var buttonIcon = new Element('span', {'class': 'fa fa-' + data.icon});
 				var mi = new Element('span', {'id': 'action-' + data.key, 'class': 'field-no-user-select menu-item ' + data.key}).insert(buttonIcon).insert(' ').insert(data.label);
