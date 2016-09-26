@@ -63,15 +63,15 @@ WebService = Class.create({
 		var config = this._settings.getSetting('diagramEndpoint');
 		switch(config.service){
 			case "mercury":
-				return "";
+				return Helpers.getSiteURL() + "/" + config.pathToEditorJSFiles;
 				break;
 			case "openclinica":
-				//get path to pedigree directory like :
-				//"http://localhost:8083/openclinica/includes/pedigreeEditor/" or
-				//"https://gmc.genomicsengland.nhs.uk/rarediseases/demo/includes/pedigreeEditor/"
-				return Helpers.getSiteURL() + "/includes/pedigreeEditor/";
+				return Helpers.getSiteURL() + "/" + config.pathToEditorJSFiles;
+				break
 			case "local":
 				return Helpers.getSiteURL() + "/";
+				break
+
 		}
 	},
 
