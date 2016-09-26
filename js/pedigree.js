@@ -153,7 +153,7 @@ var PedigreeEditor = Class.create({
 					var status = webService.getUrlParameter("status", true);
 					//In case of OpenClinica, if it is in new mode, the pedigree CRF might not have been saved yet,
 					//and as the main CRF page is still open, so just close this
-					if(status == "new"){
+					if(config.service == "openclinica" && status == "new"){
 						window.close();
 						return;
 					}
@@ -172,7 +172,7 @@ var PedigreeEditor = Class.create({
 			}
 
 
-			var settings = new Settings();
+			
 			var settings = new Settings();
 			var saveAndExit = settings.getSetting('saveAndExit');
 			//Added for GEL(GenomicsEngland)
