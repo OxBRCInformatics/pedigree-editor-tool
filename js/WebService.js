@@ -78,9 +78,10 @@ WebService = Class.create({
 		switch(config.service){
 			case "mercury":
 				var _this = this;
-				var accessPath    = _this.getUrlParameter("accessPath");
-				var participantId = _this.getParticipantIdFromURL();
-				return "???";
+				var returnUrl =  _this.getUrlParameter("returnUrl", true);
+				var participantId = this.getUrlParameter("participantId");
+				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl;
+				return mercuryGetEndpoint;
 				break;
 			case "openclinica":
 				var _this = this;
