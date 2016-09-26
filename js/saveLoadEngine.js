@@ -233,7 +233,7 @@ var SaveLoadEngine = Class.create({
 
 				//Added for GEL(GenomicsEngland) ...............................................................
 				//if it has successfully saved the result
-				if(response.responseJSON) {
+				if(response.status == 200 || response.status == 201) {
 					//Added by Soheil for GEL(GenomicsEngland)
 					//If the backend is OpenClinica and it is in adminEdit mode
 					//Show the following message after each save ................................................
@@ -272,14 +272,27 @@ var SaveLoadEngine = Class.create({
 				//Added for GEL(GenomicsEngland), if an error occurs while saving, then show error message
 				me._saveInProgress = false;
 				editor.getUndoRedoManager().addSaveEvent();
-				savingNotification.replace(new XWiki.widgets.Notification("An error occurred while saving Pedigree diagram! Please try again later."));
+
+
+				switch(response.status){
+					case 404:
+						savingNotification.replace(new XWiki.widgets.Notification("Participant not found"));
+						break;
+					case 403:
+						savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!"));
+						break;
+					default:
+						savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later."));
+						break;
+				}
+
 			},
 			onSuccess: function (response) {
 
-				if(response.responseJSON == null || response.responseJSON == undefined){
+				if(response.status != 200 && response.status != 201){
 					me._saveInProgress = false;
 					editor.getUndoRedoManager().addSaveEvent();
-					savingNotification.replace(new XWiki.widgets.Notification("An error occurred while saving Pedigree diagram! Please try again later."));
+					savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later."));
 					return;
 				}
 
