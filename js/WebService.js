@@ -45,14 +45,14 @@ WebService = Class.create({
 			case "mercury":
 				var _this = this;
 				var returnUrl =  _this.getUrlParameter("returnUrl", true);
-				var participantId = this.getUrlParameter("participantId");
+				var participantId = this.getUrlParameter("participantId", true);
 				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl;
 				return mercuryGetEndpoint;
 				break;
 			case "openclinica":
-				var eventCRFId = this.getUrlParameter("eventCRFId");
-				var status = this.getUrlParameter("status");
-				var participantId = this.getUrlParameter("participantId");
+				var eventCRFId = this.getUrlParameter("eventCRFId", true);
+				var status = this.getUrlParameter("status", true);
+				var participantId = this.getUrlParameter("participantId", true);
 				return "/openclinica/pedigree/get?eventCRFId=" + eventCRFId + "&status=" + status + "&participantId=" + participantId;
 			case "local":
 				return null;
@@ -81,15 +81,15 @@ WebService = Class.create({
 			case "mercury":
 				var _this = this;
 				var returnUrl =  _this.getUrlParameter("returnUrl", true);
-				var participantId = this.getUrlParameter("participantId");
+				var participantId = this.getUrlParameter("participantId", true);
 				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl;
 				return mercuryGetEndpoint;
 				break;
 			case "openclinica":
 				var _this = this;
-				var eventCRFId = _this.getUrlParameter("eventCRFId");
-				var status = _this.getUrlParameter("status");
-				var participantId = _this.getUrlParameter("participantId");
+				var eventCRFId = _this.getUrlParameter("eventCRFId",true);
+				var status = _this.getUrlParameter("status",true);
+				var participantId = _this.getUrlParameter("participantId",true);
 				return "/openclinica/pedigree/update?eventCRFId=" + eventCRFId + "&status=" + status + "&participantId=" + participantId;
 			case "local":
 				return null;
@@ -122,7 +122,7 @@ WebService = Class.create({
 		switch(config.service){
 			case "mercury":
 			case "openclinica":
-				var participantId = _this.getUrlParameter("participantId");
+				var participantId = _this.getUrlParameter("participantId", true);
 				return participantId;
 				break;
 			case "local":

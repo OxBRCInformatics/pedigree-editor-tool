@@ -241,7 +241,7 @@ var SaveLoadEngine = Class.create({
 					var config = settings.getSetting('diagramEndpoint');
 					if (config.service == "openclinica") {
 						var webService = new WebService();
-						var isAdminEdit = webService.getUrlParameter("adminEdit");
+						var isAdminEdit = webService.getUrlParameter("adminEdit", true);
 						if (isAdminEdit != null && isAdminEdit != undefined && isAdminEdit == "true") {
 							var closeFunction = function () {
 								this.dialog.show();
