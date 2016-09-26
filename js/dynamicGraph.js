@@ -173,18 +173,21 @@ DynamicPositionedGraph.prototype = {
 			this.DG.GG.properties[0].gender = probandSex;
 		}
 
-//		if (patientObject.hasOwnProperty("date_of_birth")) {
-//			var birthDate = new PedigreeDate(patientObject.date_of_birth);
-//			this.DG.GG.properties[0].dob = birthDate.getSimpleObject();
-//		} else {
-//			delete this.DG.GG.properties[0].dob;
-//		}
-//		if (patientObject.hasOwnProperty("date_of_death")) {
-//			var deathDate = new PedigreeDate(patientObject.date_of_death);
-//			this.DG.GG.properties[0].dod = deathDate.getSimpleObject();
-//		} else {
-//			delete this.DG.GG.properties[0].dod;
-//		}
+		//commented for GEL(GenomicsEngland) .............................................................................................................
+		//We need to load the proband dob and dod externally from import file or backend service
+		//the following lines, will keep dob and dod for the proband and don't import new item into it
+		//if (patientObject.hasOwnProperty("date_of_birth")) {
+		//	var birthDate = new PedigreeDate(patientObject.date_of_birth);
+		//	this.DG.GG.properties[0].dob = birthDate.getSimpleObject();
+		//} else {
+		//	delete this.DG.GG.properties[0].dob;
+		//}
+		//if (patientObject.hasOwnProperty("date_of_death")) {
+		//	var deathDate = new PedigreeDate(patientObject.date_of_death);
+		//	this.DG.GG.properties[0].dod = deathDate.getSimpleObject();
+		//} else {
+		//	delete this.DG.GG.properties[0].dod;
+		//}
 		if (patientObject.hasOwnProperty("life_status")) {
 			var lifeStatus = patientObject["life_status"];
 			if (lifeStatus == "deceased" || lifeStatus == "alive") {
