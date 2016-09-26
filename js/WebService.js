@@ -59,22 +59,6 @@ WebService = Class.create({
 		}
 	},
 
-	getPathToEditorFiles: function(){
-		var config = this._settings.getSetting('diagramEndpoint');
-		switch(config.service){
-			case "mercury":
-				return Helpers.getSiteURL() + "/" + config.pathToEditorJSFiles;
-				break;
-			case "openclinica":
-				return Helpers.getSiteURL() + "/" + config.pathToEditorJSFiles;
-				break
-			case "local":
-				return Helpers.getSiteURL() + "/";
-				break
-
-		}
-	},
-
 	saveDiagramEndpointPath: function(){
 		var config = this._settings.getSetting('diagramEndpoint');
 		switch(config.service){
@@ -95,6 +79,24 @@ WebService = Class.create({
 				return null;
 		}
 	},
+	
+
+	getPathToEditorFiles: function(){
+		var config = this._settings.getSetting('diagramEndpoint');
+		switch(config.service){
+			case "mercury":
+				return Helpers.getSiteURL() + "/" + config.pathToEditorJSFiles;
+				break;
+			case "openclinica":
+				return Helpers.getSiteURL() + "/" + config.pathToEditorJSFiles;
+				break
+			case "local":
+				return Helpers.getSiteURL() + "/";
+				break
+
+		}
+	},
+
 
 	getUrlParameter: function getUrlParameter(sParam, doNotDecode) {
 
