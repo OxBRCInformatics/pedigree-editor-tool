@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirect Page</title>
+    <meta http-equiv="Refresh" content="0; URL=/labkey/login/createToken.view">
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<script type="text/javascript"><!--
+var returnUrl = window.location.origin+"/pedigree_editor?"+window.location.search;
+var encodedUrl = encodeURIComponent(returnUrl);
+window.location.replace("/labkey/login/createToken.view?returnUrl="+encodedUrl);
+--></script>
+<p><a href="/labkey/login/createToken.view">Redirect to Login Page</a></p>
+</body>
+</html>
