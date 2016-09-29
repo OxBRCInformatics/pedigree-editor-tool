@@ -46,7 +46,11 @@ WebService = Class.create({
 				var _this = this;
 				var returnUrl =  _this.getUrlParameter("returnUrl", true);
 				var participantId = this.getUrlParameter("participantId", true);
-				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl;
+				var labkeyToken = this.getUrlParameter("labkeyToken", true);
+				var labkeyEmail = this.getUrlParameter("labkeyEmail", true);
+				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl + "&labkeyToken=" +
+					labkeyToken + "&labkeyEmail="+labkeyEmail;
+				debugger;
 				return mercuryGetEndpoint;
 				break;
 			case "openclinica":
@@ -66,7 +70,10 @@ WebService = Class.create({
 				var _this = this;
 				var returnUrl =  _this.getUrlParameter("returnUrl", true);
 				var participantId = this.getUrlParameter("participantId", true);
-				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl;
+				var labkeyToken = this.getUrlParameter("labkeyToken", true);
+				var labkeyEmail = this.getUrlParameter("labkeyEmail", true);
+				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl + "&labkeyToken=" +
+					labkeyToken + "&labkeyEmail="+labkeyEmail;
 				return mercuryGetEndpoint;
 				break;
 			case "openclinica":
