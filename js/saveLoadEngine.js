@@ -359,8 +359,13 @@ var SaveLoadEngine = Class.create({
 				//These lines are added by Soheil for GEL(GenomicsEngland)
 				//These will set the proband details into probandDataObj
 				probandDataObj.probandData = {};
-				for(var i = 0; i < response.responseJSON.pedigreeJSON.length;i++){
-					var node = response.responseJSON.pedigreeJSON[i];
+				var pedigreeJSON = response.responseJSON;
+				if (config.service == "openclinica") {
+					pedigreeJSON = response.responseJSON.pedigreeJSON
+				}
+
+				for(var i = 0; i < pedigreeJSON.length;i++){
+					var node = pedigreeJSON[i];
 					if(node.proband != undefined && node.proband == true){
 						probandDataObj.probandData = node;
 						//probandDataObj.probandData.firstName = node.firstName;
@@ -370,7 +375,7 @@ var SaveLoadEngine = Class.create({
 					}
 				}
 
-				var jsonContentString = JSON.stringify(response.responseJSON.pedigreeJSON);
+				var jsonContentString = JSON.stringify(pedigreeJSON);
 
 				var importType = "simpleJSON";
 				var importOptions = {
