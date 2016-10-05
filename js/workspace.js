@@ -10,6 +10,7 @@ var Workspace = Class.create({
 
 	initialize: function () {
 		var me = this;
+		this._settings = new Settings();
 		this.canvas = new Element('div', {'id': 'canvas'});
 		this.workArea = new Element('div', {'id': 'work-area'}).update(this.canvas);
 		$('body').update(this.workArea);
@@ -289,6 +290,12 @@ var Workspace = Class.create({
 					items: [
 						{ key: 'familyId', label: '', isTextOnly:true}
 					]
+				},
+				{
+					name: 'version',
+					items: [
+						{key: 'version', label: "Editor Version: "+this._settings.getSetting('version'), isTextOnly:true }
+					]
 				}
 			];
 		}
@@ -327,7 +334,7 @@ var Workspace = Class.create({
 			//Added for GEL(GenomicsEngland) ......................................................................
 			//if it is a textOnly subMenu, just display the text
 			if(data.isTextOnly){
-				var mi = new Element('span', {'id': 'text-' + data.key, 'class': 'menu-item-text-only'}).insert("");
+				var mi = new Element('span', {'id': 'text-' + data.key, 'class': 'menu-item-text-only'}).insert(data.label);
 				return mi;
 			}else{
 				//Added for GEL(GenomicsEngland)............................................

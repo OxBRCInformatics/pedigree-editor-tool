@@ -1,6 +1,6 @@
 
 body {
-	behavior: url("/resources/htc/csshover3.htc");
+	behavior: url("../resources/htc/csshover3.htc");
 }
 
 * html div {
@@ -56,17 +56,17 @@ table.xwikilogintable input#j_password , table.xwikilogintable input#j_username{
    Since IE7 doesn't understand :after, use a static image to display the question mark.
    This should be in ie-7.css, but that file doesn't exist yet. */
 *+html span.wikicreatelink a {
-	background: transparent url("/resources/icons/xwiki/create-link.png") no-repeat right;
+	background: transparent url("../resources/icons/xwiki/create-link.png") no-repeat right;
 	padding-right: 13px;
 }
 
 /* ----------------Changes----------------*/
 /* IE6/7 don't understand :before and :after, so just display a plain image instead of the CSS arrow */
 * html #changes-info {
-	background: #F3F3F3 url("/resources/icons/xwiki/diff-header.png") no-repeat 50% 2.5em;
+	background: #F3F3F3 url("../resources/icons/xwiki/diff-header.png") no-repeat 50% 2.5em;
 }
 *+html #changes-info {
-	background: #F3F3F3 url("/resources/icons/xwiki/diff-header.png") no-repeat 50% 2.5em;
+	background: #F3F3F3 url("../resources/icons/xwiki/diff-header.png") no-repeat 50% 2.5em;
 }
 /* IE7 has problems with percentage margins, this will just leave the "to" box floating on the right */
 *+html #changes-info-box-to {

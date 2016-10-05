@@ -1,7 +1,7 @@
 ## General settings
 xwiki.iconset.type = image
-xwiki.iconset.render.wiki = image:path:$xwiki.getSkinFile("icons/silk/${icon}.png")
-xwiki.iconset.render.html = <img src="$xwiki.getSkinFile("icons/silk/${icon}.png")" alt="Icon" />
+xwiki.iconset.render.wiki = image:path:$xwiki.getSkinFile("../resources/icons/silk/${icon}.png")
+xwiki.iconset.render.html = <img src="$xwiki.getSkinFile("../resources/icons/silk/${icon}.png")" alt="Icon" />
 
 ## XWiki Icon Set (see: http://design.xwiki.org/xwiki/bin/view/Proposal/XWiki+Icon+Set).
 home = house

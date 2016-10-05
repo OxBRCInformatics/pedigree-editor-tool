@@ -1,5 +1,6 @@
 var config = {
-	"codingDefinitionServiceEndpoint": "/OCService",
+	"version": "v1.0.1",
+	"codingDefinitionServiceEndpoint": "/codingDefinitionServiceEndpoint",
 	"diagramEndpoint": {
 		//"service": "openclinica",
 		//"pathToEditorJSFiles":"/includes/pedigreeEditor/"
@@ -9,13 +10,12 @@ var config = {
 
 
 
-		"service": "local",
-		"pathToEditorJSFiles":"/"
+		//"service": "local",
+		"pathToEditorJSFiles":"/",
 
-		//"service": "mercury",
-		//"mercuryHost": "http://MERCURY_ADDRESS.COM/gel/rare_diseases/1.3/pedigrees"
+		"service": "mercury",
+		"mercuryHost": "http://localhost:8080/gel/rare_diseases/1.3/pedigrees"
 		//"pathToEditorJSFiles":"/includes/pedigreeEditor/"
 	},
 	"saveAndExit": true
 };
-
