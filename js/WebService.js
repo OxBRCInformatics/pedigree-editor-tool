@@ -50,7 +50,6 @@ WebService = Class.create({
 				var labkeyEmail = this.getUrlParameter("labkeyEmail", true);
 				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl + "&labkeyToken=" +
 					labkeyToken + "&labkeyEmail="+labkeyEmail;
-				debugger;
 				return mercuryGetEndpoint;
 				break;
 			case "openclinica":
