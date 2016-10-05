@@ -58,6 +58,9 @@
 .editor-menu .action-group {
 	display: inline-block;
 }
+.editor-menu .version-actions {
+	float: right;
+}
 /* Removed by Soheil as it has a conflict with font-awesome icons */
 /*.editor-menu span {*/
 	/*font-family: Arial,Verdana,sans-serif;*/
@@ -84,7 +87,7 @@
 .editor-menu .menu-item-text-only {
 	color: #fff !important;
 	font-size: 12px;
-	padding: 0em .1em 0em .1em ;
+	padding: .35em;
 	margin: 0 .7em 0 0;
 	display: inline-block;
 	white-space: nowrap;
