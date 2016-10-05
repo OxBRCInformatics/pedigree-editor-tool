@@ -222,7 +222,7 @@ var XWiki = (function (XWiki) {
 				'class': 'fullScreenEditButton',
 				title: this.editFullScreenLabel,
 				alt: this.editFullScreenLabel,
-				src: "../icons/silk/arrow_out.png" //@@"$jsontool.serialize($xwiki.getSkinFile('icons/silk/arrow_out.png'))"
+				src: "resources/icons/silk/arrow_out.png" //@@"$jsontool.serialize($xwiki.getSkinFile('icons/silk/arrow_out.png'))"
 			});
 			// Add functionality
 			fullScreenActivator.observe('click', this.makeFullScreen.bind(this, targetElement));
@@ -260,7 +260,7 @@ var XWiki = (function (XWiki) {
 				'class': 'fullScreenCloseButton',
 				title: this.exitFullScreenLabel,
 				alt: this.exitFullScreenLabel,
-				src: "../icons/silk/arrow_in.png" //@@@"GEL_$jsontool.serialize($xwiki.getSkinFile('icons/silk/arrow_in.png'))_GEL"
+				src: "resources/icons/silk/arrow_in.png" //@@@"GEL_$jsontool.serialize($xwiki.getSkinFile('icons/silk/arrow_in.png'))_GEL"
 			});
 			// Add functionality
 			this.closeButton.observe('click', this.closeFullScreen.bind(this));

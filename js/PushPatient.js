@@ -762,7 +762,7 @@ var PhenoTips = (function (b) {
 			if (!i) {
 				return
 			}
-			var f = new b.widgets.ModalPopup('<img src="../resources/icons/xwiki/ajax-loader-large.gif"/>', false, {title: "Select patients and fields to be pushed", verticalPosition: "top", removeOnClose: true, extraClassName: "export-dialog"});
+			var f = new b.widgets.ModalPopup('<img src="resources/icons/xwiki/ajax-loader-large.gif"/>', false, {title: "Select patients and fields to be pushed", verticalPosition: "top", removeOnClose: true, extraClassName: "export-dialog"});
 			f.showDialog();
 			var e = function () {
 				alert("Failed to get the list of patients to be pushed")
@@ -774,7 +774,7 @@ var PhenoTips = (function (b) {
 				document.fire("xwiki:dom:updated", {elements: [k], pushPreferences: k, pushMulti: true, callbackOK: d, callbackFail: e})
 			}})
 		} else {
-			var f = new b.widgets.ModalPopup('<img src="../resources/icons/xwiki/ajax-loader-large.gif"/>', false, {title: "Select fields to be pushed", verticalPosition: "top", removeOnClose: true, extraClassName: "narrow-export-dialog export-dialog"});
+			var f = new b.widgets.ModalPopup('<img src="resources/icons/xwiki/ajax-loader-large.gif"/>', false, {title: "Select fields to be pushed", verticalPosition: "top", removeOnClose: true, extraClassName: "narrow-export-dialog export-dialog"});
 			f.showDialog();
 			var c = function () {
 				alert("Failed to get the list of fields to be pushed")

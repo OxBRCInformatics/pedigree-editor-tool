@@ -311,7 +311,7 @@ span.wikicreatelink a:after {
 }
 
 .edit_section a, .edit_section span {
-	background: transparent url("/resources/icons/xwiki/edit-section.png") no-repeat left top;
+	background: transparent url("../resources/icons/xwiki/edit-section.png") no-repeat left top;
 	height: 20px;
 	margin: 0;
 	overflow: hidden;
@@ -822,10 +822,10 @@ div.buttonwrapper {
 	margin-left: 4px;
 }
 .edit-meta-tools a.edit-parent {
-	background-image: url("/resources/icons/xwiki/parent_edit.gif");
+	background-image: url("../resources/icons/xwiki/parent_edit.gif");
 }
 .edit-meta-tools a.hide-edit-parent {
-	background-image: url("/resources/icons/silk/chart_organisation.png");
+	background-image: url("../resources/icons/silk/chart_organisation.png");
 }
 
 /* Parent editing area */
@@ -912,7 +912,7 @@ iframe.mceEditorIframe, .mceEditor {
 }
 
 .xwikirenderingerror {
-	background: #F3F3F3 url("/resources/icons/silk/exclamation.png") no-repeat 8px 50%;
+	background: #F3F3F3 url("../resources/icons/silk/exclamation.png") no-repeat 8px 50%;
 	border: 1px dotted #E8E8E8;
 	color: #CC3333;
 	display: block;
@@ -1152,180 +1152,180 @@ div#xwikiobjects input[type="checkbox"], div#xwikiclassproperties input[type="ch
 
 /* Icons */
 .actionmenu .tmCreate {
-	background-image: url("/resources/icons/silk/add.png");
+	background-image: url("../resources/icons/silk/add.png");
 	background-position:  10px 3px;
-	background: url("/resources/icons/silk/add.png") 10px 3px no-repeat, linear-gradient(to top, rgba(236,236,236,0.3) 0%, rgba(236,236,236,0) 30%, rgba(20,20,20,0) 70%, rgba(20,20,20,0.2) 100%) top #4D9244;
+	background: url("../resources/icons/silk/add.png") 10px 3px no-repeat, linear-gradient(to top, rgba(236,236,236,0.3) 0%, rgba(236,236,236,0) 30%, rgba(20,20,20,0) 70%, rgba(20,20,20,0.2) 100%) top #4D9244;
 }
 
 .actionmenu .tmWiki {
-	background-image: url("/resources/icons/silk/world.png");
+	background-image: url("../resources/icons/silk/world.png");
 }
 
 .actionmenu .tmAdminWiki {
-	background-image: url("/resources/icons/silk/wrench.png");
+	background-image: url("../resources/icons/silk/wrench.png");
 }
 
 .actionmenu .tmCreateWiki{
-	background-image: url("/resources/icons/silk/chart_organisation_add.png");
+	background-image: url("../resources/icons/silk/chart_organisation_add.png");
 }
 
 .actionmenu .tmCreateSpace {
-	background-image: url("/resources/icons/silk/folder_add.png");
+	background-image: url("../resources/icons/silk/folder_add.png");
 }
 
 .actionmenu .tmSpace {
-	background-image: url("/resources/icons/silk/folder.png");
+	background-image: url("../resources/icons/silk/folder.png");
 }
 
 .actionmenu .tmAdminSpace {
-	background-image: url("/resources/icons/silk/wrench.png");
+	background-image: url("../resources/icons/silk/wrench.png");
 }
 
 .actionmenu .tmSpaceDelete {
-	background-image: url("/resources/icons/silk/cross.png");
+	background-image: url("../resources/icons/silk/cross.png");
 }
 
 .actionmenu .tmPage {
-	background-image: url("/resources/icons/silk/page_white_text.png");
+	background-image: url("../resources/icons/silk/page_white_text.png");
 }
 
 .actionmenu .tmCreatePage, .actionmenu .tmCreatePageFromOffice {
-	background-image: url("/resources/icons/silk/page_white_add.png");
+	background-image: url("../resources/icons/silk/page_white_add.png");
 }
 
 .actionmenu .tmCreateComment {
-	background-image: url("/resources/icons/silk/comment_add.png");
+	background-image: url("../resources/icons/silk/comment_add.png");
 }
 
 .actionmenu .tmCreateAttachment{
-	background-image: url("/resources/icons/xwiki/attach_add.gif");
+	background-image: url("../resources/icons/xwiki/attach_add.gif");
 }
 
 .actionmenu .tmEdit {
-	background-image: url("/resources/icons/silk/page_white_edit.png");
+	background-image: url("../resources/icons/silk/page_white_edit.png");
 }
 
 .actionmenu .tmEditWiki, .actionmenu .tmViewSource {
-	background-image: url("/resources/icons/silk/page_white_code.png");
+	background-image: url("../resources/icons/silk/page_white_code.png");
 }
 
 .actionmenu .tmEditWysiwyg {
-	background-image: url("/resources/icons/silk/page_white_edit.png");
+	background-image: url("../resources/icons/silk/page_white_edit.png");
 }
 
 .actionmenu .tmEditInline {
-	background-image: url("/resources/icons/silk/application_form.png");
+	background-image: url("../resources/icons/silk/application_form.png");
 }
 
 .actionmenu .tmEditRights {
-	background-image: url("/resources/icons/silk/lock.png");
+	background-image: url("../resources/icons/silk/lock.png");
 }
 
 .actionmenu .tmEditObject {
-	background-image: url("/resources/icons/silk/brick.png");
+	background-image: url("../resources/icons/silk/brick.png");
 }
 
 .actionmenu .tmEditClass {
-	background-image: url("/resources/icons/silk/box.png");
+	background-image: url("../resources/icons/silk/box.png");
 }
 
 .actionmenu .tmExportPdf {
-	background-image: url("/resources/icons/silk/page_white_acrobat.png");
+	background-image: url("../resources/icons/silk/page_white_acrobat.png");
 }
 
 .actionmenu .tmExportOdt {
-	background-image: url("/resources/icons/xwiki/odf_textdocument.png");
+	background-image: url("../resources/icons/xwiki/odf_textdocument.png");
 }
 
 .actionmenu .tmExportRtf {
-	background-image: url("/resources/icons/silk/page_white_word.png");
+	background-image: url("../resources/icons/silk/page_white_word.png");
 }
 
 .actionmenu .tmExportHtml {
-	background-image: url("/resources/icons/silk/page_white_world.png");
+	background-image: url("../resources/icons/silk/page_white_world.png");
 }
 
 .actionmenu .tmExportXar {
-	background-image: url("/resources/icons/silk/page_white_compressed.png");
+	background-image: url("../resources/icons/silk/page_white_compressed.png");
 }
 
 .actionmenu .tmPrintPreview {
-	background-image: url("/resources/icons/silk/page_white_magnify.png");
+	background-image: url("../resources/icons/silk/page_white_magnify.png");
 }
 
 .actionmenu .tmActionDelete {
-	background-image: url("/resources/icons/silk/cross.png");
+	background-image: url("../resources/icons/silk/cross.png");
 }
 
 .actionmenu .tmActionRename {
-	background-image: url("/resources/icons/silk/textfield_rename.png");
+	background-image: url("../resources/icons/silk/textfield_rename.png");
 }
 
 .actionmenu #tmActionShare {
-	background-image: url("/resources/icons/silk/email_go.png");
+	background-image: url("../resources/icons/silk/email_go.png");
 }
 
 .actionmenu .tmActionCopy {
-	background-image: url("/resources/icons/silk/page_white_copy.png");
+	background-image: url("../resources/icons/silk/page_white_copy.png");
 }
 
 .actionmenu .tmUser {
-	background-image: url("/resources/icons/silk/user.png");
+	background-image: url("../resources/icons/silk/user.png");
 }
 
 .actionmenu .tmProfile {
-	background-image: url("/resources/icons/silk/vcard.png");
+	background-image: url("../resources/icons/silk/vcard.png");
 }
 
 .actionmenu .tmUserPreferences {
-	background-image: url("/resources/icons/silk/wrench.png");
+	background-image: url("../resources/icons/silk/wrench.png");
 }
 
 .actionmenu .tmWatchWiki, .actionmenu .tmWatchSpace, .actionmenu .tmWatchDocument {
-	background-image: url("/resources/icons/xwiki/star-gray.png");
+	background-image: url("../resources/icons/xwiki/star-gray.png");
 }
 
 .actionmenu .tmWatchlistManager, .actionmenu .tmUnwatchWiki, .actionmenu .tmUnwatchSpace, .actionmenu .tmUnwatchDocument {
-	background-image: url("/resources/icons/xwiki/star-yellow.png");
+	background-image: url("../resources/icons/xwiki/star-yellow.png");
 }
 
 .actionmenu .tmWikiDocumentIndex, .actionmenu .tmSpaceDocumentIndex {
-	background-image: url("/resources/icons/silk/book_open.png");
+	background-image: url("../resources/icons/silk/book_open.png");
 }
 .actionmenu .tmUserNetwork {
-	background-image: url("/resources/icons/silk/group.png");
+	background-image: url("../resources/icons/silk/group.png");
 }
 
 .actionmenu .tmUserDashboard {
-	background-image: url("/resources/icons/silk/application_view_tile.png");
+	background-image: url("../resources/icons/silk/application_view_tile.png");
 }
 
 .actionmenu .tmMainWiki{
-	background-image: url("/resources/icons/silk/house.png");
+	background-image: url("../resources/icons/silk/house.png");
 }
 
 .actionmenu .tmAdminMainWiki {
-	background-image: url("/resources/icons/silk/wrench.png");
+	background-image: url("../resources/icons/silk/wrench.png");
 }
 
 .actionmenu .tmWikiIndex {
-	background-image: url("/resources/icons/silk/text_list_bullets.png");
+	background-image: url("../resources/icons/silk/text_list_bullets.png");
 }
 
 .actionmenu .tmMainWikiDocumentIndex {
-	background-image: url("/resources/icons/silk/book_open.png");
+	background-image: url("../resources/icons/silk/book_open.png");
 }
 
 .actionmenu .tmMainUserIndex {
-	background-image: url("/resources/icons/silk/group.png");
+	background-image: url("../resources/icons/silk/group.png");
 }
 
 .actionmenu .tmDeleteWiki {
-	background-image: url("/resources/icons/silk/cross.png");
+	background-image: url("../resources/icons/silk/cross.png");
 }
 
 .actionmenu .tmUserWikis {
-	background-image: url("/resources/icons/silk/chart_organisation.png");
+	background-image: url("../resources/icons/silk/chart_organisation.png");
 }
 
 /* Styles for the floating menu, when scrolling down the page. */
