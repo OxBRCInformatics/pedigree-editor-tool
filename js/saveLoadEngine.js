@@ -164,7 +164,8 @@ var SaveLoadEngine = Class.create({
         new Ajax.Request(href, {
             method: 'POST',
             requestHeaders: {Accept: "application/json text/json"},
-            contentType: "application/x-www-form-urlencoded",
+            contentType: "application/json",
+            postBody:'{"jsonDiagram":'+exportString+',"svgDiagram":'+JSON.stringify(svgText)+'}',
             onCreate: function (response) {
 
                 //Added for GEL(GenomicsEngland).............
@@ -315,12 +316,7 @@ var SaveLoadEngine = Class.create({
                 me._saveInProgress = false;
                 editor.getUndoRedoManager().addSaveEvent();
                 savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
-            },
-            parameters: {
-                "jsonDiagram": exportString,
-                "svgDiagram": svgText//image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
             }
-
         });
     },
 
