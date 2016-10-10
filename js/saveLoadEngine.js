@@ -373,20 +373,20 @@ var SaveLoadEngine = Class.create({
                     pedigreeJSON = response.responseJSON.pedigreeJSON
                 }
 
-                for (var i = 0; i < pedigreeJSON.length; i++) {
-                    var node = pedigreeJSON[i];
-                    if (node.proband != undefined && node.proband == true) {
-                        probandDataObj.probandData = node;
-                        var genderString = probandDataObj.probandData.sex.toLowerCase();
-                        if (genderString == "female" || genderString == "f" || genderString == "2")
-                            probandDataObj.probandData.gender = "F";
-                        else if (genderString == "male" || genderString == "m" || genderString == "1")
-                            probandDataObj.probandData.gender = "M";
-                        else if (genderString == "other" || genderString == "o" || genderString == "9")
-                            probandDataObj.probandData.gender = "O";
-                        break;
-                    }
-                }
+                // for (var i = 0; i < pedigreeJSON.length; i++) {
+                //     var node = pedigreeJSON[i];
+                //     if (node.proband != undefined && node.proband == true) {
+                //         probandDataObj.probandData = node;
+                //         var genderString = probandDataObj.probandData.sex.toLowerCase();
+                //         if (genderString == "female" || genderString == "f" || genderString == "2")
+                //             probandDataObj.probandData.sex = "F";
+                //         else if (genderString == "male" || genderString == "m" || genderString == "1")
+                //             probandDataObj.probandData.sex = "M";
+                //         else if (genderString == "other" || genderString == "o" || genderString == "9")
+                //             probandDataObj.probandData.sex = "O";
+                //         break;
+                //     }
+                // }
 
                 var jsonContentString = JSON.stringify(pedigreeJSON);
 
