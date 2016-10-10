@@ -163,7 +163,26 @@ var SaveLoadEngine = Class.create({
         var href = webservice.saveDiagramEndpointPath();
         new Ajax.Request(href, {
             method: 'POST',
-            onCreate: function () {
+            requestHeaders: {Accept: "application/json text/json"},
+            contentType: "application/x-www-form-urlencoded",
+            onCreate: function (response) {
+
+                //Added for GEL(GenomicsEngland).............
+                //We need to stop sending Pre-flight OPTIONS request
+                //http://stackoverflow.com/questions/13814739/prototype-ajax-request-being-sent-as-options-rather-than-get-results-in-501-err
+                var SEND_OPTION_REQUEST = false;
+                if (!SEND_OPTION_REQUEST) {
+                    var t = response.transport;
+                    t.setRequestHeader = t.setRequestHeader.wrap(function (original, k, v) {
+                        if (/^(accept|accept-language|content-language)$/i.test(k))
+                            return original(k, v);
+                        if (/^content-type$/i.test(k) &&
+                            /^(application\/x-www-form-urlencoded|multipart\/form-data|text\/plain)(;.+)?$/i.test(v))
+                            return original(k, v);
+                        return;
+                    });
+                }
+
                 me._saveInProgress = true;
                 // Disable save and close buttons during a save
                 var closeButton = $('action-close');
