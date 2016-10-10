@@ -367,6 +367,8 @@ var SaveLoadEngine = Class.create({
                 //These will set the proband details into probandDataObj
                 probandDataObj.probandData = {};
                 var pedigreeJSON = response.responseJSON;
+                var settings = new Settings();
+                var config = settings.getSetting('diagramEndpoint');
                 if (config.service == "openclinica") {
                     pedigreeJSON = response.responseJSON.pedigreeJSON
                 }
