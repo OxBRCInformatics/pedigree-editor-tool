@@ -274,16 +274,19 @@ var SaveLoadEngine = Class.create({
                 me._saveInProgress = false;
                 editor.getUndoRedoManager().addSaveEvent();
 
-
+                var message = response.statusText;
+                if (response.responseJSON != null) {
+                    message = response.responseJSON.message;
+                }
                 switch (response.status) {
                     case 404:
-                        savingNotification.replace(new XWiki.widgets.Notification("Participant not found"));
+                        savingNotification.replace(new XWiki.widgets.Notification("Participant not found: \n"+message));
                         break;
                     case 403:
-                        savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!"));
+                        savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!: \n"+message));
                         break;
                     default:
-                        savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later."));
+                        savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later.: \n"+message));
                         break;
                 }
 
