@@ -285,6 +285,9 @@ var SaveLoadEngine = Class.create({
                     case 403:
                         savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!: \n"+message));
                         break;
+                    case 401:
+                        savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!: \n"+message));
+                        break;
                     default:
                         savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later.: \n"+message));
                         break;
