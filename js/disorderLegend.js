@@ -60,11 +60,18 @@ var DisorderLegend = Class.create(Legend, {
 	//Added by Soheil
 	//valueAll is passed for GEL(GenomicsEngland)
 	addCase: function($super, disorderID, disorderName, valueAll, nodeID) {
+
+		//Added by Soheil for GEL(GenomicsEngland)
+		//Age_of_Onset should not be copied from DisorderLegend into the target dropped node
+		//So we clone it and mark ageOfOnset as empty
+		var valueAll_WithoutAgeOfOnset = Object.clone(valueAll);
+		valueAll_WithoutAgeOfOnset.ageOfOnset = "";
+		
 		if (!this._disorderCache.hasOwnProperty(disorderID))
 		//valueAll is passed for GEL(GenomicsEngland)
-			this._disorderCache[disorderID] = new Disorder(disorderID, disorderName, valueAll.ageOfOnset, valueAll.disorderType, valueAll);
+			this._disorderCache[disorderID] = new Disorder(disorderID, disorderName, "", valueAll_WithoutAgeOfOnset.disorderType, valueAll_WithoutAgeOfOnset);
 		//valueAll is passed for GEL(GenomicsEngland)
-		$super(disorderID, disorderName, valueAll, nodeID);
+		$super(disorderID, disorderName, valueAll_WithoutAgeOfOnset, nodeID);
 	},
 
 	/**
