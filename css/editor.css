@@ -1218,6 +1218,11 @@ span.unRenderedItemValue{
 	background-color: #a94442 !important;
 	vertical-align: middle;
 }
+i.rightIcon{
+	float: right;
+	font-weight: bold;
+	padding-right: 5px;
+}
 /*Added for GEL(GenomicsEngland)*/
 /* Added for removing spaces in between lines in disorder suggests*/
 div.suggestItems * {
