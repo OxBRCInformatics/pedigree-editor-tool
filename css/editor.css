@@ -1245,6 +1245,12 @@ ul.phenotype-list {
 	margin-right: 5px !important;
 	padding-right: 10px !important;
 }
+
+@media (min-width: 1200px) {
+	ul.phenotype-list {
+		max-height: 500px !important;
+	}
+}
 ul.phenotype-list li {
 	margin-bottom: 3px  !important;
 	padding-bottom: 3px  !important;
