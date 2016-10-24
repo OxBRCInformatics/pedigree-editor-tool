@@ -246,6 +246,7 @@ NodeMenu = Class.create({
 						'listInsertionElt': 'input',
 						'listInsertionPosition': 'after',
 						'acceptFreeText': true,
+						'name':'disorder',
 						//'showKey':true,        // added for GEL
 						'showDisorderType':true,  // added for GEL
 						customizeItemDisplay : function(key, value, valueAll, displayedValue, options){
@@ -406,6 +407,7 @@ NodeMenu = Class.create({
 						'listInsertionElt': 'input',
 						'listInsertionPosition': 'after',
 						'acceptFreeText': true,
+						'name':'hpo',
 						'showHPOPresentStatus':true,
 						customizeItemDisplay : function(key, value, valueAll, displayedValue, options){
 							if(options.showHPOPresentStatus){
