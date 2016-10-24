@@ -1,6 +1,6 @@
 var config = {
-	"version": "v1.0.6",
-	"codingDefinitionServiceEndpoint": "/codingDefinitionServiceEndpoint",
+	"version": "v1.0.7",
+	"codingDefinitionServiceEndpoint": "/codingDefinitionService",
 	"diagramEndpoint": {
 		//"service": "openclinica",
 		//"pathToEditorJSFiles":"/includes/pedigreeEditor/"
