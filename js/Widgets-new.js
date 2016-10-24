@@ -3618,7 +3618,20 @@ var PhenoTips = (function (PhenoTips) {
 				this.input.addClassName("accept-value");
 			}
 			this.suggest.options.callback = this.acceptSuggestion.bind(this);
-			this.list = new Element('ul', {'class': 'accepted-suggestions'});
+
+
+			//Commented for GEL(GenomicsEngland)
+			//this.list = new Element('ul', {'class': 'accepted-suggestions'});
+
+			//Added for GEL(GenomicsEngland), to add more CSS class into suggestions list
+			//based on the name of the name of the suggestion list
+			var extraClass = "";
+			if(this.options.name){
+				extraClass = this.options.name +"_suggestions";
+			}
+			this.list = new Element('ul', {'class': 'accepted-suggestions gel-accepted-suggestions ' + extraClass});
+			//..........................................................................................................
+
 			var listInsertionElement;
 			if (this.options.listInsertionElt) {
 				if (typeof(this.options.listInsertionElt) == "string") {

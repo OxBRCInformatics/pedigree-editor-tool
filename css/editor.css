@@ -1235,3 +1235,80 @@ div.suggestItems * {
 	font-size:10px;
 	text-indent: 0px !important;
 }
+
+/* ------------------------------------------------------------ */
+/* Phenotype Legend */
+ul.phenotype-list {
+	max-height: 300px !important;
+	overflow-y: scroll !important;
+	overflow-x: hidden !important;
+	margin-right: 5px !important;
+	padding-right: 10px !important;
+}
+ul.phenotype-list li {
+	margin-bottom: 3px  !important;
+	padding-bottom: 3px  !important;
+	border-bottom: 1px dotted #CCC;
+}
+ul.phenotype-list li:last-child{
+	padding-bottom:200px !important;
+}
+
+/* ------------------------------------------------------------ */
+/* Disorder Legend */
+ul.disorder-list {
+	max-height: 300px !important;
+	overflow-y: scroll !important;
+	overflow-x: hidden !important;
+	margin-right: 5px !important;
+	padding-right: 10px !important;
+}
+ul.disorder-list li {
+	margin-bottom: 3px  !important;
+	padding-bottom: 3px  !important;
+	border-bottom: 1px dotted #CCC;
+}
+ul.disorder-list li:last-child{
+	padding-bottom:50px !important;
+}
+/* ------------------------------------------------------------ */
+/* UnRendered node Legend */
+ul.UnRendered-list  {
+	max-height: 200px !important;
+	overflow-y: scroll !important;
+	overflow-x: hidden !important;
+	margin-right: 5px !important;
+	padding-right: 10px !important;
+}
+ul.UnRendered-list  li {
+	margin-bottom: 3px  !important;
+	padding-bottom: 3px  !important;
+	border-bottom: 1px dotted #CCC;
+}
+ul.UnRendered-list  li:last-child{
+	padding-bottom:50px !important;
+}
+/* ----------------------------------------------------------- */
+/* Suggestion List items*/
+ul.gel-accepted-suggestions{
+	overflow-y: scroll  !important;
+	overflow-x: hidden  !important;
+	margin-right:5px !important;
+	padding-right:10px !important;
+}
+ul.gel-accepted-suggestions li {
+	border-bottom: 1px dotted #CCC;
+}
+ul.gel-accepted-suggestions li:last-child{
+	padding-bottom:30px !important;
+}
+/* ----------------------------------------------------------- */
+/* HPO Suggestion List items */
+ul.hpo_suggestions {
+	max-height: 500px !important;
+}
+/* ----------------------------------------------------------- */
+/* Disorder Suggestion List items */
+ul.disorder_suggestions {
+	max-height: 500px !important;
+}
