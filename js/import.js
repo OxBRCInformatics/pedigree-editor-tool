@@ -1402,7 +1402,7 @@ PedigreeImport.convertRelationshipProperty = function (externalPropertyName, val
 	var internalPropertyName = PedigreeImport.JSONToInternalRelationshipPropertyMapping[externalPropertyName];
 
 	if (externalPropertyName == "consanguinity") {
-		if (value != "Y" && value != "N") {
+		if (["Y","N","P","U"].indexOf(value) == -1){
 			return null;
 		}
 	}
