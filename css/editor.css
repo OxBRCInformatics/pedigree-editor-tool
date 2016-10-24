@@ -252,7 +252,7 @@
 	right: 0;
 	z-index: 10000;
 	min-width: 140px;
-	max-width: 255px;
+	max-width: 300px;
 }
 .legend-container span {
 	font-family: Arial,Verdana,sans-serif;
