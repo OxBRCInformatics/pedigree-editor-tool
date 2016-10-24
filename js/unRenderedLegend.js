@@ -9,7 +9,13 @@
 var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 
 	initialize: function ($super) {
-		$super("Unassigned participants", true);
+
+		//commented for GEL(GenomicsEngland)
+		//$super("Unassigned participants", true);
+		//Added for GEL(GenomicsEngland), we need to pass initiallyHide=true to hide the list of items for UnRendered nodes
+		var initiallyHide = true;
+		$super("Unassigned participants", true, initiallyHide);
+
 		this._termCache = {};
 	},
 
