@@ -82,6 +82,10 @@ var AbstractPerson = Class.create(AbstractNode, {
 		}
 	},
 
+	setSex: function (sex) {
+		this.setGender(sex);
+	},
+
 	/**
 	 * Changes the adoption status of this Person to adoptedStatus. Updates the graphics.
 	 *
