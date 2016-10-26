@@ -264,7 +264,7 @@ NodeMenu = Class.create({
 
 									if(valueAll != undefined && valueAll.ageOfOnset != undefined && valueAll.ageOfOnset.length > 0){
 										var ageOfOnset = valueAll.ageOfOnset;
-										var ageOfOnsetContainer = new Element('span', {'class': 'disorder-age-of-onset'}).insert(", ").insert(ageOfOnset).insert("");
+										var ageOfOnsetContainer = new Element('span','').insert(", ").insert(new Element('span', {'class': 'disorder-age-of-onset'}).insert(ageOfOnset).insert(""));
 										displayedValue.insert("").insert(ageOfOnsetContainer);
 									}
 								}
