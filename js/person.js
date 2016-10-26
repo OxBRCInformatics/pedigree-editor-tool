@@ -765,32 +765,19 @@ var Person = Class.create(AbstractPerson, {
 			}
 		}
 
+		//this condition happens when we assign a disorder and then call 'setCarrierStatus'
+		//to update the status (if GEL disorder is assigned then make it affected)
 		if (status === undefined || status === null) {
 			if (numDisorders == 0) {
 				status = ""
 			} else {
-				status = this.getCarrierStatus();
-				if (status == "") {
-					status = "affected";
-				}
+				status = "affected";
+				this.getGraphics().updateDisorderShapes();
 			}
 		}
 
 		if (!this._isValidCarrierStatus(status)) return;
 
-		if (numDisorders > 0 && status == '') {
-			if (numDisorders == 1 && this.getDisorders()[0] == "affected") {
-				this.removeDisorder("affected");
-				this.getGraphics().updateDisorderShapes();
-			} else {
-				status = 'affected';
-			}
-		} else if (numDisorders == 0 && status == 'affected') {
-			//commented by Soheil for GEL(GenomicsEngland).........................
-			//we do not need to create a new default disease as 'affected' when the user clicks on 'Affected' radio item
-			//this.addDisorder("affected");
-			//this.getGraphics().updateDisorderShapes();
-		}
 
 		if (status != this._carrierStatus) {
 			this._carrierStatus = status;

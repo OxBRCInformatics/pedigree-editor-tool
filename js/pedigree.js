@@ -599,7 +599,7 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'carrier',
-				'label': 'Disease status',
+				'label': 'GEL disease status',
 				'type': 'radio',
 				'tab': 'Clinical',
 				'values': [
