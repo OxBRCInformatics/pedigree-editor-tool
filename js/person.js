@@ -1679,6 +1679,11 @@ Person.copyUnassignedNode = function(person, unRenderedValueAll){
 	var yesFunction = function(){
 		var disorderLoaded = false;
 		var hpoLoaded = false;
+
+		//Although all unRendered nodes are registered in Mercury and it returns "registered=true" for all
+		//of them, but we also set it to True, here
+		unRenderedValueAll.registered = true;
+
 		for (var property in unRenderedValueAll) {
 
 			if (Object.prototype.hasOwnProperty.call(unRenderedValueAll, property)) {
@@ -1703,8 +1708,7 @@ Person.copyUnassignedNode = function(person, unRenderedValueAll){
 					"comments",
 					"childlessstatus",
 					"childlessreason",
-					"karyotypicsex",
-					"registered"
+					"karyotypicsex"
 				];
 				if(ignoreProperties.indexOf(property.toLocaleLowerCase().trim()) > -1){
 					continue;
