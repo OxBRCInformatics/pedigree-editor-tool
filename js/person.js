@@ -776,6 +776,12 @@ var Person = Class.create(AbstractPerson, {
 			}
 		}
 
+		//if the user select 'affected' manually and we find that No GEL disorders added,
+		//then ignore it and do not change the status to affected
+		if(status == "affected" && numDisorders == 0){
+			return;
+		}
+
 		if (!this._isValidCarrierStatus(status)) return;
 
 
