@@ -766,21 +766,34 @@ var Person = Class.create(AbstractPerson, {
 		}
 
 		//this condition happens when we assign a disorder and then call 'setCarrierStatus'
-		//to update the status (if GEL disorder is assigned then make it affected)
+		//to update the status (if GEL disorder is assigned then make it affected, otherwise do not change it)
 		if (status === undefined || status === null) {
-			if (numDisorders == 0) {
-				status = ""
-			} else {
+			if (numDisorders > 0) {
 				status = "affected";
 				this.getGraphics().updateDisorderShapes();
+				this._carrierStatus = status;
+				this.getGraphics().updateCarrierGraphic();
+				return;
 			}
 		}
 
 		//if the user select 'affected' manually and we find that No GEL disorders added,
 		//then ignore it and do not change the status to affected
 		if(status == "affected" && numDisorders == 0){
+			editor.getOkCancelDialogue().showCustomized("At least one 'GEL Disorder' should be added to make the node status 'Affected'.",
+				"Genomics England", "Ok", function () {this.dialog.show();},
+				null, null,
+				null, null, true);
 			return;
 		}
+
+		//if the user select 'uncertain' or 'unaffected' manually and we find that there are GEL disorders in the list,
+		//then change the status to affected
+		if(status != "affected" && numDisorders > 0 ){
+			status = "affected";
+			this.getGraphics().updateDisorderShapes();
+		}
+
 
 		if (!this._isValidCarrierStatus(status)) return;
 
