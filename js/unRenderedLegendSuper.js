@@ -85,7 +85,7 @@ var unRenderedLegendSuper = Class.create(Legend, {
 		item.store("valueAll", node);
 
 		item.insert(new Element('span', {class: 'unRenderedItemName'}).update("NHS#: "));
-		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.nhsNumber));
+		item.insert(new Element('span', {class: 'unRenderedItemValue'}).update(node.NHSNumber));
 		item.insert(new Element('span', {}).update("<br>"));
 
 
