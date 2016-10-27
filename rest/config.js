@@ -1,5 +1,5 @@
 var config = {
-	"version": "v1.0.8",
+	"version": "v1.0.9",
 	"codingDefinitionServiceEndpoint": "/codingDefinitionService",
 	"diagramEndpoint": {
 		//"service": "openclinica",
