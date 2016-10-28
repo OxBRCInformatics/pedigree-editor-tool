@@ -1348,18 +1348,18 @@ var Person = Class.create(AbstractPerson, {
 
 		return {
 			identifier: {value: this.getID()},
-			nhs_number:    {value : this.getNHSNumber(), disabled: this.isRegistered()},
-			chi_number:    {value : this.getCHINumber(), disabled: this.isRegistered()},
+			nhs_number:    {value : this.getNHSNumber(), disabled: true},
+			chi_number:    {value : this.getCHINumber(), disabled: true},
 			gel_super_family_id: {value : this.getGelSuperFamilyId()},
 			family_id: {value : this.getFamilyId()},
 			consanguineous_population: {value : this.getConsanguineousPopulation()},
 			karyotypic_sex: {value : this.getKaryotypicSex()},
 			ancestries: {value : this.getAncestries()},
-			participant_id:{value : this.getParticipantId(), disabled: this.isRegistered()},
+			participant_id:{value : this.getParticipantId(), disabled: true},
 			registered:{value : this.getRegistered()},
 
-			first_name: {value: this.getFirstName(), disabled: this.isRegistered()},
-			last_name: {value: this.getLastName(), disabled: this.isRegistered()},
+			first_name: {value: this.getFirstName(), disabled: true},
+			last_name: {value: this.getLastName(), disabled: true},
 			last_name_birth: {value: this.getLastNameAtBirth(), disabled: this.isRegistered()}, //, inactive: (this.getGender() != 'F')},
 			external_id: {value: this.getExternalID(), disabled: this.isRegistered()},
 			gender: {value: this.getGender(), inactive: inactiveGenders, disabled: this.isRegistered()},
