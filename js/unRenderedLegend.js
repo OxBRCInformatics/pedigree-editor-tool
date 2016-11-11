@@ -9,8 +9,30 @@
 var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 
 	initialize: function ($super) {
-		$super("Unassigned participants", true);
+
+		//commented for GEL(GenomicsEngland)
+		//$super("Unassigned participants", true);
+		//Added for GEL(GenomicsEngland), we need to pass initiallyHide=true to hide the list of items for UnRendered nodes
+		var initiallyHide = true;
+		$super("Unassigned participants", true, initiallyHide);
+
+		// Added for GEL to add the info box about what to do with the unassigned participants
+		this._unrenderedLegendInfo = new Element('div', {'class': 'legend-box legend-info', id: 'extra-legend-info'}).insert(
+			new Element('div', {'class': 'infomessage'}).insert(
+				"Please drag & drop all 'unassigned' participants from the list below into the correct position in the pedigree.")
+		);
+		this.unrenderedCloseButton = new Element('span', {'class': 'close-button'}).update('x');
+		this.unrenderedCloseButton.observe('click', this.hideUnRenderedHint.bindAsEventListener(this));
+		this._unrenderedLegendInfo.insert({'top': this.unrenderedCloseButton});
+
+		this._list.insert(this._unrenderedLegendInfo);
+
 		this._termCache = {};
+	},
+
+	hideUnRenderedHint: function () {
+		editor.getPreferencesManager().setConfigurationOption("user", "hideDraggingHint", true);
+		this._unrenderedLegendInfo.hide();
 	},
 
 	_getPrefix: function (id) {

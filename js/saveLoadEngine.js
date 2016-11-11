@@ -163,7 +163,11 @@ var SaveLoadEngine = Class.create({
         var href = webservice.saveDiagramEndpointPath();
         new Ajax.Request(href, {
             method: 'POST',
+            requestHeaders: {Accept: "application/json text/json"},
+            contentType: "application/json",
+            postBody:'{"jsonDiagram":'+exportString+',"svgDiagram":'+JSON.stringify(svgText)+'}',
             onCreate: function () {
+
                 me._saveInProgress = true;
                 // Disable save and close buttons during a save
                 var closeButton = $('action-close');
@@ -270,16 +274,22 @@ var SaveLoadEngine = Class.create({
                 me._saveInProgress = false;
                 editor.getUndoRedoManager().addSaveEvent();
 
-
+                var message = response.statusText;
+                if (response.responseJSON != null) {
+                    message = response.responseJSON.message;
+                }
                 switch (response.status) {
                     case 404:
-                        savingNotification.replace(new XWiki.widgets.Notification("Participant not found"));
+                        savingNotification.replace(new XWiki.widgets.Notification("Participant not found: \n"+message));
                         break;
                     case 403:
-                        savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!"));
+                        savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!: \n"+message));
+                        break;
+                    case 401:
+                        savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!: \n"+message));
                         break;
                     default:
-                        savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later."));
+                        savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later.: \n"+message));
                         break;
                 }
 
@@ -296,12 +306,7 @@ var SaveLoadEngine = Class.create({
                 me._saveInProgress = false;
                 editor.getUndoRedoManager().addSaveEvent();
                 savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
-            },
-            parameters: {
-                "jsonDiagram": exportString,
-                "svgDiagram": svgText//image.innerHTML.replace(/xmlns:xlink=".*?"/, '').replace(/width=".*?"/, '').replace(/height=".*?"/, '').replace(/viewBox=".*?"/, "viewBox=\"" + bbox.x + " " + bbox.y + " " + bbox.width + " " + bbox.height + "\" width=\"" + bbox.width + "\" height=\"" + bbox.height + "\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
             }
-
         });
     },
 
@@ -367,24 +372,26 @@ var SaveLoadEngine = Class.create({
                 //These will set the proband details into probandDataObj
                 probandDataObj.probandData = {};
                 var pedigreeJSON = response.responseJSON;
+                var settings = new Settings();
+                var config = settings.getSetting('diagramEndpoint');
                 if (config.service == "openclinica") {
                     pedigreeJSON = response.responseJSON.pedigreeJSON
                 }
 
-                for (var i = 0; i < pedigreeJSON.length; i++) {
-                    var node = pedigreeJSON[i];
-                    if (node.proband != undefined && node.proband == true) {
-                        probandDataObj.probandData = node;
-                        var genderString = probandDataObj.probandData.sex.toLowerCase();
-                        if (genderString == "female" || genderString == "f" || genderString == "2")
-                            probandDataObj.probandData.gender = "F";
-                        else if (genderString == "male" || genderString == "m" || genderString == "1")
-                            probandDataObj.probandData.gender = "M";
-                        else if (genderString == "other" || genderString == "o" || genderString == "9")
-                            probandDataObj.probandData.gender = "O";
-                        break;
-                    }
-                }
+                // for (var i = 0; i < pedigreeJSON.length; i++) {
+                //     var node = pedigreeJSON[i];
+                //     if (node.proband != undefined && node.proband == true) {
+                //         probandDataObj.probandData = node;
+                //         var genderString = probandDataObj.probandData.sex.toLowerCase();
+                //         if (genderString == "female" || genderString == "f" || genderString == "2")
+                //             probandDataObj.probandData.sex = "F";
+                //         else if (genderString == "male" || genderString == "m" || genderString == "1")
+                //             probandDataObj.probandData.sex = "M";
+                //         else if (genderString == "other" || genderString == "o" || genderString == "9")
+                //             probandDataObj.probandData.sex = "O";
+                //         break;
+                //     }
+                // }
 
                 var jsonContentString = JSON.stringify(pedigreeJSON);
 

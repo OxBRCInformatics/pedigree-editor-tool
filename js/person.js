@@ -32,6 +32,10 @@ var Person = Class.create(AbstractPerson, {
 
 	_setDefault: function () {
 		this._phenotipsId = "";
+
+		Person.setMethods["sex"] = "setGender";
+		Person.setMethods["gender"] = "setGender";
+
 		this._firstName = "";
 		Person.setMethods["firstName"] = "setFirstName";
 		this._lastName = "";
@@ -761,32 +765,38 @@ var Person = Class.create(AbstractPerson, {
 			}
 		}
 
+		//this condition happens when we assign a disorder and then call 'setCarrierStatus'
+		//to update the status (if GEL disorder is assigned then make it affected, otherwise do not change it)
 		if (status === undefined || status === null) {
-			if (numDisorders == 0) {
-				status = ""
-			} else {
-				status = this.getCarrierStatus();
-				if (status == "") {
-					status = "affected";
-				}
+			if (numDisorders > 0) {
+				status = "affected";
+				this.getGraphics().updateDisorderShapes();
+				this._carrierStatus = status;
+				this.getGraphics().updateCarrierGraphic();
+				return;
 			}
 		}
+
+		//if the user select 'affected' manually and we find that No GEL disorders added,
+		//then ignore it and do not change the status to affected
+		if(status == "affected" && numDisorders == 0){
+			editor.getOkCancelDialogue().showCustomized("At least one 'GEL Disorder' should be added to make the node status 'Affected'.",
+				"Genomics England", "Ok", function () {this.dialog.show();},
+				null, null,
+				null, null, true);
+			return;
+		}
+
+		//if the user select 'uncertain' or 'unaffected' manually and we find that there are GEL disorders in the list,
+		//then change the status to affected
+		if(status != "affected" && numDisorders > 0 ){
+			status = "affected";
+			this.getGraphics().updateDisorderShapes();
+		}
+
 
 		if (!this._isValidCarrierStatus(status)) return;
 
-		if (numDisorders > 0 && status == '') {
-			if (numDisorders == 1 && this.getDisorders()[0] == "affected") {
-				this.removeDisorder("affected");
-				this.getGraphics().updateDisorderShapes();
-			} else {
-				status = 'affected';
-			}
-		} else if (numDisorders == 0 && status == 'affected') {
-			//commented by Soheil for GEL(GenomicsEngland).........................
-			//we do not need to create a new default disease as 'affected' when the user clicks on 'Affected' radio item
-			//this.addDisorder("affected");
-			//this.getGraphics().updateDisorderShapes();
-		}
 
 		if (status != this._carrierStatus) {
 			this._carrierStatus = status;
@@ -1338,18 +1348,18 @@ var Person = Class.create(AbstractPerson, {
 
 		return {
 			identifier: {value: this.getID()},
-			nhs_number:    {value : this.getNHSNumber(), disabled: this.isRegistered()},
-			chi_number:    {value : this.getCHINumber(), disabled: this.isRegistered()},
+			nhs_number:    {value : this.getNHSNumber(), disabled: true},
+			chi_number:    {value : this.getCHINumber(), disabled: true},
 			gel_super_family_id: {value : this.getGelSuperFamilyId()},
 			family_id: {value : this.getFamilyId()},
 			consanguineous_population: {value : this.getConsanguineousPopulation()},
 			karyotypic_sex: {value : this.getKaryotypicSex()},
 			ancestries: {value : this.getAncestries()},
-			participant_id:{value : this.getParticipantId(), disabled: this.isRegistered()},
+			participant_id:{value : this.getParticipantId(), disabled: true},
 			registered:{value : this.getRegistered()},
 
-			first_name: {value: this.getFirstName(), disabled: this.isRegistered()},
-			last_name: {value: this.getLastName(), disabled: this.isRegistered()},
+			first_name: {value: this.getFirstName(), disabled: true},
+			last_name: {value: this.getLastName(), disabled: true},
 			last_name_birth: {value: this.getLastNameAtBirth(), disabled: this.isRegistered()}, //, inactive: (this.getGender() != 'F')},
 			external_id: {value: this.getExternalID(), disabled: this.isRegistered()},
 			gender: {value: this.getGender(), inactive: inactiveGenders, disabled: this.isRegistered()},
@@ -1671,95 +1681,169 @@ Person.setMethods = {};
 //Added for GEL(GenomicsEngland)
 //This will be used to assign values into a node and dynamically update the UI. Mainly used for drag/drop and copying an unRendered node into a node in the UI
 Person.copyUnassignedNode = function(person, unRenderedValueAll){
-	var disorderLoaded = false;
-	var hpoLoaded = false;
-	for (var property in unRenderedValueAll) {
-		if (Object.prototype.hasOwnProperty.call(unRenderedValueAll, property)) {
-			var value = unRenderedValueAll[property];
-			var setMethod = Person.setMethods[property];
-			if(!setMethod){
-				console.log("Set method '"+ setMethod + "' for property '" + property +"' not specified in 'Person.setMethods'");
-				continue;
-			}
 
-			//Do not copy the following values from unAssigned node into the destination node
-			var ignoreProperties = [
-				"gelsuperfamilyid",
-				"ancestries",
-				"consanguineouspopulation",
-				"comments",
-				"childlessstatus",
-				"childlessreason",
-				"karyotypicsex",
-				"registered"
-			];
-			if(ignoreProperties.indexOf(property.toLocaleLowerCase().trim()) > -1){
-				continue;
-			}
+	var yesFunction = function(){
+		var disorderLoaded = false;
+		var hpoLoaded = false;
 
-			//We need to follow a certain order to fill disorder and disorderFullDetails
-			if((property == "disordersFullDetails" || property == "disorders")){
+		//Although all unRendered nodes are registered in Mercury and it returns "registered=true" for all
+		//of them, but we also set it to True, here
+		unRenderedValueAll.registered = true;
 
-				if(disorderLoaded){
+		for (var property in unRenderedValueAll) {
+
+			if (Object.prototype.hasOwnProperty.call(unRenderedValueAll, property)) {
+				var value = unRenderedValueAll[property];
+				var setMethod = Person.setMethods[property];
+				if(!setMethod){
+					console.log("Set method '"+ setMethod + "' for property '" + property +"' not specified in 'Person.setMethods'");
 					continue;
 				}
 
-				if(!unRenderedValueAll.disordersFullDetails){
-					//disordersFullDetails must have been included, otherwise we can not load disorders from "disorders" in unRendered Nodes
-					console.log("disordersFullDetails must have been included, otherwise we can not load disorders from 'disorders' in unRendered Nodes");
+				//if property is Gender, then get it in the right format
+				if(property == "sex" || property == "gender"){
+					value = Person.FormatGender(value);
+				}
+
+
+				//Do not copy the following values from unAssigned node into the destination node
+				var ignoreProperties = [
+					"gelsuperfamilyid",
+					"ancestries",
+					"consanguineouspopulation",
+					"comments",
+					"childlessstatus",
+					"childlessreason",
+					"karyotypicsex"
+				];
+				if(ignoreProperties.indexOf(property.toLocaleLowerCase().trim()) > -1){
 					continue;
 				}
 
-				if(unRenderedValueAll.disordersFullDetails){
-					var disorders = unRenderedValueAll.disordersFullDetails;
-					var newDisorderArray = [];
-					for(var i = 0; i < disorders.length; i++){
-						var disorder = new Disorder(disorders[i].disorderId, disorders[i].name,disorders[i].ageOfOnset,disorders[i].disorderType,disorders[i].valueAll);
-						newDisorderArray.push(disorder);
+				//We need to follow a certain order to fill disorder and disorderFullDetails
+				if((property == "disordersFullDetails" || property == "disorders")){
+
+					if(disorderLoaded){
+						continue;
 					}
-					var properties = {};
-					properties["setDisorders"] = newDisorderArray;
-					var event = { "nodeID": person.getID(), "properties": properties };
-					document.fire("pedigree:node:setproperty", event);
-				}
 
-				disorderLoaded = true;
-				continue;
-			}
-
-			//We need to follow a certain order to fill hpoTerms and hpoTermsFullDetails
-			if((property == "hpoTerms" || property == "hpoTermsFullDetails")){
-
-				if(hpoLoaded){
-					continue;
-				}
-
-				if(!unRenderedValueAll.hpoTermsFullDetails){
-					//hpoTermsFullDetails must have been included, otherwise we can not load HPO from "hpoTerms" in unRendered Nodes
-					console.log("hpoTermsFullDetails must have been included, otherwise we can not load HPOs from 'hpoTerms' in unRendered Nodes");
-					continue;
-				}
-
-				if(unRenderedValueAll.hpoTermsFullDetails){
-					var HPOs = unRenderedValueAll.hpoTermsFullDetails;
-					var newHPOArray = [];
-					for(var i = 0; i < HPOs.length; i++){
-						var HPO = new HPOTerm(HPOs[i].hpoId, HPOs[i].name,HPOs[i].hpoPresent, HPOs[i].valueAll);
-						newHPOArray.push(HPO);
+					if(!unRenderedValueAll.disordersFullDetails){
+						//disordersFullDetails must have been included, otherwise we can not load disorders from "disorders" in unRendered Nodes
+						console.log("disordersFullDetails must have been included, otherwise we can not load disorders from 'disorders' in unRendered Nodes");
+						continue;
 					}
-					var properties = {};
-					properties["setHPO"] = newHPOArray;
-					var event = { "nodeID": person.getID(), "properties": properties };
-					document.fire("pedigree:node:setproperty", event);
-				}
-				hpoLoaded = true;
-				continue;
-			}
 
-			var properties = {};
-			properties[setMethod] = value;
-			var event = { "nodeID": person.getID(), "properties": properties };
-			document.fire("pedigree:node:setproperty", event);
+					if(unRenderedValueAll.disordersFullDetails){
+						var disorders = unRenderedValueAll.disordersFullDetails;
+						var newDisorderArray = [];
+						for(var i = 0; i < disorders.length; i++){
+							var disorder = new Disorder(disorders[i].disorderId, disorders[i].name,disorders[i].ageOfOnset,disorders[i].disorderType,disorders[i].valueAll);
+							newDisorderArray.push(disorder);
+						}
+						var properties = {};
+						properties["setDisorders"] = newDisorderArray;
+						var event = { "nodeID": person.getID(), "properties": properties };
+						document.fire("pedigree:node:setproperty", event);
+					}
+
+					disorderLoaded = true;
+					continue;
+				}
+
+				//We need to follow a certain order to fill hpoTerms and hpoTermsFullDetails
+				if((property == "hpoTerms" || property == "hpoTermsFullDetails")){
+
+					if(hpoLoaded){
+						continue;
+					}
+
+					if(!unRenderedValueAll.hpoTermsFullDetails){
+						//hpoTermsFullDetails must have been included, otherwise we can not load HPO from "hpoTerms" in unRendered Nodes
+						console.log("hpoTermsFullDetails must have been included, otherwise we can not load HPOs from 'hpoTerms' in unRendered Nodes");
+						continue;
+					}
+
+					if(unRenderedValueAll.hpoTermsFullDetails){
+						var HPOs = unRenderedValueAll.hpoTermsFullDetails;
+						var newHPOArray = [];
+						for(var i = 0; i < HPOs.length; i++){
+							var HPO = new HPOTerm(HPOs[i].hpoId, HPOs[i].name,HPOs[i].hpoPresent, HPOs[i].valueAll);
+							newHPOArray.push(HPO);
+						}
+						var properties = {};
+						properties["setHPO"] = newHPOArray;
+						var event = { "nodeID": person.getID(), "properties": properties };
+						document.fire("pedigree:node:setproperty", event);
+					}
+					hpoLoaded = true;
+					continue;
+				}
+
+				var properties = {};
+				properties[setMethod] = value;
+				var event = { "nodeID": person.getID(), "properties": properties };
+				document.fire("pedigree:node:setproperty", event);
+			}
 		}
+	};
+
+	var closeFunction = function () {
+		this.dialog.show();
+	};
+
+	//If target has a gender like "M","F","O" but the source gender is different from the target gender, then ask for confirmation
+	var targetNodeGender = Person.FormatGender(person.getGender());
+	var sourceNodeGender = Person.FormatGender(unRenderedValueAll.sex);
+	var genderMessage = undefined;
+	if(targetNodeGender === "M" && (sourceNodeGender === "F" || sourceNodeGender === "O" || sourceNodeGender === "unknown" )){
+		genderMessage = "Gender in target node is 'Male' but in unassigned node it is '"+Person.getGenderString(sourceNodeGender)+"',<br> Are you sure you want to assign the values to this node?"
+	}else if (targetNodeGender === "F" && (sourceNodeGender === "M" || sourceNodeGender === "O" || sourceNodeGender === "unknown" )){
+		genderMessage = "Gender in target node is 'Female' but in unassigned node it is '"+Person.getGenderString(sourceNodeGender)+"',<br> Are you sure you want to assign the values to this node?"
+	}else if (targetNodeGender === "O" && (sourceNodeGender === "M" || sourceNodeGender === "F" || sourceNodeGender === "unknown" )){
+		genderMessage = "Gender in target node is 'Other' but in unassigned node it is '"+Person.getGenderString(sourceNodeGender)+"',<br> Are you sure you want to assign the values to this node?"
 	}
+
+
+	if(genderMessage){
+		//get confirmation
+		editor.getOkCancelDialogue().showCustomized(genderMessage,
+			"Genomics England",
+			"Yes", yesFunction,
+			"No", closeFunction,
+			null, true);
+	}else{
+		yesFunction();
+	}
+
+};
+
+Person.FormatGender = function(genderString){
+	if(genderString == null || genderString == undefined){
+		return "unknown";
+	}
+	var genderString = genderString.toLowerCase();
+	if (genderString == "female" || genderString == "f" || genderString == "2")
+		return "F";
+	if (genderString == "other" || genderString == "o"  || genderString == "9")
+		return "O";
+	else if (genderString == "male" || genderString == "m" || genderString == "1")
+		return "M";
+	else
+		return "unknown";
+};
+
+Person.getGenderString = function(genderString){
+	if(genderString == null || genderString == undefined){
+		return "unknown";
+	}
+	var genderString = genderString.toLowerCase();
+
+ 	if (genderString == "female" || genderString == "f" || genderString == "2")
+		return "Female";
+	if (genderString == "other" || genderString == "o"  || genderString == "9")
+		return "Other";
+	else if (genderString == "male" || genderString == "m" || genderString == "1")
+		return "Male";
+	else
+		return "Unknown";
 };

@@ -41,11 +41,12 @@ var PedigreeEditor = Class.create({
 
 		//initialize the elements of the app
 		this._workspace = new Workspace();
+		this._unRenderedLegend = new unRenderedLegend();
 		this._disorderLegend = new DisorderLegend();
 		this._geneLegend = new GeneLegend();
 		this._hpoLegend = new HPOLegend();
 		this._cancerLegend = new CancerLegend();
-		this._unRenderedLegend = new unRenderedLegend();
+
 		this._nodetypeSelectionBubble = new NodetypeSelectionBubble(false);
 		this._siblingSelectionBubble = new NodetypeSelectionBubble(true);
 		this._okCancelDialogue = new OkCancelDialogue();
@@ -598,7 +599,7 @@ var PedigreeEditor = Class.create({
 			},
 			{
 				'name': 'carrier',
-				'label': 'Disease status',
+				'label': 'GEL disease status',
 				'type': 'radio',
 				'tab': 'Clinical',
 				'values': [

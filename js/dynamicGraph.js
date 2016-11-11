@@ -165,6 +165,17 @@ DynamicPositionedGraph.prototype = {
 		var genderOK = true;
 		if (patientObject.hasOwnProperty("sex")) {
 			var probandSex = patientObject.sex;
+
+			//Added for GEL(GenomicsEngland), this will get the proband Gender regardless of the format
+			var genderString = probandSex.toLowerCase();
+			if (genderString == "female" || genderString == "f" || genderString == "2")
+				probandSex = "F";
+			else if (genderString == "male" || genderString == "m" || genderString == "1")
+				probandSex = "M";
+			else if (genderString == "other" || genderString == "o" || genderString == "9")
+				probandSex = "O";
+
+
 			var possibleGenders = this.getPossibleGenders(0);
 			if (!possibleGenders.hasOwnProperty(probandSex) || !possibleGenders[probandSex]) {
 				probandSex = 'U';

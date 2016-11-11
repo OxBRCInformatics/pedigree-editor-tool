@@ -7,7 +7,11 @@
 
 var Legend = Class.create({
 
-	initialize: function (title, allowDrop) {
+	//initiallyHide: is passed for GEL(GenomicsEngland), if true, it means that the menu in legend box should be hidden initially
+	initialize: function (title, allowDrop, initiallyHide) {
+		//Added for GEL(GenomicsEngland)
+		this._initiallyHide = initiallyHide;
+
 		this._affectedNodes = {};     // for each object: the list of affected person nodes
 
 		this._objectColors = {};       // for each object: the corresponding object color
@@ -42,11 +46,59 @@ var Legend = Class.create({
 		this._legendBox.hide();
 		legendContainer.insert(this._legendBox);
 
-		var legendTitle = new Element('h2', {'class': 'legend-title'}).update(title);
-		this._legendBox.insert(legendTitle);
+
+
+		var showMoreIcon = new Element('i',{'class':'fa  rightIcon'});
+		if(this._initiallyHide === true){
+			showMoreIcon.addClassName("fa-angle-double-down");
+		}else{
+			showMoreIcon.addClassName("fa-angle-double-up");
+		}
+
+
+
+		//Commented for GEL(GenomicsEngland)
+		//These lines are commented and replaced with the following lines
+		//var legendTitle = new Element('h2', {'class': 'legend-title'}).update(title);
+		//var divTitle = new Element('div', {'class': ''}).update(legendTitle);
+
+
+		//Added for GEL(GenomicsEngland) to add a show/hide button in the tab title ....................................
+		var plusElement = new Element('span', {style:'cursor:pointer;font-size: 90%;'}).insert(title).insert(showMoreIcon);// + '<i class="fa fa-angle-double-down rightIcon"></i>');
+		var legendTitle = new Element('h2', {'class': 'legend-title'}).update(plusElement);
+		var divTitle = new Element('div', {'class': ''}).update(legendTitle);
+		var self = this;
+		showMoreIcon.on("click",function(event){
+			if(this.hasClassName('fa-angle-double-down')) {
+				var nextUL = $$('ul.' + self._getPrefix() + '-list');
+				if (nextUL.length > 0) {
+					nextUL[0].show();
+				}
+				this.removeClassName('fa-angle-double-down');
+				this.addClassName('fa-angle-double-up');
+			}else{
+				var nextUL = $$('ul.' + self._getPrefix() + '-list');
+				if (nextUL.length > 0) {
+					nextUL[0].hide();
+				}
+				this.addClassName('fa-angle-double-down');
+				this.removeClassName('fa-angle-double-up');
+			}
+		});
+		this._legendBox.insert(divTitle);
+		//..............................................................................................................
+
+
 
 		this._list = new Element('ul', {'class': this._getPrefix() + '-list abnormality-list'});
 		this._legendBox.insert(this._list);
+
+		//Added for GEL(GenomicsEngland), to hide the list if initiallyHide is True
+		if(this._initiallyHide === true){
+			this._list.hide();
+		}
+		//..............................................................................................................
+
 
 		Element.observe(this._legendBox, 'mouseover', function () {
 			$$('.menu-box').invoke('setOpacity', .1);

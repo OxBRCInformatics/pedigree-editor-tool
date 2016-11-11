@@ -400,17 +400,15 @@ Helpers.getSiteURL = function(){
 	return window.location.origin + window.location.pathname.substr(0, window.location.pathname.lastIndexOf('/'));
 }
 
-Helpers.getGenderDisplayText = function(gender){
+Helpers.getGenderDisplayText = function(genderString){
 
-	var genderMap = {
-		m:"Male",
-		f:"Female",
-		o:"Other",
-		u:"Unknown"
-	};
-	if(genderMap.hasOwnProperty(gender.toLowerCase())){
-		return genderMap[gender.toLowerCase()];
-	}else{
-		"Unknown"
-	}
+	var gender = "Unknown";
+	var genderString = genderString.toLowerCase();
+	if (genderString == "female" || genderString == "f" || genderString == "2")
+		gender = "Female";
+	else if (genderString == "male" || genderString == "m" || genderString == "1")
+		gender = "Male";
+	else if (genderString == "other" || genderString == "o" || genderString == "9")
+		gender = "Other";
+	return gender;
 };
