@@ -14,7 +14,7 @@ var config = {
 		"pathToEditorJSFiles":"/",
 
 		"service": "mercury",
-		"mercuryHost": "http://localhost:8080/gel/rare_diseases/1.3/pedigrees"
+		"mercuryHost": "http://localhost:8080/gel/rare_diseases/pedigrees"
 		//"pathToEditorJSFiles":"/includes/pedigreeEditor/"
 	},
 	"saveAndExit": true
