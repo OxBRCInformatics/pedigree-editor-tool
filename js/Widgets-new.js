@@ -3397,7 +3397,7 @@ var PhenoTips = (function (PhenoTips) {
 					break;
 				default:
 					// TODO: smart alignment according to the actual height
-					this.dialogBox.setStyle({"top": "35%"});
+					this.dialogBox.setStyle({"top": "20%"});
 					break;
 			}
 			this.dialogBox.setStyle({"left": "", "right": ""});

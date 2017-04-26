@@ -30,7 +30,7 @@ NodeMenu = Class.create({
 		if (otherCSSClass) cssClass += " " + otherCSSClass;
 		this.menuBox = new Element('div', {'class': cssClass});
 
-		this.closeButton = new Element('span', {'class': 'close-button'}).update('×');
+		this.closeButton = new Element('span', {'class': 'close-button'}).update('x');
 		this.menuBox.insert({'top': this.closeButton});
 		this.closeButton.observe('click', this.hide.bindAsEventListener(this));
 
