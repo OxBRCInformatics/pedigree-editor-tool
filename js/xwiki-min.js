@@ -1317,7 +1317,7 @@ var XWiki = (function (b) {
 				this.dialogBox.setStyle({bottom: "0"});
 				break;
 			default:
-				this.dialogBox.setStyle({top: "35%"});
+				this.dialogBox.setStyle({top: "20%"});
 				break
 		}
 		switch (this.options.horizontalPosition) {

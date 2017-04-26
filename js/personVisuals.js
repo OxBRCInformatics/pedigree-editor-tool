@@ -425,7 +425,7 @@ var PersonVisuals = Class.create(AbstractPersonVisuals, {
 				}
 				else {
 					if (deathDate && birthDate && deathDate.isComplete() && birthDate.isComplete()) {
-						text = person.getBirthDate().getBestPrecisionStringDDMMYYY(dateFormat) + " – " + person.getDeathDate().getBestPrecisionStringDDMMYYY(dateFormat);
+						text = person.getBirthDate().getBestPrecisionStringDDMMYYY(dateFormat) + " - " + person.getDeathDate().getBestPrecisionStringDDMMYYY(dateFormat);
 						if (person.getBirthDate().getYear() !== null && person.getDeathDate().getYear() !== null) {
 							var age = AgeCalc.getAge(person.getBirthDate(), person.getDeathDate());
 							text += "\n" + age;
@@ -435,7 +435,7 @@ var PersonVisuals = Class.create(AbstractPersonVisuals, {
 						text = "d. " + person.getDeathDate().getBestPrecisionStringDDMMYYY(dateFormat);
 					}
 					else if (birthDate && birthDate.isComplete()) {
-						text = person.getBirthDate().getBestPrecisionStringDDMMYYY(dateFormat) + " – ?";
+						text = person.getBirthDate().getBestPrecisionStringDDMMYYY(dateFormat) + " - ?";
 					}
 				}
 			} else {
@@ -470,7 +470,7 @@ var PersonVisuals = Class.create(AbstractPersonVisuals, {
 							(age.indexOf("day") != -1 || age.indexOf("wk") != -1 || age.indexOf("mo") != -1)) {
 							text = "d. " + deathDate.getYear(true) + " (" + age + ")";
 						} else {
-							text = birthDate.getBestPrecisionStringYear() + " – " + deathDate.getBestPrecisionStringYear();
+							text = birthDate.getBestPrecisionStringYear() + " - " + deathDate.getBestPrecisionStringYear();
 							if (age !== "") {
 								text += "\n" + age;
 							}
@@ -480,7 +480,7 @@ var PersonVisuals = Class.create(AbstractPersonVisuals, {
 						text = "d. " + deathDate.getBestPrecisionStringYear();
 					}
 					else if (birthDate) {
-						text = birthDate.getBestPrecisionStringYear() + " – ?";
+						text = birthDate.getBestPrecisionStringYear() + " - ?";
 					}
 				}
 			}

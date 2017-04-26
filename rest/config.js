@@ -1,5 +1,5 @@
 var config = {
-	"version": "v1.1.0",
+	"version": "v1.2.0",
 	"codingDefinitionServiceEndpoint": "/codingDefinitionService",
 	"diagramEndpoint": {
 		//"service": "openclinica",
@@ -14,7 +14,7 @@ var config = {
 		"pathToEditorJSFiles":"/",
 
 		"service": "mercury",
-		"mercuryHost": "http://localhost:8080/gel/rare_diseases/1.3/pedigrees"
+		"mercuryHost": "http://localhost:8080/gel/rare_diseases/pedigrees"
 		//"pathToEditorJSFiles":"/includes/pedigreeEditor/"
 	},
 	"saveAndExit": true

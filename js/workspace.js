@@ -391,10 +391,10 @@ var Workspace = Class.create({
 			if (span && span.length > 0) {
 				var label = "";
 				if (participantId && participantId.length > 0) {
-					label = participantId;
+					label = "Proband Id: "+participantId;
 				}
 				if (familyId && familyId.length > 0) {
-					label = label + "&nbsp;&nbsp;FamilyId:&nbsp;" + familyId +"";
+					label = label + " Family Id:" + familyId +"";
 				}
 				(span[0]).update(label);
 			}

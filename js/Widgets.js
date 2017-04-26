@@ -960,7 +960,7 @@ var PhenoTips = (function (b) {
 				this.dialogBox.setStyle({bottom: ".5em"});
 				break;
 			default:
-				this.dialogBox.setStyle({top: "35%"});
+				this.dialogBox.setStyle({top: "20%"});
 				break
 		}
 		this.dialogBox.setStyle({left: "", right: ""});

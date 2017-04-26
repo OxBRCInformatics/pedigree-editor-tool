@@ -92,7 +92,7 @@ var SaveLoadEngine = Class.create({
             editor.getWorkspace().clearMenuText();
             //..........................................................................................................
 
-            if (changeSet == null) throw "unable to create a pedigree from imported data";
+            if (changeSet == null) throw "Unable to create a pedigree from imported data";
         }
         catch (err) {
             alert("Error importing pedigree: " + err);
@@ -130,14 +130,13 @@ var SaveLoadEngine = Class.create({
 
         editor.getView().unmarkAll();
 
-
         //Added by Soheil for GEL(GenomicsEngland)
         //the following line will export the diagram as JSON and pass the param as all
         var privacySetting = "all";
         var exportString = PedigreeExport.exportAsSimpleJSON(editor.getGraph().DG, privacySetting);
 
 
-        var me = this;
+        var _this = this;
 
         var jsonData = this.serialize();
 
@@ -145,14 +144,6 @@ var SaveLoadEngine = Class.create({
 
         var svg = editor.getWorkspace().getSVGCopy(false);
         var svgText = svg.getSVGText();
-
-
-//		var image = $('canvas');
-//		var background = image.getElementsByClassName('panning-background')[0];
-//		var backgroundPosition = background.nextSibling;
-//		var backgroundParent =  background.parentNode;
-//		backgroundParent.removeChild(background);
-//		var bbox = image.down().getBBox();
 
         var savingNotification = new XWiki.widgets.Notification("Saving", "inprogress");
         //The line is commented by Soheil for GEL(GenomicEngland)
@@ -165,10 +156,10 @@ var SaveLoadEngine = Class.create({
             method: 'POST',
             requestHeaders: {Accept: "application/json text/json"},
             contentType: "application/json",
-            postBody:'{"jsonDiagram":'+exportString+',"svgDiagram":'+JSON.stringify(svgText)+'}',
+            postBody: '{"jsonDiagram":' + exportString + ',"svgDiagram":' + JSON.stringify(svgText) + '}',
             onCreate: function () {
 
-                me._saveInProgress = true;
+                _this._saveInProgress = true;
                 // Disable save and close buttons during a save
                 var closeButton = $('action-close');
                 var saveButton = $('action-save');
@@ -200,7 +191,7 @@ var SaveLoadEngine = Class.create({
 
             },
             onComplete: function (response) {
-                me._saveInProgress = false;
+                _this._saveInProgress = false;
                 var actionAfterSave = editor.getAfterSaveAction();
                 actionAfterSave && actionAfterSave();
                 // Enable save and close buttons after a save
@@ -231,81 +222,65 @@ var SaveLoadEngine = Class.create({
                 if (saveAndExitButton != null && saveAndExitButton != undefined) {
                     Helpers.enableMouseclicks(saveAndExitButton);
                 }
+            },
+            on401: function (response) {
+                _this.handleSaveFail(_this, savingNotification);
+                debugger;
 
-                //Added for GEL(GenomicsEngland) ...............................................................
-                //if it has successfully saved the result
-                if (response.status == 200 || response.status == 201) {
-                    //Added by Soheil for GEL(GenomicsEngland)
-                    //If the backend is OpenClinica and it is in adminEdit mode
-                    //Show the following message after each save ................................................
-                    var settings = new Settings();
-                    var config = settings.getSetting('diagramEndpoint');
-                    if (config.service == "openclinica") {
-                        var webService = new WebService();
-                        var isAdminEdit = webService.getUrlParameter("adminEdit", true);
-                        if (isAdminEdit != null && isAdminEdit != undefined && isAdminEdit == "true") {
-                            var closeFunction = function () {
-                                this.dialog.show();
-                                if (callback) {
-                                    callback();
-                                }
-                            };
-                            editor.getOkCancelDialogue().showCustomized('Your data will be saved for later but not resubmitted to Genomics England. <br>When you are ready, please resubmit the Pedigree CRF.',
-                                "Genomics England",
-                                "Close", closeFunction,
-                                null, null,
-                                null, null, true);
-                        } else {
+                var message = _this.constructErrorMessage(response.responseJSON, response.statusText);
+                _this.showUnauthorisedSaveError(message);
+            },
+            on0: function (response) {
+                _this.handleSaveFail(_this, savingNotification);
+                debugger;
+
+                var message = "-- Connection Refused --";
+                message += "<br><br><pre>" + response.request.url.replace(/\?.+/, "") + "</pre><br>--------<br>";
+                _this.showSaveError(message);
+            },
+            onFailure: function (response) {
+                debugger;
+                _this.handleSaveFail(_this, savingNotification);
+
+                var message = _this.constructErrorMessage(response.responseJSON, response.statusText);
+                _this.showSaveError(message);
+            },
+            onSuccess: function (response) {
+                _this._saveInProgress = false;
+                editor.getUndoRedoManager().addSaveEvent();
+                savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
+
+                //Added by Soheil for GEL(GenomicsEngland)
+                //If the backend is OpenClinica and it is in adminEdit mode
+                //Show the following message after each save ................................................
+                var settings = new Settings();
+                var config = settings.getSetting('diagramEndpoint');
+                if (config.service === "openclinica") {
+                    var webService = new WebService();
+                    var isAdminEdit = webService.getUrlParameter("adminEdit", true);
+                    if (isAdminEdit && isAdminEdit != undefined && isAdminEdit == "true") {
+                        var closeFunction = function () {
+                            this.dialog.show();
                             if (callback) {
                                 callback();
                             }
-                        }
+                        };
+                        editor.getOkCancelDialogue().showCustomized('Your data will be saved for later but not resubmitted to Genomics England. ' +
+                            '<br>When you are ready, please resubmit the Pedigree CRF.',
+                            "Genomics England",
+                            "Close", closeFunction,
+                            null, null,
+                            null, null, true);
                     } else {
                         if (callback) {
                             callback();
                         }
                     }
+                } else {
+                    if (callback) {
+                        callback();
+                    }
                 }
-                //............................................................................................
-
-            },
-            onFailure: function (response) {
-                //Added for GEL(GenomicsEngland), if an error occurs while saving, then show error message
-                me._saveInProgress = false;
-                editor.getUndoRedoManager().addSaveEvent();
-
-                var message = response.statusText;
-                if (response.responseJSON != null) {
-                    message = response.responseJSON.message;
-                }
-                switch (response.status) {
-                    case 404:
-                        savingNotification.replace(new XWiki.widgets.Notification("Participant not found: \n"+message));
-                        break;
-                    case 403:
-                        savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!: \n"+message));
-                        break;
-                    case 401:
-                        savingNotification.replace(new XWiki.widgets.Notification("Not Authorized!: \n"+message));
-                        break;
-                    default:
-                        savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later.: \n"+message));
-                        break;
-                }
-
-            },
-            onSuccess: function (response) {
-
-                if (response.status != 200 && response.status != 201) {
-                    me._saveInProgress = false;
-                    editor.getUndoRedoManager().addSaveEvent();
-                    savingNotification.replace(new XWiki.widgets.Notification("An error occurred! Please try again later."));
-                    return;
-                }
-
-                me._saveInProgress = false;
-                editor.getUndoRedoManager().addSaveEvent();
-                savingNotification.replace(new XWiki.widgets.Notification("Successfully saved"));
             }
         });
     },
@@ -313,11 +288,6 @@ var SaveLoadEngine = Class.create({
     //probandDataObj passed to set  the probandData from the result content returned by the webservice
     load: function (probandDataObj) {
         console.log("initiating load process");
-
-        //CALL OpenClinica service to load it ******************************************
-        //******************************************************************************
-        //******************************************************************************
-
 
         //This line is commented by Soheil for GEL(GenomicsEngland)
         //we load the pedigree diagram JSON from backend webservice instead of xWiki XML
@@ -344,30 +314,26 @@ var SaveLoadEngine = Class.create({
                         if (/^content-type$/i.test(k) &&
                             /^(application\/x-www-form-urlencoded|multipart\/form-data|text\/plain)(;.+)?$/i.test(v))
                             return original(k, v);
-                        return;
                     });
                 }
             },
-            on401:function (response) {
-                var message = response.statusText;
-                if (response.responseJSON != null) {
-                    message = response.responseJSON.message;
-                }
-                _this.showUnauthorisedError(message);
+            on401: function (response) {
+                debugger;
+                var message = _this.constructErrorMessage(response.responseJSON, response.statusText);
+                _this.showUnauthorisedLoadError(message);
+            },
+            on0: function (response) {
+                debugger;
+                var message = "-- Connection Refused --";
+                message += "<br><br><pre>" + response.request.url.replace(/\?.+/, "") + "</pre><br>--------<br>";
+                _this.showLoadError(message);
             },
             onFailure: function (response) {
-                var message = response.statusText;
-                if (response.responseJSON != null) {
-                    message = response.responseJSON.message;
-                }
+                debugger;
+                var message = _this.constructErrorMessage(response.responseJSON, response.statusText);
                 _this.showLoadError(message);
             },
             onSuccess: function (response) {
-                if (response.status == 0) {
-                    _this.showLoadError("Unknown failure reason");
-                    return;
-                }
-
                 //These lines are added by Soheil for GEL(GenomicsEngland)
                 //These will set the proband details into probandDataObj
                 probandDataObj.probandData = {};
@@ -375,23 +341,8 @@ var SaveLoadEngine = Class.create({
                 var settings = new Settings();
                 var config = settings.getSetting('diagramEndpoint');
                 if (config.service == "openclinica") {
-                    pedigreeJSON = response.responseJSON.pedigreeJSON
+                    pedigreeJSON = response.responseJSON.pedigreeJSON;
                 }
-
-                // for (var i = 0; i < pedigreeJSON.length; i++) {
-                //     var node = pedigreeJSON[i];
-                //     if (node.proband != undefined && node.proband == true) {
-                //         probandDataObj.probandData = node;
-                //         var genderString = probandDataObj.probandData.sex.toLowerCase();
-                //         if (genderString == "female" || genderString == "f" || genderString == "2")
-                //             probandDataObj.probandData.sex = "F";
-                //         else if (genderString == "male" || genderString == "m" || genderString == "1")
-                //             probandDataObj.probandData.sex = "M";
-                //         else if (genderString == "other" || genderString == "o" || genderString == "9")
-                //             probandDataObj.probandData.sex = "O";
-                //         break;
-                //     }
-                // }
 
                 var jsonContentString = JSON.stringify(pedigreeJSON);
 
@@ -404,37 +355,107 @@ var SaveLoadEngine = Class.create({
                 var noUndo = false;
                 var centerAround0 = true;
                 this.createGraphFromImportData(jsonContentString, importType, importOptions, noUndo, centerAround0);
-                return;
-
-
-                //console.log("Data from LOAD: >>" + response.responseText + "<<");
-                if (response.responseJSON) {
-                    console.log("[LOAD] recived JSON: " + Helpers.stringifyObject(response.responseJSON));
-
-                    var updatedJSONData = editor.getVersionUpdater().updateToCurrentVersion(response.responseText);
-
-                    this.createGraphFromSerializedData(updatedJSONData);
-
-                    // since we just loaded data from disk data in memory is equivalent to data on disk
-                    editor.getUndoRedoManager().addSaveEvent();
-                } else {
-                    new TemplateSelector(true);
-                }
             }.bind(this)
-        })
+        });
     },
-    showLoadError: function(reason){
-        this.showError("Failed to load pedigree model",reason);
+    handleSaveFail: function (_this, savingNotification) {
+        _this._saveInProgress = false;
+        editor.getUndoRedoManager().addSaveEvent();
+        savingNotification.replace(new XWiki.widgets.Notification("Save unsuccessful"));
     },
-    showUnauthorisedError: function(reason){
-        this.showError("User is not allowed to load pedigree model",reason);
+    showLoadError: function (reason) {
+        this.showLoadErrorWithReason("!! Failed to load pedigree model !!", reason);
     },
-    showError: function(message, reason){
-        editor.getOkCancelDialogue().showCustomized(message + "<br><br>-- " + reason +
-            " --<br><br>Please choose a base template.", "Error Loading Model", "Choose Template", function () {
+    showUnauthorisedLoadError: function (reason) {
+        this.showLoadErrorWithReason("!! User is not allowed to load pedigree model !!", reason);
+    },
+    showLoadErrorWithReason: function (message, reason) {
+        var fullMessage = message + "<br><br>" + reason + "<br>" + "Please choose a base template.";
+        editor.getOkCancelDialogue().showCustomized(fullMessage, "Error Loading Model", "Choose Template",
+            function () {
                 new TemplateSelector(true);
-            },
-            null, null,
-            null, null, true);
+            }, null, null, null, null, true);
+    },
+    showSaveError: function (reason) {
+        this.showSaveErrorWithReason("!! Failed to save pedigree model !!", reason);
+    },
+    showUnauthorisedSaveError: function (reason) {
+        this.showSaveErrorWithReason("!! User is not allowed to save pedigree model !!", reason);
+    },
+    showSaveErrorWithReason: function (message, reason) {
+        var fullMessage = message + "<br><br>" + reason;
+        editor.getOkCancelDialogue().showCustomized(fullMessage, "Error Saving Model", "Close",
+            function () {
+            }, null, null, null, null, true);
+    },
+    constructErrorMessage: function (json, status) {
+        var message = "-- " + status;
+
+        // All messages from Mercury contain an errorcode or a type
+        if (json.errorCode || json.type) {
+            message = this.constructMercuryErrorMessage(json, message);
+        }
+        else if (json.message) {
+            message += " :: " + json.message + " --";
+        } else {
+            message += " :: Unknown cause --";
+        }
+        return message + "<br>--------<br>";
+    },
+    constructMercuryErrorMessage: function (json, message) {
+        var renderJson = {};
+        if (json.message) {
+            message += ' --<br><br>:: ';
+
+            // Add the error code to the message if its missing
+            // This happens for errors which aren't exceptions
+            if (json.errorCode && !json.message.startsWith(json.errorCode)) {
+                message += json.errorCode + " - ";
+            }
+
+            message += json.message + " ::<br>";
+
+            if (json.exception) {
+                message += this.constructExceptionSection(json.exception);
+            }else if(json.type) {
+                message += this.constructExceptionSection(json);
+            }
+
+            if (json.validationErrors) {
+                message += this.constructJsonRenderSection(json.validationErrors, 'Please find the validation errors below');
+            }
+        }
+
+        // Situation of exception response when rendering, no standard exception JSON
+        else if (json.type) {
+            message += " :: " + json.type;
+            message += this.constructExceptionSection(json);
+        }
+        // Just a general catch all for unknown situation
+        else {
+            message += " :: Unknown Reason --";
+        }
+
+        return message;
+    },
+    constructExceptionSection: function (exception) {
+        renderJson = {
+            exception: {
+                type: exception.type,
+                message: exception.message
+            }
+        };
+
+        if (exception.stacktrace) {
+            renderJson.exception.stacktrace = exception.stacktrace;
+        }
+        return this.constructJsonRenderSection(renderJson, 'Please copy the below and provide to the Service Desk')
+    },
+    constructJsonRenderSection: function(renderJson, title){
+        var message = '<br>--------<br>' + title + '<br><br>';
+        message += '<pre style="text-align: left;">';
+        message += JSON.stringify(renderJson, null, 2);
+        message += "</pre>";
+        return message;
     }
 });
