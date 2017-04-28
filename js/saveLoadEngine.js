@@ -225,21 +225,20 @@ var SaveLoadEngine = Class.create({
             },
             on401: function (response) {
                 _this.handleSaveFail(_this, savingNotification);
-                debugger;
 
                 var message = _this.constructErrorMessage(response.responseJSON, response.statusText);
                 _this.showUnauthorisedSaveError(message);
             },
             on0: function (response) {
                 _this.handleSaveFail(_this, savingNotification);
-                debugger;
 
-                var message = "-- Connection Refused --";
-                message += "<br><br><pre>" + response.request.url.replace(/\?.+/, "") + "</pre><br>--------<br>";
+                var message = "-- Connection Error --";
+                message += "<br><br><pre>" + response.request.url.replace(/\?.+/, "");
+                message += "</pre><br>Please report this to the ";
+                message += _this.constructHelpdeskDetails() + "<br>--------<br>";
                 _this.showSaveError(message);
             },
             onFailure: function (response) {
-                debugger;
                 _this.handleSaveFail(_this, savingNotification);
 
                 var message = _this.constructErrorMessage(response.responseJSON, response.statusText);
@@ -277,6 +276,7 @@ var SaveLoadEngine = Class.create({
                         }
                     }
                 } else {
+                    debugger;
                     if (callback) {
                         callback();
                     }
@@ -318,18 +318,17 @@ var SaveLoadEngine = Class.create({
                 }
             },
             on401: function (response) {
-                debugger;
                 var message = _this.constructErrorMessage(response.responseJSON, response.statusText);
                 _this.showUnauthorisedLoadError(message);
             },
             on0: function (response) {
-                debugger;
-                var message = "-- Connection Refused --";
-                message += "<br><br><pre>" + response.request.url.replace(/\?.+/, "") + "</pre><br>--------<br>";
+                var message = "-- Connection Error --";
+                message += "<br><br><pre>" + response.request.url.replace(/\?.+/, "");
+                message += "</pre><br>Please report this to the ";
+                message += _this.constructHelpdeskDetails() + "<br>--------<br>";
                 _this.showLoadError(message);
             },
             onFailure: function (response) {
-                debugger;
                 var message = _this.constructErrorMessage(response.responseJSON, response.statusText);
                 _this.showLoadError(message);
             },
@@ -391,12 +390,14 @@ var SaveLoadEngine = Class.create({
     constructErrorMessage: function (json, status) {
         var message = "-- " + status;
 
-        // All messages from Mercury contain an errorcode or a type
-        if (json.errorCode || json.type) {
-            message = this.constructMercuryErrorMessage(json, message);
-        }
-        else if (json.message) {
-            message += " :: " + json.message + " --";
+        if (json) {
+            // All messages from Mercury contain an errorcode or a type
+            if (json.errorCode || json.type) {
+                message = this.constructMercuryErrorMessage(json, message);
+            }
+            else if (json.message) {
+                message += " :: " + json.message + " --";
+            }
         } else {
             message += " :: Unknown cause --";
         }
@@ -417,7 +418,7 @@ var SaveLoadEngine = Class.create({
 
             if (json.exception) {
                 message += this.constructExceptionSection(json.exception);
-            }else if(json.type) {
+            } else if (json.type) {
                 message += this.constructExceptionSection(json);
             }
 
@@ -449,13 +450,27 @@ var SaveLoadEngine = Class.create({
         if (exception.stacktrace) {
             renderJson.exception.stacktrace = exception.stacktrace;
         }
-        return this.constructJsonRenderSection(renderJson, 'Please copy the below and provide to the Service Desk')
+
+        return this.constructJsonRenderSection(renderJson, 'Please copy the below and provide to the ' + this.constructHelpdeskDetails());
     },
-    constructJsonRenderSection: function(renderJson, title){
+    constructJsonRenderSection: function (renderJson, title) {
         var message = '<br>--------<br>' + title + '<br><br>';
         message += '<pre style="text-align: left;">';
         message += JSON.stringify(renderJson, null, 2);
         message += "</pre>";
         return message;
+    },
+    constructHelpdeskDetails: function () {
+        var contact = 'Help Desk';
+
+        var settings = new Settings();
+        var config = settings.getSetting('helpdesk');
+
+        if (config) {
+            contact = config.name;
+            contact += '<br>';
+            contact += config.contact.phone + " :: " + config.contact.email;
+        }
+        return contact;
     }
 });
