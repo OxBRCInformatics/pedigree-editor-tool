@@ -1195,10 +1195,10 @@ div.field-label {
 }
 
 .msdialog-box {
-    /*overflow:auto;*/
+    overflow:auto;
     /*width: 60% !important;*/
     min-width: 680px !important;
-    /*max-width: 720px !important;*/
+    max-width: 80% !important;
     display: inline-block;
 }
 
