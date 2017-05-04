@@ -6,6 +6,7 @@ Settings = Class.create({
 
 	initialize: function (baseURL) {
 		this._settings = config; //'config' is a global variable load it from config.js
+		this._settings.version = version;
 	},
 
 	getSetting: function (key) {

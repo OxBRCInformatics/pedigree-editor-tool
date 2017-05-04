@@ -1,5 +1,4 @@
 var config = {
-    "version": "v1.2.3-SNAPSHOT",
     "codingDefinitionServiceEndpoint": "/codingDefinitionService",
     // "helpdesk": {
     //     "name": "Help Desk",

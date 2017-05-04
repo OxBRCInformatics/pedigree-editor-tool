@@ -45,7 +45,7 @@
             for(String jsFile : jsFiles){
               out.println("<script type=\"text/javascript\" src=\"js/"+jsFile+".js?"+time+"\"></script>");
             }
-            String[] jsRestFiles = {"config"};
+            String[] jsRestFiles = {"config","version"};
             for(String jsFile : jsRestFiles){
               out.println("<script type=\"text/javascript\" src=\"rest/"+jsFile+".js?"+time+"\"></script>");
             }
