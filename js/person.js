@@ -714,11 +714,12 @@ var Person = Class.create(AbstractPerson, {
 	},
 
 	setAgeOfDeath: function(ageOfDeath){
+		var wasSet = this._ageOfDeath || this._ageOfDeath.length;
 		this._ageOfDeath = ageOfDeath + "";
 
 		//if ageOfDeath has value, then set deathDate and birthDate to null and make life status 'deceased'
 		//we either have ageOfDeath and ageOfDeathFormat OR date-of-birth and date-of-death
-		if(this._ageOfDeath && this._ageOfDeath.length > 0){
+		if(this._ageOfDeath && this._ageOfDeath.length){
 			this.setLifeStatus('deceased');
 			this.setDeathDate(null);
 			this.setBirthDate(null);
@@ -726,6 +727,9 @@ var Person = Class.create(AbstractPerson, {
 			//if ageOfDeath and ageOfDeathFormat both have value then create the text to display in the UI
 			var text = 	ageOfDeath + " " + this._ageOfDeathFormat;
 			this.getGraphics().updateAgeLabelForGELDirectly(text);
+		}else if(wasSet){
+            // if was set but now is empty, then make sure we wipe out the text
+            this.getGraphics().updateAgeLabelForGELDirectly("");
 		}
 	},
 
