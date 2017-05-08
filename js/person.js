@@ -257,7 +257,7 @@ var Person = Class.create(AbstractPerson, {
 	// added for GEL
 	setNHSNumber: function(NHSNumber) {
 		this._NHSNumber = NHSNumber;
-		this.getGraphics().updateNHSNumberLabel();
+		this.getGraphics().updateExternalIDLabel();
 	},
 
 	// added for GEL
@@ -300,7 +300,7 @@ var Person = Class.create(AbstractPerson, {
 	// added for GEL
 	setCHINumber: function(CHINumber) {
 		this._CHINumber = CHINumber;
-		this.getGraphics().updateNHSNumberLabel();
+		this.getGraphics().updateExternalIDLabel();
 	},
 
 	setParticipantId: function(participantId) {
@@ -310,6 +310,7 @@ var Person = Class.create(AbstractPerson, {
 			var event = { "familyId": this._familyId, "participantId": this._participantId };
 			document.fire("pedigree:update:topMenu", event);
 		}
+        this.getGraphics().updateExternalIDLabel();
 	},
 
 
