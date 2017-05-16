@@ -630,28 +630,28 @@ var PedigreeEditor = Class.create({
 				'tab': 'Clinical',
 				'function' : 'setAgeOfOnset'
 			},
-			{
-				'name': 'disorders',
-				'label': 'Disorder',
-				'type': 'disease-picker',
-				'tab': 'Clinical',
-				'function': 'setDisorders'
-			},
-			{
-				'name': 'consanguineous_population',
-				'label': 'Consanguineous Population',
-				'type': 'text',
-				'tab': 'Clinical',
-				'function': 'setConsanguineousPopulation'
-			},
-			{
-				'name': 'ancestries',
-				'label': 'Ancestries',
-				'type': 'textarea',
-				 'columns':4,
-				'tab': 'Clinical',
-				'function': 'setAncestries'
-			},
+            {
+                'name': 'disorders',
+                'label': 'Disorder',
+                'type': 'disease-picker',
+                'tab': 'Clinical',
+                'function': 'setDisorders'
+            },
+			// {
+			// 	'name': 'consanguineous_population',
+			// 	'label': 'Consanguineous Population',
+			// 	'type': 'text',
+			// 	'tab': 'Clinical',
+			// 	'function': 'setConsanguineousPopulation'
+			// },
+			// {
+			// 	'name': 'ancestries',
+			// 	'label': 'Ancestries',
+			// 	'type': 'textarea',
+			// 	 'columns':4,
+			// 	'tab': 'Clinical',
+			// 	'function': 'setAncestries'
+			// },
 
 			{
 				'name': 'hpo_positive',
@@ -813,13 +813,13 @@ var PedigreeEditor = Class.create({
 				'tab': 'Personal',
 				'function': 'makePlaceholder'
 			},
-			{
-				'name': 'commentsClinical',
-				'label': 'Comments',
-				'type': 'textarea',
-				'tab': 'Clinical',
-				'function': 'setComments'
-			},
+			// {
+			// 	'name': 'commentsClinical',
+			// 	'label': 'Comments',
+			// 	'type': 'textarea',
+			// 	'tab': 'Clinical',
+			// 	'function': 'setComments'
+			// },
 			{
 				'name': 'evaluated',
 				'label': 'Documented evaluation',
