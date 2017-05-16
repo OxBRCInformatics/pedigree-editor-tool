@@ -68,7 +68,7 @@ var NodetypeSelectionBubble = Class.create({
 			type: "person",
 			label: "Twins",
 			tip: "Create twins (expandable to triplets or more)",
-			symbol: "⋀",
+			symbol: '\u22C0',
 			cssclass: "",
 			callback: "CreateChild",
 			params: { "twins": true, "parameters": {"gender": "U"} },
@@ -95,7 +95,7 @@ var NodetypeSelectionBubble = Class.create({
 			type: "marker",
 			label: "No children",
 			tip: "Mark as childless by choice",
-			symbol: "┴",
+			symbol: "\u2534",
 			cssclass: "",
 			callback: "setProperty",
 			params: { setChildlessStatus: "childless" },
@@ -106,7 +106,7 @@ var NodetypeSelectionBubble = Class.create({
 			type: "marker",
 			label: "Infertile",
 			tip: "Mark as infertile",
-			symbol: "╧",
+			symbol: "\u2567",
 			cssclass: "",
 			callback: "setProperty",
 			params: { setChildlessStatus: "infertile" },
@@ -224,20 +224,21 @@ var NodetypeSelectionBubble = Class.create({
 			'class': 'expand-arrow collapsed',
 			'title': "show more options",
 			'href': '#'
-		}).update("▾");
+		}).update('\u25BE');
+			//.update("▾");
 
 		expandArrow.expand = function () {
 			$$(".expand-arrow").forEach(function (arrow) {
 				arrow.collapse()
 			});
 			this[data.expandsTo](data);
-			expandArrow.update("▴");
+			expandArrow.update('\u25B4');
 			Element.removeClassName(expandArrow, "collapsed");
 		}.bind(this);
 
 		expandArrow.collapse = function () {
 			this.expandedOptionsContainer.update("");
-			expandArrow.update("▾");
+			expandArrow.update('\u25BE');
 			Element.addClassName(expandArrow, "collapsed");
 		}.bind(this);
 
