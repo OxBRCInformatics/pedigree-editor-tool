@@ -1,2 +1,15 @@
 @import "microformats.css";
-@import "colibri.css?colorTheme=ColorThemes.Blue";
+@import "colibri.css";
+
+@import "xwiki.css";
+@import "searchSuggest.css";
+@import "exportData.css";
+@import "editor.css";
+@import "PlaygroundStyle.css";
+@import "Skin.css";
+@import "CommentsFix.css";
+@import "Widgets.css";
+@import "PhenoTipsGroupSheet.css";
+@import "ContentTopMenu.css";
+@import "PushPatient.css";
+@import "DateTimePicker.css";
