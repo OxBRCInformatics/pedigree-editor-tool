@@ -42,29 +42,31 @@
 
       String suffix = "min.js";
 
-      if(!devMode){
+      if(devMode){
         Long time = System.currentTimeMillis();
         out.println("<!-- Running in DEV mode -->");
         // In devmode then load the unminified files
         suffix = "js?"+time;
 
         %>
+        <link href="resources/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/print.css" rel="stylesheet" type="text/css" media="print"/>
         <!--[if IE]>
         <link href="css/colibri-ie-all.css" rel="stylesheet" type="text/css" />
         <![endif]-->
-        <link href="resources/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
         <%
       }else{
         // In prod mode then load minified
         %>
+        <link href="resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="css/style.min.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/print.min.css" rel="stylesheet" type="text/css" media="print"/>
         <!--[if IE]>
         <link href="css/colibri-ie-all.min.css" rel="stylesheet" type="text/css" />
         <![endif]-->
-        <link href="resources/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
         <%
       }
 

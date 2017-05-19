@@ -5,11 +5,11 @@
     <meta http-equiv="Refresh" content="0; URL=/labkey/login/createToken.view">
 </head>
 <body bgcolor="#FFFFFF" text="#000000">
-<script type="text/javascript"><!--
-var returnUrl = window.location.origin+"/pedigree_editor?"+window.location.search;
+<script type="text/javascript">
+var returnUrl = window.location.href.replace('/usercheck.html','?')+window.location.search;
 var encodedUrl = encodeURIComponent(returnUrl);
 window.location.replace("/labkey/login/createToken.view?returnUrl="+encodedUrl);
---></script>
+</script>
 <p><a href="/labkey/login/createToken.view">Redirect to Login Page</a></p>
 </body>
 </html>
