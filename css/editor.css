@@ -1,86 +1,74 @@
-/* =========================================
+/*! =========================================
  * GENERAL
  */
 #body {
-    overflow: hidden;
+    overflow: hidden
 }
-
-/* =========================================
+/*! =========================================
  * NOTIFICATIONS
  */
 #body .xnotification-container {
-    right: 0 !important;
-    left: auto !important;
-    width: 250px;
+    right: 0!important;
+    left: auto!important;
+    width: 250px
 }
-
 #body .xnotification {
-    background: #FFFFFF none 2px .7em no-repeat !important;
-    border: 2px solid #E8E8E8;
-    box-shadow: 0 0 6px #AAA, 0 0 25px #DDD inset;
-    color: #636B75 !important;
+    background: #fff none 2px .7em no-repeat!important;
+    border: 2px solid #e8e8e8;
+    box-shadow: 0 0 6px #aaa,0 0 25px #ddd inset;
+    color: #636b75!important;
     display: block;
-    font-weight: normal;
+    font-weight: 400;
     margin: 2px;
-    padding: 0.5em 22px;
+    padding: .5em 22px;
     text-align: left;
-    width: 200px;
+    width: 200px
 }
-
 #body .xnotification-inprogress {
-    background-image: url("../resources/icons/xwiki/spinner.gif") !important;
+    background-image: url(../resources/icons/xwiki/spinner.gif)!important
 }
-
 #body .xnotification-error {
-    background-image: url("../resources/icons/silk/delete.png") !important;
-    color: #CC3333 !important;
-    border-color: #CC3333 !important;
+    background-image: url(../resources/icons/silk/delete.png)!important;
+    color: #c33!important;
+    border-color: #c33!important
 }
-
 #body .xnotification-warning {
-    background-image: url("../resources/icons/silk/error.png") !important;
-    color: #D09000 !important;
-    border-color: #D09000 !important;
+    background-image: url(../resources/icons/silk/error.png)!important;
+    color: #d09000!important;
+    border-color: #d09000!important
 }
-
 #body .xnotification-info {
-    background-image: url("../resources/icons/silk/information.png") !important;
-    color: #336699 !important;
-    border-color: #336699 !important;
+    background-image: url(../resources/icons/silk/information.png)!important;
+    color: #369!important;
+    border-color: #369!important
 }
-
 #body .xnotification-done {
-    background-image: url("../resources/icons/silk/tick.png") !important;
-    color: #008000 !important;
-    border-color: #008000 !important;
+    background-image: url(../resources/icons/silk/tick.png)!important;
+    color: green!important;
+    border-color: green!important
 }
-
-/* =========================================
+/*! =========================================
  * MENU
  */
 .editor-menu {
     background: #444;
-    padding: 5px;
+    padding: 5px
 }
-
 .editor-menu .action-group {
-    display: inline-block;
+    display: inline-block
 }
-
 .editor-menu .version-actions {
-    float: right;
+    float: right
 }
-
-/* Removed by Soheil as it has a conflict with font-awesome icons */
-/*.editor-menu span {*/
-/*font-family: Arial,Verdana,sans-serif;*/
-/*}*/
+/*! Removed by Soheil as it has a conflict with font-awesome icons */
+/*!.editor-menu span {*/
+/*!font-family: Arial,Verdana,sans-serif;*/
+/*!}*/
 .editor-menu .action-group:not(:last-of-type) {
     border-right: 1px solid #777;
-    margin-right: 0.4em;
-    padding-right: 0.4em;
+    margin-right: .4em;
+    padding-right: .4em
 }
-
 .editor-menu .menu-item {
     border-radius: 4px;
     color: #fff;
@@ -88,48 +76,41 @@
     margin: 0 .7em 0 0;
     cursor: pointer;
     display: inline-block;
-    white-space: nowrap;
+    white-space: nowrap
 }
-
 .editor-menu .menu-item:last-of-type {
-    margin: 0;
+    margin: 0
 }
-
 .editor-menu .menu-item-text-only {
-    color: #fff !important;
+    color: #fff!important;
     font-size: 12px;
     padding: .35em;
     margin: 0 .7em 0 0;
     display: inline-block;
-    white-space: nowrap;
+    white-space: nowrap
 }
-
 .editor-menu .disabled-menu-item {
     color: #777;
     padding: .35em;
     margin: 0 .7em 0 0;
     cursor: default;
     display: inline-block;
-    white-space: nowrap;
+    white-space: nowrap
 }
-
 .editor-menu .disabled-menu-item:last-of-type {
-    margin: 0;
+    margin: 0
 }
-
 .loading-indicator {
-    background-image: url("../resources/icons/xwiki/ajax-loader-large.gif");
+    background-image: url(../resources/icons/xwiki/ajax-loader-large.gif);
     background-position: center;
     background-repeat: no-repeat;
     height: 100px;
-    width: 200px;
+    width: 200px
 }
-
 .editor-menu .menu-item:hover {
-    box-shadow: #fff 0 0 5px 0;
+    box-shadow: #fff 0 0 5px 0
 }
-
-/* =========================================
+/*! =========================================
  * CONTROLS
  */
 .view-controls {
@@ -138,13 +119,9 @@
     top: 10px;
     padding: 4px;
     opacity: .8;
-    z-index: 100000;
+    z-index: 100000
 }
-
-.view-controls:hover {
-}
-
-/* ----------------------------------------
+/*! ----------------------------------------
  * Pan
  */
 .view-controls-pan {
@@ -154,50 +131,42 @@
     top: 0;
     position: absolute;
     border: 1px solid #aaa;
-    background: #FFF;
+    background: #fff;
     border-radius: 30px;
-    box-shadow: 0 0 6px #AAAAAA;
+    box-shadow: 0 0 6px #aaa
 }
-
 .view-controls-pan * {
     width: 16px;
     height: 16px;
     position: absolute;
     cursor: pointer;
-    line-height: 16px;
+    line-height: 16px
 }
-
-.view-control-pan:hover, .view-controls-zoom .zoom-button:hover {
-    color: #0089DC;
+.view-control-pan:hover,.view-controls-zoom .zoom-button:hover {
+    color: #0089dc
 }
-
 .view-controls-pan .pan-up {
     top: 4px;
-    left: 22px;
+    left: 22px
 }
-
 .view-controls-pan .pan-right {
     top: 22px;
-    right: 4px;
+    right: 4px
 }
-
 .view-controls-pan .pan-down {
     bottom: 4px;
-    left: 22px;
+    left: 22px
 }
-
 .view-controls-pan .pan-left {
     top: 22px;
-    left: 4px;
+    left: 4px
 }
-
 .view-controls-pan .pan-home {
     top: 22px;
     left: 22px;
-    font-size: 12px;
+    font-size: 12px
 }
-
-/* ----------------------------------------
+/*! ----------------------------------------
  * Zoom
  */
 .view-controls-zoom {
@@ -205,31 +174,27 @@
     left: 0;
     top: 70px;
     position: absolute;
-    text-align: center;
+    text-align: center
 }
-
 .view-controls-zoom * {
-    background: #FFF;
+    background: #fff;
     border: 1px solid #aaa;
     border-radius: 4px;
-    box-shadow: 0 0 6px #AAAAAA;
-    margin: auto;
+    box-shadow: 0 0 6px #aaa;
+    margin: auto
 }
-
 .view-controls-zoom .zoom-track {
     width: 4px;
     height: 200px;
-    position: relative;
+    position: relative
 }
-
 .view-controls-zoom .zoom-button {
     cursor: pointer;
     line-height: 20px;
     width: 20px;
     height: 20px;
-    padding: 2px 2px;
+    padding: 2px 2px
 }
-
 .view-controls-zoom .zoom-handle {
     cursor: pointer;
     position: absolute;
@@ -237,310 +202,261 @@
     left: 0;
     width: 20px;
     height: 10px;
-    margin-left: -9px;
+    margin-left: -9px
 }
-
 .view-controls-zoom .zoom-crt-value {
-    background: transparent;
+    background: 0 0;
     border: 0 none;
-    box-shadow: none;
+    box-shadow: none
 }
-
-/* =========================================
+/*! =========================================
  * CANVAS
  */
 #canvas {
     overflow: hidden;
-
-    /* fallback */
-    background-color: #F8F8F8;
+    /*! fallback */background-color: #f8f8f8;
     background-position: center center;
     background-repeat: no-repeat;
-
-    background: radial-gradient(circle, #FBFBFB, #DFDFDF);
+    background: radial-gradient(circle,#fbfbfb,#dfdfdf)
 }
-
-/* ===========================================
+/*! ===========================================
  * LEGEND
  */
 #work-area {
-    position: relative;
+    position: relative
 }
-
 .legend-info {
-    font-size: .8em;
+    font-size: .8em
 }
-
 .legend-box {
-    background: #FFF;
+    background: #fff;
     border-radius: 0 0 0 4px;
-    padding: .5em .5em .5em 1em;
+    padding: .5em .5em .5em 1em
 }
-
 .legend-container {
     top: 5px;
     position: absolute;
     right: 0;
     z-index: 10000;
     min-width: 140px;
-    max-width: 300px;
+    max-width: 300px
 }
-
 .legend-container span {
-    font-family: Arial, Verdana, sans-serif;
+    font-family:inherit
 }
-
 .legend-box .legend-title {
     font-size: 1.1em;
-    margin: 0 0 0.3em;
+    margin: 0 0 .3em
 }
-
 .legend-box .abnormality-list {
     list-style-type: none;
     margin: 0;
-    padding: 0;
+    padding: 0
 }
-
 .legend-box .close-button {
     cursor: pointer;
     float: right;
     font-size: 13px;
-    font-weight: bold;
-    margin: 0.4em .3em 0 -1em;
-    background: rgb(239, 106, 95);
+    font-weight: 700;
+    margin: .4em .3em 0 -1em;
+    height: 16px;
+    width: 16px;
+    background: url("../resources/icons/silk/cross.png")
 }
-
 .legend-box .infomessage {
-    padding-right: 24px;
+    padding-right: 24px
 }
-
 .abnormality-color {
     display: inline-block;
     width: .8em;
     height: .8em;
     margin: 0 .5em .2em 0;
     border-radius: .4em;
-    background-color: #DDD;
-    vertical-align: middle;
+    background-color: #ddd;
+    vertical-align: middle
 }
-
 .abnormality-cases-container {
     font-size: .8em;
     font-style: italic;
-    color: #777;
+    color: #777
 }
-
-/* ==== Added by Soheil for GEL(GenomicsEngland) ==== */
+/*! ==== Added by Soheil for GEL(GenomicsEngland) ==== */
 .disorder-disorder-type {
     font-size: .6em;
     font-style: italic;
-    color: #777;
+    color: #777
 }
-
 .disorder-age-of-onset {
     font-size: .8em;
     font-style: italic;
-    font-weight: bold;
+    font-weight: 700;
     color: #777;
-    padding-left: .7em;
+    padding-left: .7em
 }
-
-/* ===========================================
+/*! ===========================================
  * NODE MENU
  */
 .menu-box {
     position: absolute;
-    width: 27em; /* This line is commented in original code but uncommented by Soheil 31.08.2016*/
-    color: #000000;
-    z-index: 100000;
+    width: 27em;
+    /*! This line is commented in original code but uncommented by Soheil 31.08.2016*/color: #000;
+    z-index: 100000
 }
-
 .menu-box select {
-    padding: 0.15em 0 0.15em 0;
+    padding: .15em 0 .15em 0
 }
-
-/* fix weird default styling for radiobuttons in Chrome on Windows */
-.menu-box input[type="radio"] {
-    outline-style: none;
+/*! fix weird default styling for radiobuttons in Chrome on Windows */
+.menu-box input[type=radio] {
+    outline-style: none
 }
-
 .calendar_date_select {
-    z-index: 100000 !important;
+    z-index: 100000!important
 }
-
 .width80px {
-    width: 80px;
+    width: 80px
 }
-
 .min-width80px {
-    min-width: 80px;
+    min-width: 80px
 }
-
 .relationship-menu {
-    width: 290px !important;
+    width: 290px!important
 }
-
 .menu-box .tabs {
-    margin-bottom: -1px !important;
+    margin-bottom: -1px!important;
     margin-left: 2px;
-    display: inline-block;
+    display: inline-block
 }
-
-.menu-box .tabs dd, .tabs .tab-title {
+.menu-box .tabs dd,.tabs .tab-title {
     position: relative;
-    margin-bottom: -3px !important;
+    margin-bottom: -3px!important;
     list-style: none;
     float: left;
-    border-radius: 0.8em 0.8em 0 0;
+    border-radius: .8em .8em 0 0
 }
-
 .menu-box .tabs dd.active {
     box-shadow: none;
-    background-color: #E1E1E1;
+    background-color: #e1e1e1
 }
-
 .menu-box .tabs dd:not(.active) {
     box-shadow: none;
-    background-color: #EFEFEF;
-    box-shadow: 0 0 6px #DDD, 0 0 25px #DDDDDD inset;
+    background-color: #efefef;
+    box-shadow: 0 0 6px #ddd,0 0 25px #ddd inset
 }
-
 .menu-box .tabs dd a {
-    text-decoration: none;
+    text-decoration: none
 }
-
-.menu-box .tabs dd.active a, .tabs .tab-title.active a {
-    color: #222222;
-    font-weight: bold;
+.menu-box .tabs dd.active a,.tabs .tab-title.active a {
+    color: #222;
+    font-weight: 700;
     pointer-events: none;
-    box-shadow: none;
+    box-shadow: none
 }
-
-.menu-box .tabs dd:not(.active):hover, .tabs .tab-title:hover {
-    background-color: #D1D1D1;
-    cursor: pointer;
+.menu-box .tabs dd:not(.active):hover,.tabs .tab-title:hover {
+    background-color: #d1d1d1;
+    cursor: pointer
 }
-
-.menu-box .tabs dd > a, .tabs .tab-title > a {
+.menu-box .tabs dd>a,.tabs .tab-title>a {
     display: block;
-    color: #222222;
-    padding: 0.88889em 1.77778em;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
-    font-size: 0.88889rem;
+    color: #222;
+    padding: .88889em 1.77778em;
+    font-family:inherit;
+    font-size: .88889rem;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
+    user-select: none
 }
-
-.menu-box .tabs-content > .content {
+.menu-box .tabs-content>.content {
     display: none;
     float: left;
     padding: 0;
-    max-width: 350px; /* Added by Soheil for GEL*/
+    max-width: 350px/*! Added by Soheil for GEL*/
 }
-
-.menu-box .tabs-content > .content.active {
+.menu-box .tabs-content>.content.active {
     display: block;
     float: none;
-    padding: .3em 1.2em 0.8em;
-    min-height: 5em;
+    padding: .3em 1.2em .8em;
+    min-height: 5em
 }
-
 .menu-box form {
-    border: 1px solid #F5F5F5;
+    border: 1px solid #f5f5f5;
     border-top-width: 0;
     border-radius: 0 0 .75em .75em;
-    background: #EEE;
-    box-shadow: 0 0 6px #DDD, 0 -1px 25px #DDDDDD inset;
+    background: #eee;
+    box-shadow: 0 0 6px #ddd,0 -1px 25px #ddd inset
 }
-
 .menu-box form:not(.content) {
-    padding: 0 0 0 0;
-    overflow: auto; /*Added for GEL(GenomicsEngland), this will stop hpo/disorder selected items get out of the main tab div*/
-}
+    padding: 0;
+    overflow: auto
+/*!Added for GEL(GenomicsEngland), this will stop hpo/disorder selected items get out of the main tab div*/
 
+}
 .menu-box form.content {
-    padding: .3em 1.3em 0.8em !important;
+    padding: .3em 1.3em .8em!important
 }
-
 .menu-box .close-button {
     cursor: pointer;
     float: right;
     font-size: 16px;
-    /*font-weight: bold;*/
-    height: 12px;
+    /*!font-weight: bold;*/height: 16px;
     line-height: 9px;
     margin: 3em .3em 0 -1em;
     text-align: center;
-    width: 12px;
-    background: rgb(239, 106, 95);
+    width: 16px;
+    background: url("../resources/icons/silk/cross.png")
 }
-
 .menu-box .close-button:hover {
-    text-shadow: 0.5px 0.5px #CCCCCC;
+    text-shadow: .5px .5px #ccc
 }
-
 .menu-box .close-button-old {
-    margin: 0.3em .3em 0 .3em !important;
+    margin: .3em .3em 0 .3em!important
 }
-
 .menu-box .field-box {
-    padding: .5em 0;
+    padding: .5em 0
 }
-
 div.field-label {
-    padding: 0px !important;
-    font-size: 12px !important;
-    font-weight: normal !important;
-    font-style: italic !important;
+    padding: 0!important;
+    font-size: 12px!important;
+    font-weight: 400!important;
+    font-style: italic!important
 }
-
 .menu-box .field-phenotipsid {
-    padding: .8em 0;
+    padding: .8em 0
 }
-
 .menu-box .field-box input[type=text] {
-    width: 99%;
+    width: 99%
 }
-
 .menu-box .field-box input[type=text]:focus {
-    border: 1px solid #DDD;
+    border: 1px solid #ddd
 }
-
 .menu-box .field-box textarea {
     width: 99%;
     resize: vertical;
-    border: 1px solid #E8E8E8;
+    border: 1px solid #e8e8e8
 }
 
-/* 3.3em height is set because firefox does not respect the rows qualifier for the textarea,
+/*! 3.3em height is set because firefox does not respect the rows qualifier for the textarea,
    displaying one more line than most other browsers. Less than 3.3em and there is no scrollbar in FF */
 .menu-box .field-box .textarea-2-rows {
-    height: 3.3em;
+    height: 3.3em
 }
-
 .menu-box .field-box .textarea-3-rows {
-    height: 4.3em;
+    height: 4.3em
 }
-
 .menu-box .field-box .textarea-4-rows {
-    height: 5.5em;
+    height: 5.5em
 }
-
 .menu-box .field-box .textarea-20-rows {
-    height: 28em;
+    height: 28em
 }
-
 .import-upload {
     display: block;
-    margin: 0.2em 0 0.75em 7.5em;
-    text-align: left;
+    margin: .2em 0 .75em 7.5em;
+    text-align: left
 }
-
-/*
+/*!
 .import-selector {
   overflow: auto;
 }*/
@@ -548,388 +464,308 @@ div.field-label {
     height: 10em;
     resize: none;
     width: 84%;
-    /*border: 1px solid #E8E8E8;*/
-    margin: .2em .2em 0 7.5em;
-    display: block;
+    /*!border: 1px solid #E8E8E8;*/margin: .2em .2em 0 7.5em;
+    display: block
 }
-
 .import-block {
-    margin: 0.75em 0 0.5em 0;
-    display: block;
+    margin: .75em 0 .5em 0;
+    display: block
 }
-
 .import-block-bottom {
-    margin: 1.2em 0 0.5em 0;
+    margin: 1.2em 0 .5em 0
 }
-
 .import-section {
-    font-weight: bold;
-    float: left;
+    font-weight: 700;
+    float: left
 }
-
 .import-type-label {
     float: left;
-    margin: 0 1em 0 0.8em;
+    margin: 0 1em 0 .8em
 }
-
 .import-config-label {
     float: left;
-    margin: 0 1em 0 2.5em;
+    margin: 0 1em 0 2.5em
 }
-
 .export-config-header {
     float: left;
-    margin: 0 1em 0 2.95em;
+    margin: 0 1em 0 2.95em
 }
-
 .export-subconfig-label {
     float: left;
-    margin: 0 1em 0 3.5em;
+    margin: 0 1em 0 3.5em
 }
-
 .import-mark-label1 {
     float: left;
-    margin: 0.25em 1em 0 2.5em;
+    margin: .25em 1em 0 2.5em
 }
-
 .import-mark-label2 {
     float: left;
-    margin: 0 1em 0 2.5em;
+    margin: 0 1em 0 2.5em
 }
-
 .menu-box .field-box textarea:focus {
-    border: 1px solid #DDD;
+    border: 1px solid #ddd
 }
-
 .menu-box .field-name {
     display: block;
-    font-weight: bold;
+    font-weight: 700
 }
-
 .menu-box .accepted-suggestions li {
     line-height: 1em;
     padding: .2em 1em .1em 0;
     font-size: 85%
 }
-
 .menu-box .accepted-suggestions li:hover {
-    background-color: #FFEE99;
+    background-color: #fe9
 }
-
 .menu-box .field-box .accepted-suggestions li .delete-tool {
     position: absolute;
     top: .4em;
     right: 0;
-    display: inline;
+    display: inline
 }
-
 .field-no-user-select {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
+    user-select: none
 }
-
 .field-values label {
-    display: block;
+    display: block
 }
-
 .field-values {
     -moz-column-count: 2;
     -webkit-column-count: 2;
-    column-count: 2;
+    column-count: 2
 }
-
 .field-values-3-columns {
     -moz-column-count: 3;
     -webkit-column-count: 3;
-    column-count: 3;
+    column-count: 3
 }
-
 .field-values-3-columns label {
-    display: block;
+    display: block
 }
-
 .field-adopted .field-values-3-columns {
-    display: table-row;
+    display: table-row
 }
-
 .field-adopted .field-values-3-columns label {
-    display: table-cell;
+    display: table-cell
 }
-
-.field-values-3-columns .state_deceased {
-}
-
 .field-values-3-columns .state_miscarriage {
-    margin-bottom: 1px; /* otherwise the bottom pixel of the letter "g" in "miscarriage" is displayed at the top of the next column in Chrome */
-}
+    margin-bottom: 1px
+/*! otherwise the bottom pixel of the letter "g" in "miscarriage" is displayed at the top of the next column in Chrome */
 
-.field-values-3-columns .state_unborn {
 }
-
-.field-values-3-columns .state_aborted {
-}
-
 .field-inputs {
     display: table;
     width: 100%;
-    padding-top: 0.2em;
+    padding-top: .2em
 }
-
-.field-inputs > span {
-    display: table-cell;
+.field-inputs>span {
+    display: table-cell
 }
-
 .field-inputs label {
-    font-family: Arial, Verdana, sans-serif;
+    font-family: inherit
 }
-
 .menu-box .field-cancers {
     margin-bottom: 5px;
-    padding-top: 0.8em;
+    padding-top: .8em
 }
-
 .menu-box .field-first_name {
     width: 48%;
-    float: left;
+    float: left
 }
-
 .menu-box .field-last_name {
     width: 48%;
-    float: right;
+    float: right
 }
-
 .menu-box .field-gender {
     width: 48%;
-    float: left;
+    float: left
 }
-
 .menu-box .field-consanguineous_population {
     width: 100%;
-    float: left;
+    float: left
 }
-
 .menu-box .field-karyotypic_sex {
     width: 48%;
-    float: right;
+    float: right
 }
-
 .menu-box .field-nhs_number {
     width: 48%;
-    float: left;
+    float: left
 }
-
 .menu-box .field-chi_number {
     width: 48%;
-    float: right;
+    float: right
 }
-
 .menu-box .field-external_id {
     width: 48%;
     float: right;
-    padding: .5em 0 0.9em;
+    padding: .5em 0 .9em
 }
-
 .menu-box .field-date_of_birth {
     width: 48%;
     float: left;
-    margin-bottom: 6px;
+    margin-bottom: 6px
 }
-
 .menu-box .field-date_of_death {
     width: 48%;
     float: right;
-    margin-top: -5px; /* TODO: investigate why elements float below its intended position */
-    margin-bottom: 7px;
+    margin-top: -5px;
+    /*! TODO: investigate why elements float below its intended position */margin-bottom: 7px
 }
-
 .menu-box .field-state {
-    float: left;
+    float: left
 }
-
 .menu-box .field-ancestries {
     width: 90%;
-    float: left;
+    float: left
 }
-
 .stateNodeGroup {
-    float: none !important;
+    float: none!important
 }
-
 .menu-box .field-participant_id {
     width: 48%;
-    float: left;
+    float: left
 }
-
 .menu-box .field-gel_super_family_id {
     width: 48%;
-    float: right;
+    float: right
 }
-
 .menu-box .accepted-suggestions {
-    margin: 0px 0px 0.3em !important;
+    margin: 0 0 .3em!important
 }
-
 .menu-box .field-childlessText {
-    padding: 0 0;
+    padding: 0 0
 }
-
 .menu-box .field-adopted {
-    padding: 0.6em 0;
+    padding: .6em 0
 }
-
 .menu-box .field-monozygotic {
-    padding: 0.5em 0 0.26em 0;
+    padding: .5em 0 .26em 0
 }
-
 .menu-box .field-nocontact {
-    padding: 0.26em 0;
+    padding: .26em 0
 }
-
 .menu-box .field-placeholder {
-    padding: 0.26em 0;
+    padding: .26em 0
 }
-
 .menu-box .field-gestation_age {
-    padding: 0.45em 0;
-    float: left;
+    padding: .45em 0;
+    float: left
 }
-
 .menu-box .field-evaluated {
-    padding-top: 0.26em;
-    padding-bottom: 0.5em;
+    padding-top: .26em;
+    padding-bottom: .5em;
     padding-right: 0;
-    margin-left: -0.1em;
-    clear: both;
+    margin-left: -.1em;
+    clear: both
 }
-
 .menu-box .field-evaluated .field-name {
-    font-weight: normal;
+    font-weight: 400
 }
-
 .menu-box .field-carrier {
-    padding-top: 0.8em;
-    padding-bottom: 0.6em;
+    padding-top: .8em;
+    padding-bottom: .6em;
     padding-right: 0;
-    padding-left: 0;
+    padding-left: 0
 }
-
 .menu-box .field-hpo_positive {
     width: 75%;
-    float: right;
+    float: right
 }
-
 .menu-box .field-hpoPresent {
     width: 25%;
     float: left;
-    padding: 0.6em 0;
+    padding: .6em 0
 }
-
 .menu-box .field-hpoPresent label.field-name {
-    font-size: 12px !important;
+    font-size: 12px!important
 }
-
-/* Disable the "browse ontology" button, as ontology browser events are not supported (yet) */
+/*! Disable the "browse ontology" button, as ontology browser events are not supported (yet) */
 .tooltip-phenotype-info .term-tools {
-    display: none;
+    display: none
 }
-
 .menu-box .field-disorders {
     width: 75%;
-    float: right;
+    float: right
 }
-
 .menu-box .disordersNodeGroup {
     width: 90%;
-    float: none !important;
+    float: none!important
 }
-
 .menu-box .field-ageOfOnset {
     width: 25%;
     float: left;
-    padding: 0.6em 0;
+    padding: .6em 0
 }
-
 .menu-box .field-age_of_death_guide {
     width: 90%;
-    float: left;
+    float: left
 }
-
 .menu-box .field-age_of_death {
     width: 72%;
-    float: left;
+    float: left
 }
-
 .menu-box .field-age_of_death_format {
     width: 28%;
     float: right;
-    padding-top: 24px;
+    padding-top: 24px
 }
-
 .menu-box .field-ageOfOnset label.field-name {
-    font-size: 12px !important;
+    font-size: 12px!important
 }
-
 .menu-box .field-candidate_genes {
     width: 85%;
     float: left;
-    padding: 0.6em 0;
+    padding: .6em 0
 }
-
 .menu-box .field-commentsClinical {
     width: 90%;
     float: left;
-    padding: 0.6em 0;
+    padding: .6em 0
 }
-
 .menu-box .field-identifier {
-    padding: 0 0;
+    padding: 0 0
 }
-
 .menu-box .field-childlessSelect {
-    padding: 0.5em 0 0.5em;
-    float: left;
+    padding: .5em 0 .5em;
+    float: left
 }
-
 .menu-box .disabled-select {
-    opacity: 0.5;
-    color: black;
+    opacity: .5;
+    color: #000
 }
-
 .hidden {
-    display: none !important;
+    display: none!important
 }
-
 .menu-box .patient-menu-button {
     border-radius: 2px;
-    box-shadow: 0px 1px 1px #999;
-    background: #D5D5D5;
+    box-shadow: 0 1px 1px #999;
+    background: #d5d5d5;
     padding: 2px 8px 2px 8px;
-    cursor: pointer;
+    cursor: pointer
 }
-
 .menu-box .patient-menu-button:hover {
-    background: #B1C2E2;
+    background: #b1c2e2
 }
-
-/* ===========================================
+/*! ===========================================
  * NODE TYPE OPTIONS
  */
 .callout {
     position: absolute;
     width: auto;
     padding: 3px 0;
-    border: 1px solid #F5F5F5;
+    border: 1px solid #f5f5f5;
     border-radius: 4px;
-    background: #EEE;
+    background: #eee;
     text-align: center;
-    white-space: nowrap !important;
-    box-shadow: 0 0 6px #FF9, 0 0 25px #DDDDDD inset;
+    white-space: nowrap!important;
+    box-shadow: 0 0 6px #ff9,0 0 25px #ddd inset
 }
-
 .callout .callout-handle {
     position: absolute;
     top: -8px;
@@ -940,564 +776,469 @@ div.field-label {
     display: block;
     width: 0;
     z-index: 10;
-    margin-left: -10px;
+    margin-left: -10px
 }
-
 .callout.upside .callout-handle {
     border-top-width: 10px;
     border-bottom-width: 0;
     top: auto;
-    bottom: -8px;
+    bottom: -8px
 }
-
 .node-type-options {
-    position: relative;
+    position: relative
 }
-
 .node-type-options .separator {
     display: inline-block;
     width: 0;
     margin: 0 8px;
-    overflow: hidden;
+    overflow: hidden
 }
-
 .node-type-options .node-type-option {
     background: transparent none center center no-repeat;
-    border: 1px solid #F5F5F5;
+    border: 1px solid #f5f5f5;
     border-radius: 4px;
     display: inline-block;
     margin: 3px;
     height: 24px;
     width: 24px;
-    box-shadow: 0 0 9px #DDDDDD inset;
-    color: black !important;
+    box-shadow: 0 0 9px #ddd inset;
+    color: #000!important;
     vertical-align: middle;
-    text-decoration: none !important;
-    /*
+    text-decoration: none!important;
+    
+/*!
       TODO: Keep this:
       overflow: hidden;
       text-indent: 48px;
       line-height: 48px;
       font-size: 1px;
       TODO: remove this
-      */
-    text-align: center;
-    line-height: 24px;
+      */text-align: center;
+    line-height: 24px
 }
-
 .node-type-options .person-type-option.square {
-    line-height: 28px;
+    line-height: 28px
 }
-
 .node-type-options .person-type-option.square span {
     display: inline-block;
     width: 12px;
     height: 12px;
-    border: 1px solid black;
+    border: 1px solid #000
 }
-
 .node-type-options .person-type-option.diamond {
-    line-height: 26px;
+    line-height: 26px
 }
-
 .node-type-options .person-type-option.diamond span {
     display: inline-block;
     width: 10px;
     height: 10px;
-    border: 1px solid black;
+    border: 1px solid #000;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: rotate(45deg)
 }
-
 .node-type-options .person-type-option.circle {
-    line-height: 29px;
+    line-height: 29px
 }
-
 .node-type-options .person-type-option.circle span {
     display: inline-block;
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid #000
 }
-
 .node-type-options .person-type-option.text-in-middle {
-    position: relative;
+    position: relative
 }
-
 .node-type-options .person-type-option.text-in-middle strong {
-    font-weight: bold;
+    font-weight: 700;
     font-size: 8px;
     position: absolute;
     top: 8px;
-    left: 10px;
+    left: 10px
 }
-
 .expand-arrow {
     cursor: pointer;
     font-size: 15px;
     margin-left: -1px;
-    margin-right: 2px;
+    margin-right: 2px
 }
-
 .expand-arrow:hover {
-    color: #6666CC;
+    color: #66c
 }
-
 .node-type-options .expandable-node-type-option {
     background: transparent none center center no-repeat;
-    border: 1px solid #F5F5F5;
+    border: 1px solid #f5f5f5;
     border-radius: 4px;
     display: inline-block;
     margin: 3px;
     height: 24px;
     width: 24px;
-    box-shadow: 0 0 9px #DDDDDD inset;
-    color: black !important;
+    box-shadow: 0 0 9px #ddd inset;
+    color: #000!important;
     vertical-align: middle;
-    text-decoration: none !important;
-    /*
+    text-decoration: none!important;
+    
+/*!
     TODO: Keep this:
     overflow: hidden;
     text-indent: 48px;
     line-height: 48px;
     font-size: 1px;
     TODO: remove this
-    */
-    text-align: center;
-    line-height: 24px;
+    */text-align: center;
+    line-height: 24px
 }
-
 .node-type-options-extended * {
-    vertical-align: middle;
+    vertical-align: middle
 }
-
 .value-control-button {
-    border: 1px solid #FFF;
+    border: 1px solid #fff;
     border-radius: 3px;
-    box-shadow: 0 0 5px #DDD inset;
+    box-shadow: 0 0 5px #ddd inset;
     cursor: pointer;
     display: inline-block;
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 700;
     height: 1em;
     line-height: 1em;
     margin: 3px;
     padding: 3px;
     text-align: center;
-    width: 1em;
+    width: 1em
 }
-
 .minus-button {
-    color: #C00;
+    color: #c00
 }
-
 .plus-button {
-    color: #080;
+    color: #080
 }
-
 .cursor-normal {
-    cursor: default;
+    cursor: default
 }
-
 .msdialog-modal-container .pedigree-template-chooser {
-    width: 720px;
+    width: 720px
 }
-
 .msdialog-modal-container .pedigree-print-dialog {
-    width: 760px !important;
-    max-width: 760px !important;
+    width: 760px!important;
+    max-width: 760px!important
 }
-
 .print-preview-header {
     text-align: left;
     margin-bottom: 2pt;
-    line-height: 15pt;
+    line-height: 15pt
 }
-
 .print-preview-footer {
     margin-top: 1px;
     margin-bottom: 13px;
     margin-left: 10px;
     margin-right: 25px;
-    display: block !important;
-    color: #733;
+    display: block!important;
+    color: #733
 }
-
 .print-preview-footer-text {
-    color: black;
-    margin-left: 7px;
+    color: #000;
+    margin-left: 7px
 }
-
 .print-settings-block {
-    margin: 0.25em 0 0.5em 0;
-    display: block;
+    margin: .25em 0 .5em 0;
+    display: block
 }
-
 .print-move-span {
-    margin-left: 70px;
+    margin-left: 70px
 }
-
 .print-zoom-value {
     display: inline-block;
     width: 45px;
     height: 25px;
     text-align: center;
     margin-right: 5px;
-    margin-left: 5px;
+    margin-left: 5px
 }
-
 .print-small-button {
     width: 26px;
     height: 28px;
-    cursor: pointer;
+    cursor: pointer
 }
-
 .print-long-button {
     height: 28px;
-    cursor: pointer;
+    cursor: pointer
 }
-
 .print-orientation-span {
-    margin-left: 70px;
+    margin-left: 70px
 }
-
 .print-left-margin {
-    margin-left: 10px;
+    margin-left: 10px
 }
-
 .print-small-left-margin {
-    margin-left: 5px;
+    margin-left: 5px
 }
-
 .picture-box {
     display: inline-block;
-    box-shadow: rgba(0, 0, 0, 0.5) 0 0 5px 2px;
-    margin: 14px;
+    box-shadow: rgba(0,0,0,.5) 0 0 5px 2px;
+    margin: 14px
 }
-
 .picture-box:hover {
     cursor: pointer;
-    box-shadow: rgba(0, 10, 0, 0.5) 0 0 5px 4px;
+    box-shadow: rgba(0,10,0,.5) 0 0 5px 4px
 }
-
 .preview-container {
     border: 1px;
     border-style: solid;
     border-color: #ccc;
-    display: inline-block;
+    display: inline-block
 }
-
 .template-picture-container {
     display: inline-block;
-    margin: 3px;
+    margin: 3px
 }
-
 .msdialog-box {
-    overflow:auto;
-    /*width: 60% !important;*/
-    min-width: 680px !important;
-    max-width: 80% !important;
-    display: inline-block;
+    overflow: auto;
+    /*!width: 60% !important;*/min-width: 680px!important;
+    max-width: 80%!important;
+    display: inline-block
 }
-
 .msdialog-box .content {
-    text-align: center;
+    text-align: center
 }
-
 .pedigree-okcancel {
-    /*width: 680px !important;*/
+    /*!width: 680px !important;*/
 }
-
 .no-mouse-interaction {
-    pointer-events: none;
+    pointer-events: none
 }
-
-/* Make sure the tooltips fit nicely in the suggest box in the pedigree editor: */
+/*! Make sure the tooltips fit nicely in the suggest box in the pedigree editor: */
 .suggestItem .xTooltip {
     left: 4px;
-    margin: 1.4em 0 0;
+    margin: 1.4em 0 0
 }
-
 .cancer_field td {
-    padding: .2em;
+    padding: .2em
 }
-
 .cancer_textarea td {
-    padding: .3em 0 .2em .2em;
+    padding: .3em 0 .2em .2em
 }
-
 .cancer-header td {
-    padding-top: 0.65em;
+    padding-top: .65em
 }
-
 .cancer-notes {
-    margin-left: 2px;
+    margin-left: 2px
 }
-
 .cancer-notes-textarea {
-    margin-bottom: 4px;
+    margin-bottom: 4px
 }
-
 .cancer-header {
-    color: #888;
+    color: #888
 }
-
 .cancer_status_select {
-    margin-right: 10px;
+    margin-right: 10px
 }
-
 .cancer_age_select {
-    margin-right: 3px;
+    margin-right: 3px
 }
-
 .cancer_field .clickable:hover {
-    cursor: pointer;
+    cursor: pointer
 }
-
 .cancer_field label.clickable.disabled {
-    color: #CCC;
-    cursor: default;
+    color: #ccc;
+    cursor: default
 }
-
 .cancer_field textarea {
-    margin-top: 3px;
+    margin-top: 3px
 }
-
 .menu-box .patient-no-cancers-button {
     width: 88%;
     max-width: 20em;
     margin-top: 10px;
-    float: left !important;
-    text-align: center;
+    float: left!important;
+    text-align: center
 }
-
-/* Option types */
+/*! Option types */
 .node-type-options .node-type-m.text-in-middle strong {
     font-size: 10px;
     left: 10px;
-    top: 5px;
+    top: 5px
 }
-
-/* Datepicker style */
+/*! Datepicker style */
 .fuzzy-date-picker {
-    margin-right: -2px;
+    margin-right: -2px
 }
-
 .fuzzy-date-picker select {
-    font-family: Arial, Verdana, sans-serif;
+    font-family: inherit
 }
-
 .fuzzy-date-picker .year {
     font-size: 14px;
-    max-width: 68px;
+    max-width: 68px
 }
-
 .fuzzy-date-picker .month {
     font-size: 14px;
-    max-width: 48px;
+    max-width: 48px
 }
-
 .fuzzy-date-picker .day {
     font-size: 14px;
-    max-width: 48px;
+    max-width: 48px
 }
-
 .fuzzy-date-picker .empty {
     font-size: .7em;
-    opacity: .5;
+    opacity: .5
 }
-
 .fuzzy-date-picker .year option {
-    /*text-indent: 1em;*/
+    /*!text-indent: 1em;*/
 }
-
 .fuzzy-date-picker .year .decade {
-    font-weight: bold;
-    /*text-indent: 0;*/
+    font-weight: 700/*!text-indent: 0;*/
 }
-
 .fuzzy-date-picker .year .century {
-    font-weight: bold;
-    /*text-indent: 0;*/
+    font-weight: 700/*!text-indent: 0;*/
 }
-
 .UnRendered-legend-container {
     bottom: 5px;
     position: absolute;
     z-index: 10000;
     min-width: 140px;
-    max-width: 255px;
+    max-width: 255px
 }
-
 #UnRendered-legend-box {
-    background-color: #FFF;
+    background-color: #fff
 }
-
 li.UnRendered-legend-box-item {
-    background-color: #F7F0F0;
+    background-color: #f7f0f0;
     padding: 3px;
     border-radius: 4px;
-    margin-bottom: 3px;
+    margin-bottom: 3px
 }
-
 li.UnRendered-legend-box-item-selected {
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
     padding: 3px;
     border-radius: 4px;
-    margin-bottom: 3px;
+    margin-bottom: 3px
 }
-
 span.unRenderedItemName {
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 700;
     width: 65px;
     display: inline-block;
-    text-align: left;
+    text-align: left
 }
-
 span.unRenderedItemValue {
     font-size: 12px;
     display: inline-block;
     text-align: left;
-    padding-left: 6px;
+    padding-left: 6px
 }
-
-#UnRendered-legend-box > div > h2.legend-title {
+#UnRendered-legend-box>div>h2.legend-title {
     padding: 4px;
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;
     border-radius: 4px;
-    font-weight: bold;
-    width: 274px !important;;
+    font-weight: 700;
+    width: 274px!important
 }
-
 .UnRendered-abnormality-color {
     display: inline-block;
     width: .5em;
     height: .5em;
     margin: 0 .5em .2em 0;
-    background-color: #a94442 !important;
-    vertical-align: middle;
+    background-color: #a94442!important;
+    vertical-align: middle
 }
-
 i.rightIcon {
     float: right;
-    font-weight: bold;
-    padding-right: 5px;
+    font-weight: 700;
+    padding-right: 5px
 }
-
-/*Added for GEL(GenomicsEngland)*/
-/* Added for removing spaces in between lines in disorder suggests*/
+/*!Added for GEL(GenomicsEngland)*/
+/*! Added for removing spaces in between lines in disorder suggests*/
 div.suggestItems * {
-    line-height: normal !important;
+    line-height: normal!important
 }
-
 .unRendered-disorder-item {
     padding-left: 5px;
     font-size: 10px;
-    text-indent: 0px !important;
+    text-indent: 0!important
 }
-
-/* ------------------------------------------------------------ */
-/* Phenotype Legend */
+/*! ------------------------------------------------------------ */
+/*! Phenotype Legend */
 ul.phenotype-list {
-    max-height: 300px !important;
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
-    margin-right: 5px !important;
-    padding-right: 10px !important;
+    max-height: 300px!important;
+    overflow-y: scroll!important;
+    overflow-x: hidden!important;
+    margin-right: 5px!important;
+    padding-right: 10px!important
 }
-
-@media (min-width: 1200px) {
+@media (min-width:1200px) {
     ul.phenotype-list {
-        max-height: 500px !important;
+        max-height: 500px!important
     }
+}ul.phenotype-list li {
+    margin-bottom: 3px!important;
+    padding-bottom: 3px!important;
+    border-bottom: 1px dotted #ccc
 }
-
-ul.phenotype-list li {
-    margin-bottom: 3px !important;
-    padding-bottom: 3px !important;
-    border-bottom: 1px dotted #CCC;
-}
-
 ul.phenotype-list li:last-child {
-    padding-bottom: 200px !important;
+    padding-bottom: 200px!important
 }
-
-/* ------------------------------------------------------------ */
-/* Disorder Legend */
+/*! ------------------------------------------------------------ */
+/*! Disorder Legend */
 ul.disorder-list {
-    max-height: 300px !important;
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
-    margin-right: 5px !important;
-    padding-right: 10px !important;
+    max-height: 300px!important;
+    overflow-y: scroll!important;
+    overflow-x: hidden!important;
+    margin-right: 5px!important;
+    padding-right: 10px!important
 }
-
 ul.disorder-list li {
-    margin-bottom: 3px !important;
-    padding-bottom: 3px !important;
-    border-bottom: 1px dotted #CCC;
+    margin-bottom: 3px!important;
+    padding-bottom: 3px!important;
+    border-bottom: 1px dotted #ccc
 }
-
 ul.disorder-list li:last-child {
-    padding-bottom: 50px !important;
+    padding-bottom: 50px!important
 }
-
-/* ------------------------------------------------------------ */
-/* UnRendered node Legend */
+/*! ------------------------------------------------------------ */
+/*! UnRendered node Legend */
 ul.UnRendered-list {
-    max-height: 200px !important;
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
-    margin-right: 5px !important;
-    padding-right: 10px !important;
+    max-height: 200px!important;
+    overflow-y: scroll!important;
+    overflow-x: hidden!important;
+    margin-right: 5px!important;
+    padding-right: 10px!important
 }
-
 ul.UnRendered-list li {
-    margin-bottom: 3px !important;
-    padding-bottom: 3px !important;
-    border-bottom: 1px dotted #CCC;
+    margin-bottom: 3px!important;
+    padding-bottom: 3px!important;
+    border-bottom: 1px dotted #ccc
 }
-
 ul.UnRendered-list li:last-child {
-    padding-bottom: 50px !important;
+    padding-bottom: 50px!important
 }
-
-/* ----------------------------------------------------------- */
-/* Suggestion List items*/
+/*! ----------------------------------------------------------- */
+/*! Suggestion List items*/
 ul.gel-accepted-suggestions {
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
-    margin-right: 5px !important;
-    padding-right: 10px !important;
+    overflow-y: scroll!important;
+    overflow-x: hidden!important;
+    margin-right: 5px!important;
+    padding-right: 10px!important
 }
-
 ul.gel-accepted-suggestions li {
-    border-bottom: 1px dotted #CCC;
+    border-bottom: 1px dotted #ccc
 }
-
 ul.gel-accepted-suggestions li:last-child {
-    padding-bottom: 30px !important;
+    padding-bottom: 30px!important
 }
-
-/* ----------------------------------------------------------- */
-/* HPO Suggestion List items */
+/*! ----------------------------------------------------------- */
+/*! HPO Suggestion List items */
 ul.hpo_suggestions {
-    max-height: 500px !important;
+    max-height: 500px!important
 }
-
-/* ----------------------------------------------------------- */
-/* Disorder Suggestion List items */
+/*! ----------------------------------------------------------- */
+/*! Disorder Suggestion List items */
 ul.disorder_suggestions {
-    max-height: 500px !important;
+    max-height: 500px!important
 }
-
 pre {
     font-family: monospace;
     overflow: scroll;
-    max-height: 250px;
+    max-height: 250px
 }

@@ -1,102 +1,86 @@
-/*
+/*!
  */
-
-#body, #xwikimaincontainer, #xwikimaincontainerinner, #xwikicontent, #mainContentArea {
-	background-color: #FFF !important;
-	background-image: none !important;
-	border: none !important;
-	float: none !important;
-	margin: 0px !important;
-	overflow: visible !important;
-	padding: 10px !important;
-	width: auto !important;
+#body,#mainContentArea,#xwikicontent,#xwikimaincontainer,#xwikimaincontainerinner {
+    background-color: #fff!important;
+    background-image: none!important;
+    border: none!important;
+    float: none!important;
+    margin: 0!important;
+    overflow: visible!important;
+    padding: 10px!important;
+    width: auto!important
 }
 * html #body {
-	overflow: auto !important;
+    overflow: auto!important
 }
-/* Hide unneeded stuff */
-.edit_section,
-#rightPanels, #leftPanels,
-#mainmenu, #contentmenu, #menuview, #editmenu,
-#globallinks, #footerglobal,
-#commentform, .xwikitabbar li, #Historyshortcut, #Informationshortcut, .separator,
-.commentheader .commenttools a, a.tag-delete , .tag-add a {
-	display: none !important;
+/*! Hide unneeded stuff */
+#Historyshortcut,#Informationshortcut,#commentform,#contentmenu,#editmenu,#footerglobal,#globallinks
+,#leftPanels,#mainmenu,#menuview,#rightPanels,.commentheader .commenttools a,.edit_section,
+.separator,.tag-add a,.xwikitabbar li,a.tag-delete {
+    display: none!important
 }
 #printcontainer {
-	border: none;
-	float: none !important;
-	overflow: visible !important;
-	padding: 10px;
-	text-align: justify;
+    border: none;
+    float: none!important;
+    overflow: visible!important;
+    padding: 10px;
+    text-align: justify
 }
-
 #headerglobal {
-	float: none;
+    float: none
 }
 #headerspace {
-	margin: 0 !important;
+    margin: 0!important
 }
 #contentcolumn .main {
-	margin: 0 !important;
+    margin: 0!important
 }
-/*-------------------------------------------------------------------*/
+/*!-------------------------------------------------------------------*/
 .main {
-	background-color: white;
-	padding: 10px;
+    background-color: #fff;
+    padding: 10px
 }
-
 .xwikitabbar li.active {
-	display: block;
+    display: block
 }
-
 #docextrapanes #AddComment {
-	border: none;
+    border: none
 }
-
-#xwikidatacontents, #docExtraTabs {
-	background: white;
+#docExtraTabs,#xwikidatacontents {
+    background: #fff
 }
-
-#xdocFooter, #docextrapanes {
-	border: 0;
-	padding-left: 10px;
-	padding-right: 10px;
+#docextrapanes,#xdocFooter {
+    border: 0;
+    padding-left: 10px;
+    padding-right: 10px
 }
-
-#xwikicontent a , #xdocFooter a, #docextrapanes .commentauthor a, #breadcrumbs a {
-	color: #9F9F9F !important;
+#breadcrumbs a,#docextrapanes .commentauthor a,#xdocFooter a,#xwikicontent a {
+    color: #9f9f9f!important
 }
-
 #docExtraTabs ul.xwikitabbar {
-	background: white;
-	border: 0;
-	padding: 0px;
+    background: #fff;
+    border: 0;
+    padding: 0
 }
-
-.leftsidecolumns, #contentcolumn {
-	float: none !important;
+#contentcolumn,.leftsidecolumns {
+    float: none!important
 }
-
-#docextrapanes { /* display all comments */
-	box-shadow: none;
-	float: none !important;
-	overflow: visible !important;
+#docextrapanes {
+    /*! display all comments */box-shadow: none;
+    float: none!important;
+    overflow: visible!important
 }
-
-/* Remove shortcuts */
-#document-info>div+div,
-#historyshortcut, #informationshortcut, #annotationsshortcut {
-	display: none;
+/*! Remove shortcuts */
+#annotationsshortcut,#document-info>div+div,#historyshortcut,#informationshortcut {
+    display: none
 }
 .xdocLastModification {
-	width: auto;
+    width: auto
 }
 .recentChangesMoreActions {
-	display: none;
+    display: none
 }
-
-/* Fix XWIKI-5567 */
+/*! Fix XWIKI-5567 */
 .box {
-	overflow: visible;
+    overflow: visible
 }

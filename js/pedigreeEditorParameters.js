@@ -63,7 +63,7 @@ PedigreeEditorParameters.attributes = {
 	nameLabels: {'font-size': 20, 'font-family': 'Arial'},
 	commentLabel: {'font-size': 19, 'font-family': 'Arial' },
 	cancerAgeOfOnsetLabels: {'font-size': 19, 'font-family': 'Arial' },
-	externalIDLabels: {'font-size': 18, 'font-family': 'Arial' },
+	externalIDLabels: {'font-size': 16, 'font-family': 'Arial' },
 	disorderShapes: {},
 	partnershipNode: {fill: '#d79185', stroke: 'black', 'stroke-width': 2},  //#dc7868, #E25740
 	partnershipRadius: 7.0,

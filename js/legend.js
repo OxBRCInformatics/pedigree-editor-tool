@@ -29,7 +29,7 @@ var Legend = Class.create({
 					new Element('div', {'class': 'infomessage'}).insert(
 						"You can drag and drop all items from the list(s) below onto individuals in the pedigree to mark them as affected.")
 				);
-				this.closeButton = new Element('span', {'class': 'close-button'}).update('x');
+				this.closeButton = new Element('span', {'class': 'close-button'}).update(' ');
 				this.closeButton.observe('click', this.hideDragHint.bindAsEventListener(this));
 				this._legendInfo.insert({'top': this.closeButton});
 				this._legendInfo.hide();
