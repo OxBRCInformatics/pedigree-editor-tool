@@ -25,46 +25,66 @@
       <meta name="language" content="en"/>
 
       <%
-      Long time = System.currentTimeMillis();
       Boolean devMode = new Boolean(System.getProperty("devmode"));
-      if(devMode){
 
+      String[] jsFiles = {"require", "prototype", "localization", "WebService","xwiki"};
+      String[] jsRestFiles = {"config","version"};
+      String[] jsDeferFiles = {"effects", "DateTimePicker", "datepicker", "searchSuggest", "lock", "livevalidation_prototype", "fullScreen",
+      "slider", "dragdrop", "raphael", "helpers", "queues", "baseGraph", "xcoordclass", "ordering", "import", "export", "edgeOptimization", "ageCalc",
+      "positionedGraph", "dynamicGraph", "Blob", "FileSaver", "nodeMenu", "nodetypeSelectionBubble", "graphicHelpers", "legend", "disorder",
+      "disorderLegend", "hpoTerm", "hpoLegend", "geneLegend", "unRenderedLegendSuper", "unRenderedLegend", "saveLoadIndicator", "templateSelector",
+      "okCancelDialogue", "importSelector", "exportSelector", "abstractHoverbox", "readonlyHoverbox", "partnershipHoverbox", "personHoverbox",
+      "abstractNode", "abstractNodeVisuals", "abstractPerson", "Settings", "undoRedoManager", "controller", "preferencesManager", "probandDataLoader",
+      "saveLoadEngine", "versionUpdater", "lineSet", "childlessBehavior", "childlessBehaviorVisuals", "partnershipVisuals", "partnership",
+      "abstractPersonVisuals", "personVisuals", "person", "personGroupHoverbox", "personGroupVisuals", "personGroup", "personPlaceholderVisuals",
+      "personPlaceholder", "view", "svgWrapper", "workspace", "cancersLegend", "printEngine", "printDialog", "pedigree", "actionButtons",
+      "ContentTopMenu", "PushPatient", "compatibility", "markerScript","pedigreeDate", "pedigreeEditorParameters", "Widgets"};
+
+      String suffix = "min.js";
+
+      if(!devMode){
+        Long time = System.currentTimeMillis();
+        out.println("<!-- Running in DEV mode -->");
         // In devmode then load the unminified files
+        suffix = "js?"+time;
+
         %>
         <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/print.css" rel="stylesheet" type="text/css" media="print"/>
-
         <!--[if IE]>
         <link href="css/colibri-ie-all.css" rel="stylesheet" type="text/css" />
         <![endif]-->
-
+        <link href="resources/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <%
       }else{
         // In prod mode then load minified
         %>
         <link href="css/style.min.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/print.min.css" rel="stylesheet" type="text/css" media="print"/>
-
         <!--[if IE]>
         <link href="css/colibri-ie-all.min.css" rel="stylesheet" type="text/css" />
         <![endif]-->
-
+        <link href="resources/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <%
       }
-      out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/icons/font-awesome/css/font-awesome.min.css?"+time+"\">");
 
-      String[] jsFiles = {"require", "prototype", "localization", "WebService","xwiki-min"};
+      out.println("<!-- Load pedigree source base -->");
       for(String jsFile : jsFiles){
-        out.println("<script type=\"text/javascript\" src=\"js/"+jsFile+".js?"+time+"\"></script>");
+        out.println("      <script type=\"text/javascript\" src=\"js/"+jsFile+"."+suffix+"\"></script>");
       }
-      String[] jsRestFiles = {"config","version"};
+
+      out.println("      <!-- Load pedigree config-->");
       for(String jsFile : jsRestFiles){
-        out.println("<script type=\"text/javascript\" src=\"rest/"+jsFile+".js?"+time+"\"></script>");
+        out.println("      <script type=\"text/javascript\" src=\"rest/"+jsFile+".js\"></script>");
       }
-      String[] jsDeferFiles = { "effects", "DateTimePicker", "datepicker", "searchSuggest", "lock", "livevalidation_prototype", "fullScreen", "slider", "dragdrop", "raphael", "helpers", "queues", "baseGraph", "xcoordclass", "ordering", "import", "export", "edgeOptimization", "ageCalc", "positionedGraph", "dynamicGraph", "Blob", "FileSaver", "nodeMenu", "nodetypeSelectionBubble", "graphicHelpers", "legend", "disorder", "disorderLegend", "hpoTerm", "hpoLegend", "geneLegend", "unRenderedLegendSuper", "unRenderedLegend", "saveLoadIndicator", "templateSelector", "okCancelDialogue", "importSelector", "exportSelector", "abstractHoverbox", "readonlyHoverbox", "partnershipHoverbox", "personHoverbox", "abstractNode", "abstractNodeVisuals", "abstractPerson", "Settings", "undoRedoManager", "controller", "preferencesManager", "probandDataLoader", "saveLoadEngine", "versionUpdater", "lineSet", "childlessBehavior", "childlessBehaviorVisuals", "partnershipVisuals", "partnership", "abstractPersonVisuals", "personVisuals", "person", "personGroupHoverbox", "personGroupVisuals", "personGroup", "personPlaceholderVisuals", "personPlaceholder", "view", "svgWrapper", "workspace", "cancersLegend", "printEngine", "printDialog", "pedigree", "actionButtons","ContentTopMenu", "PushPatient", "compatibility", "markerScript","pedigreeDate", "pedigreeEditorParameters", "Widgets-new"};
+      out.print("      <!-- Load pedigree widgets-->");
+
+      out.println("<!-- Load pedigree deferred files-->");
       for(String jsFile : jsDeferFiles){
-        out.println("<script type=\"text/javascript\" src=\"js/"+jsFile+".js?"+time+"\" defer=\"defer\"></script>");
+        out.println("      <script type=\"text/javascript\" src=\"js/"+jsFile+"."+suffix+"\" defer=\"defer\"></script>");
       }
+      out.println("      <!-- All JS loaded -->");
+
       %>
 
       <script type="text/javascript">
