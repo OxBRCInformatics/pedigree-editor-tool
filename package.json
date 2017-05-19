@@ -1,6 +1,6 @@
 {
   "name": "pedigree-editor-tool",
-  "version": "1.3.0-SNAPSHOT",
+  "version": "1.3.0",
   "description": "Tool for creating pedigree diagrams",
   "main": "index.jsp",
   "scripts": {

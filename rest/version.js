@@ -1,1 +1,1 @@
-var version = 'v1.3.0-SNAPSHOT';
+var version = 'v1.3.0';
