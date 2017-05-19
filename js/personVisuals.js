@@ -171,7 +171,7 @@ var PersonVisuals = Class.create(AbstractPersonVisuals, {
                 type = 'chi';
             }
 
-            var text = '{gel:' + this.getNode().getParticipantId() + "}";
+            var text = '{' + this.getNode().getParticipantId() + "}";
             if (number) {
                 text += "[" + type + ":" + number + "]";
             }
