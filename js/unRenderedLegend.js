@@ -21,7 +21,7 @@ var unRenderedLegend = Class.create(unRenderedLegendSuper, {
 			new Element('div', {'class': 'infomessage'}).insert(
 				"Please drag & drop all 'unassigned' participants from the list below into the correct position in the pedigree.")
 		);
-		this.unrenderedCloseButton = new Element('span', {'class': 'close-button'}).update('x');
+		this.unrenderedCloseButton = new Element('span', {'class': 'close-button'}).update(' ');
 		this.unrenderedCloseButton.observe('click', this.hideUnRenderedHint.bindAsEventListener(this));
 		this._unrenderedLegendInfo.insert({'top': this.unrenderedCloseButton});
 

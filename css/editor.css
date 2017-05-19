@@ -259,7 +259,9 @@
     font-size: 13px;
     font-weight: 700;
     margin: .4em .3em 0 -1em;
-    background: #ef6a5f
+    height: 16px;
+    width: 16px;
+    background: url("../resources/icons/silk/cross.png")
 }
 .legend-box .infomessage {
     padding-right: 24px
@@ -398,12 +400,12 @@
     cursor: pointer;
     float: right;
     font-size: 16px;
-    /*!font-weight: bold;*/height: 12px;
+    /*!font-weight: bold;*/height: 16px;
     line-height: 9px;
     margin: 3em .3em 0 -1em;
     text-align: center;
-    width: 12px;
-    background: #ef6a5f
+    width: 16px;
+    background: url("../resources/icons/silk/cross.png")
 }
 .menu-box .close-button:hover {
     text-shadow: .5px .5px #ccc
