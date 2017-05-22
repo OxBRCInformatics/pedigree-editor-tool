@@ -1,5 +1,5 @@
 var config = {
-    "codingDefinitionServiceEndpoint": "/codingDefinitionService",
+    "codingDefinitionServiceEndpoint": "/coding-definition-service",
     // "helpdesk": {
     //     "name": "Help Desk",
     //     "contact": {
@@ -8,19 +8,18 @@ var config = {
     //     }
     // },
     "diagramEndpoint": {
+        "service": "local",
+        "pathToEditorJSFiles": "/"
+
+        //"service": "mercury",
+        //"mercuryPedigreeServiceEndpoint": mercuryRemoteHost + "/gel/rare_diseases/pedigrees"
+        //"pathToEditorJSFiles": "/"
+
         //"service": "openclinica",
         //"pathToEditorJSFiles":"/includes/pedigreeEditor/"
         //get path to pedigree directory like :
         //"http://localhost:8083/openclinica/includes/pedigreeEditor/" or
         //"https://gmc.genomicsengland.nhs.uk/rarediseases/demo/includes/pedigreeEditor/"
-
-
-        "pathToEditorJSFiles": "/",
-        "service": "local"
-
-        //"service": "mercury",
-        //"mercuryHost": "http://localhost:8080/gel/rare_diseases/pedigrees"
-        //"pathToEditorJSFiles":"/includes/pedigreeEditor/"
     },
     "saveAndExit": true
 };

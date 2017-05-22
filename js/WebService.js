@@ -48,7 +48,7 @@ WebService = Class.create({
 				var participantId = this.getUrlParameter("participantId", true);
 				var labkeyToken = this.getUrlParameter("labkeyToken", true);
 				var labkeyEmail = this.getUrlParameter("labkeyEmail", true);
-				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl + "&labkeyToken=" +
+				var mercuryGetEndpoint =  config.mercuryPedigreeServiceEndpoint + "/" + participantId + "?accessPath=" + returnUrl + "&labkeyToken=" +
 					labkeyToken + "&labkeyEmail="+labkeyEmail;
 				return mercuryGetEndpoint;
 				break;
@@ -71,7 +71,7 @@ WebService = Class.create({
 				var participantId = this.getUrlParameter("participantId", true);
 				var labkeyToken = this.getUrlParameter("labkeyToken", true);
 				var labkeyEmail = this.getUrlParameter("labkeyEmail", true);
-				var mercuryGetEndpoint =  config.mercuryHost + "/" + participantId + "?accessPath=" + returnUrl + "&labkeyToken=" +
+				var mercuryGetEndpoint =  config.mercuryPedigreeServiceEndpoint + "/" + participantId + "?accessPath=" + returnUrl + "&labkeyToken=" +
 					labkeyToken + "&labkeyEmail="+labkeyEmail;
 				return mercuryGetEndpoint;
 				break;

@@ -26,6 +26,8 @@
 
       <%
       Boolean devMode = new Boolean(System.getProperty("devmode"));
+      String mercuryRemoteHost = System.getenv("MERCURY_REMOTE_HOST");
+      if(mercuryRemoteHost == null || mercuryRemoteHost.equals("")) mercuryRemoteHost = "http://localhost:8080";
 
       String[] jsFiles = {"require", "prototype", "localization", "WebService","xwiki"};
       String[] jsRestFiles = {"config","version"};
@@ -41,6 +43,9 @@
       "ContentTopMenu", "PushPatient", "compatibility", "markerScript","pedigreeDate", "pedigreeEditorParameters", "Widgets"};
 
       String suffix = "min.js";
+
+      out.println("<!-- Mercury Remote Host: "+mercuryRemoteHost+" -->");
+      out.println("      <script type=\"text/javascript\">var mercuryRemoteHost='"+mercuryRemoteHost+"'</script>");
 
       if(devMode){
         Long time = System.currentTimeMillis();
