@@ -48,3 +48,33 @@ Then start tomcat passing the `-Ddevmode=true` system property, this will make s
 
 We highly recommend the use of JetBrains WebStorm for development as it auto-collapses all .min.js files under their owner .js file,
 making the directories a lot easier to read.
+
+## Deployment
+
+New deployment can be done using the war file which can be built using `grunt build`.
+Nothing complicated about this, just place into the Tomcat webapps folder.
+
+### Config file
+
+The `config.js` file can only be replaced once the war file is unpacked by Tomcat, however as its JavaScript the config is loaded when the
+webpages are requested therefore there's no risk in this.
+
+## Improvements yet to be made
+
+* Combine CSS files into 1 file (configure and use `grunt cssmin`)
+* Mangle JS files (configure and use `grunt uglify`), mangling turned off as some of the variable names are single letters which is causing the code
+to break when its mangled
+* Fix all JSHint issues (use `grunt jshint`)
+* Split JS files between libs and src (files which are pre-supplied and those written for the PET)
+* Merge src JS files into 1 file for PROD
+* Remove all protoype code and replace with jQuery
+* Remove the unnecessary code files
+
+## Release Notes
+
+### V1.3.0 Improvements
+
+* `usercheck.html` is now dynamic to its location, expecting it to be deployed in the same url as the `index.jsp`,
+which it is now, as its included as part of the war file.
+* CSS files are now served as minified files for PROD
+* JS files are now served as minified files for PROD
